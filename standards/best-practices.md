@@ -34,6 +34,56 @@ ELSE:
 - Use consistent naming conventions
 </conditional-block>
 
+<conditional-block context-check="spec-adherence" task-condition="implementation-task">
+IF current task involves implementing features or changes:
+  IF Spec Adherence section already read in current context:
+    SKIP: Re-reading this section
+    NOTE: "Using Spec Adherence guidelines already in context"
+  ELSE:
+    READ: The following guidelines
+ELSE:
+  SKIP: Spec Adherence section not relevant to current task
+
+## Spec Adherence
+
+### Strict Scope Management
+When implementing features or changes:
+- **Read Spec Literally**: Only implement what is explicitly stated in the spec
+- **No Scope Creep**: Do not add features, change existing functionality, or modify unrelated components unless explicitly requested
+- **Ask Before Expanding**: If something seems missing or unclear, ask for clarification instead of making assumptions
+- **Validate Against Original Requirements**: Before implementing, verify each change against the original spec
+
+### Implementation Checklist
+Before starting implementation:
+- [ ] Read the complete spec document thoroughly
+- [ ] Identify exactly what needs to be changed
+- [ ] List any assumptions or unclear requirements
+- [ ] Ask for clarification on any ambiguous points
+- [ ] Confirm scope boundaries with the user
+
+### Scope Validation Process
+During implementation:
+- **Before Each Change**: Ask "Is this explicitly required by the spec?"
+- **For Each File**: Verify "Am I only changing what the spec requires?"
+- **For Each Feature**: Confirm "Is this within the stated scope?"
+- **When Uncertain**: Stop and ask for clarification
+
+### Common Scope Creep Pitfalls
+Avoid these common mistakes:
+- **Over-engineering**: Adding features not in the spec
+- **UI Improvements**: Changing unrelated navigation or styling
+- **Code Refactoring**: Modifying existing functionality not mentioned in spec
+- **Performance Optimizations**: Adding optimizations not requested
+- **Error Handling**: Adding extensive error handling not specified
+
+### When Scope Expansion is Needed
+If you believe the spec is incomplete:
+1. **Document the Gap**: Clearly state what seems to be missing
+2. **Ask for Permission**: Request explicit approval before expanding scope
+3. **Propose Minimal Changes**: Suggest the smallest possible addition
+4. **Get Confirmation**: Wait for user approval before implementing
+</conditional-block>
+
 <conditional-block context-check="dependencies" task-condition="choosing-external-library">
 IF current task involves choosing an external library:
   IF Dependencies section already read in current context:
