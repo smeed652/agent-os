@@ -46,6 +46,13 @@ ELSE:
 
 ## Spec Adherence
 
+### Collaborative Decision Making
+When implementing features or changes:
+- **Always Ask First**: Never implement changes without explicit user approval
+- **Present Options**: When multiple approaches exist, present them and let user choose
+- **Clarify Ambiguities**: When spec is unclear, ask for clarification before proceeding
+- **Get Confirmation**: For any deviation from spec, get explicit user approval
+
 ### Strict Scope Management
 When implementing features or changes:
 - **Read Spec Literally**: Only implement what is explicitly stated in the spec
@@ -53,12 +60,22 @@ When implementing features or changes:
 - **Ask Before Expanding**: If something seems missing or unclear, ask for clarification instead of making assumptions
 - **Validate Against Original Requirements**: Before implementing, verify each change against the original spec
 
+### Implementation Approval Process
+Before starting implementation:
+1. **Read Spec**: Understand requirements completely
+2. **Present Plan**: Show user exactly what will be implemented
+3. **Get Approval**: Wait for user confirmation before proceeding
+4. **Implement**: Only after explicit approval
+5. **Verify**: Confirm implementation matches user expectations
+
 ### Implementation Checklist
 Before starting implementation:
 - [ ] Read the complete spec document thoroughly
 - [ ] Identify exactly what needs to be changed
 - [ ] List any assumptions or unclear requirements
 - [ ] Ask for clarification on any ambiguous points
+- [ ] Present implementation plan to user
+- [ ] Get explicit user approval before proceeding
 - [ ] Confirm scope boundaries with the user
 
 ### Scope Validation Process
@@ -67,6 +84,15 @@ During implementation:
 - **For Each File**: Verify "Am I only changing what the spec requires?"
 - **For Each Feature**: Confirm "Is this within the stated scope?"
 - **When Uncertain**: Stop and ask for clarification
+- **Before Implementation**: Get user approval for approach
+
+### Collaboration Checkpoints
+At key decision points, always ask for user input:
+- **Before Implementation**: "Should I proceed with this approach?"
+- **When Multiple Options**: Present alternatives and let user choose
+- **When Spec is Unclear**: Ask for clarification before proceeding
+- **When Scope Expansion Needed**: Get explicit approval before expanding
+- **Before Final Implementation**: Confirm with user that approach is correct
 
 ### Common Scope Creep Pitfalls
 Avoid these common mistakes:
@@ -75,13 +101,16 @@ Avoid these common mistakes:
 - **Code Refactoring**: Modifying existing functionality not mentioned in spec
 - **Performance Optimizations**: Adding optimizations not requested
 - **Error Handling**: Adding extensive error handling not specified
+- **Making Assumptions**: Implementing without user approval
 
 ### When Scope Expansion is Needed
 If you believe the spec is incomplete:
 1. **Document the Gap**: Clearly state what seems to be missing
-2. **Ask for Permission**: Request explicit approval before expanding scope
-3. **Propose Minimal Changes**: Suggest the smallest possible addition
-4. **Get Confirmation**: Wait for user approval before implementing
+2. **Present Options**: Show user different approaches to address the gap
+3. **Ask for Permission**: Request explicit approval before expanding scope
+4. **Propose Minimal Changes**: Suggest the smallest possible addition
+5. **Get Confirmation**: Wait for user approval before implementing
+6. **Verify Understanding**: Confirm user's choice before proceeding
 </conditional-block>
 
 <conditional-block context-check="dependencies" task-condition="choosing-external-library">
