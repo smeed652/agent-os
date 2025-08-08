@@ -498,6 +498,14 @@ Use the file-creator subagent to await user approval from step 11 and then creat
   - [ ] 2. [MAJOR_TASK_DESCRIPTION]
     - [ ] 2.1 Write tests for [COMPONENT]
     - [ ] 2.2 [IMPLEMENTATION_STEP]
+
+  - [ ] 3. Code Refactoring and Optimization (Post-UI Approval)
+    - [ ] 3.1 Analyze codebase for optimization opportunities
+    - [ ] 3.2 Create refactoring plan and get user approval
+    - [ ] 3.3 Extract common functionality and split large files
+    - [ ] 3.4 Optimize performance and improve error handling
+    - [ ] 3.5 Verify all functionality and UI remain unchanged
+    - [ ] 3.6 Confirm all tests pass and code quality improved
 </task_template>
 
 <ordering_principles>
@@ -608,6 +616,8 @@ Evaluate readiness to begin implementation after completing all previous steps, 
 
   **Task 1:** [FIRST_TASK_TITLE]
   [BRIEF_DESCRIPTION_OF_TASK_1_AND_SUBTASKS]
+
+  **Note:** I will create a feature branch for this implementation to keep the main branch clean and enable proper code review.
 
   Would you like me to proceed with implementing Task 1? I will focus only on this first task and its subtasks unless you specify otherwise.
 

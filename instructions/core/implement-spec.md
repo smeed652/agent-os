@@ -18,9 +18,49 @@ Execute spec implementation with strict scope control and collaborative decision
 
 <process_flow>
 
-<step number="1" name="spec_analysis">
+<step number="1" name="branch_creation">
 
-### Step 1: Spec Analysis and Scope Definition
+### Step 1: Feature Branch Creation (Mandatory)
+
+Create a feature branch for the spec implementation to ensure proper isolation and code review process:
+
+<branch_requirement>
+  <mandatory>ALWAYS create a feature branch before any implementation</mandatory>
+  <rationale>
+    - Keeps main branch clean and stable
+    - Enables proper code review process
+    - Allows for easy rollback if needed
+    - Prevents conflicts between different specs
+  </rationale>
+</branch_requirement>
+
+<branch_creation_process>
+  <naming_convention>
+    - Format: feature/spec-name
+    - Source: Spec folder name (exclude date prefix)
+    - Example: 2025-08-07-commit-message-validation → feature/commit-message-validation
+  </naming_convention>
+  
+  <creation_steps>
+    - [ ] Check current branch status
+    - [ ] Create feature branch from main
+    - [ ] Switch to the new feature branch
+    - [ ] Verify branch creation successful
+    - [ ] Confirm clean working directory
+  </creation_steps>
+</branch_creation_process>
+
+<user_confirmation>
+  BEFORE proceeding to spec analysis:
+    - Confirm feature branch has been created
+    - Verify we're working on the correct branch
+    - Ask: "Should I proceed with spec analysis on this branch?"
+    - Wait for user confirmation
+</user_confirmation>
+
+<step number="2" name="spec_analysis">
+
+### Step 2: Spec Analysis and Scope Definition
 
 Thoroughly analyze the spec document to understand exact requirements:
 
@@ -50,9 +90,9 @@ Thoroughly analyze the spec document to understand exact requirements:
 
 </step>
 
-<step number="2" name="implementation_planning">
+<step number="3" name="implementation_planning">
 
-### Step 2: Implementation Planning and User Approval
+### Step 3: Implementation Planning and User Approval
 
 Create a detailed plan and get user approval before proceeding:
 
@@ -98,9 +138,9 @@ Create a detailed plan and get user approval before proceeding:
 
 </step>
 
-<step number="3" name="implementation">
+<step number="4" name="implementation">
 
-### Step 3: Implementation with Scope Control and User Collaboration
+### Step 4: Implementation with Scope Control and User Collaboration
 
 Implement changes with strict adherence to the spec and user approval:
 
@@ -141,9 +181,9 @@ Implement changes with strict adherence to the spec and user approval:
 
 </step>
 
-<step number="4" name="testing">
+<step number="5" name="testing">
 
-### Step 4: Testing Implementation with User Approval
+### Step 5: Testing Implementation with User Approval
 
 Test only the changes specified in the spec:
 
@@ -173,9 +213,9 @@ Test only the changes specified in the spec:
 
 </step>
 
-<step number="5" name="verification">
+<step number="6" name="verification">
 
-### Step 5: Implementation Verification and User Confirmation
+### Step 6: Implementation Verification and User Confirmation
 
 Verify that implementation matches spec exactly and get user confirmation:
 
@@ -205,6 +245,126 @@ Verify that implementation matches spec exactly and get user confirmation:
     - If user is satisfied: Complete implementation
     - If user wants changes: Make adjustments and get re-approval
 </user_confirmation>
+
+</step>
+
+<step number="7" name="refactoring">
+
+### Step 7: Code Refactoring and Optimization (Post-UI Approval)
+
+After user approval of the implementation, perform code refactoring and optimization while preserving all functionality and UI:
+
+<refactoring_phase>
+  <timing>
+    - TRIGGER: After user confirms implementation matches expectations
+    - CONSTRAINT: Only after UI/UX has been approved
+    - GOAL: Optimize code quality without changing functionality
+  </timing>
+</refactoring_phase>
+
+<refactoring_objectives>
+  - **Code Quality**: Improve readability, maintainability, and performance
+  - **DRY Principles**: Eliminate code duplication
+  - **File Size Management**: Keep files under 250 lines
+  - **Design Patterns**: Ensure proper architectural patterns
+  - **Performance**: Optimize without changing behavior
+  - **Documentation**: Improve code comments and documentation
+</refactoring_objectives>
+
+<refactoring_process>
+  <analysis_phase>
+    - [ ] Analyze codebase for optimization opportunities
+    - [ ] Identify code duplication and extract common functionality
+    - [ ] Review file sizes and split large files if needed
+    - [ ] Assess performance bottlenecks
+    - [ ] Check for proper design pattern implementation
+    - [ ] Review error handling and edge cases
+  </analysis_phase>
+
+  <planning_phase>
+    - [ ] Create refactoring plan with specific improvements
+    - [ ] Identify files that need restructuring
+    - [ ] Plan extraction of reusable components/functions
+    - [ ] Design improved error handling strategies
+    - [ ] Plan performance optimizations
+    - [ ] Present refactoring plan to user for approval
+  </planning_phase>
+
+  <implementation_phase>
+    - [ ] Extract common functionality into reusable modules
+    - [ ] Split large files into smaller, focused components
+    - [ ] Implement proper error handling and validation
+    - [ ] Optimize performance-critical sections
+    - [ ] Improve code documentation and comments
+    - [ ] Ensure all tests continue to pass
+  </implementation_phase>
+
+  <validation_phase>
+    - [ ] Verify all functionality remains unchanged
+    - [ ] Confirm UI/UX is preserved exactly
+    - [ ] Run comprehensive test suite
+    - [ ] Check for any performance regressions
+    - [ ] Validate code quality improvements
+    - [ ] Get user confirmation that refactoring is successful
+  </validation_phase>
+</refactoring_process>
+
+<refactoring_guidelines>
+  <code_quality>
+    - **Readability**: Clear variable names, consistent formatting
+    - **Maintainability**: Modular design, single responsibility
+    - **Reusability**: Extract common patterns and utilities
+    - **Testability**: Ensure code is easily testable
+  </code_quality>
+
+  <file_management>
+    - **Size Limit**: Keep files under 250 lines
+    - **Single Responsibility**: Each file has one clear purpose
+    - **Logical Grouping**: Related functionality in same files
+    - **Clear Naming**: Descriptive file and folder names
+  </file_management>
+
+  <performance_optimization>
+    - **Algorithm Efficiency**: Optimize time/space complexity
+    - **Resource Usage**: Minimize memory and CPU usage
+    - **Lazy Loading**: Load resources only when needed
+    - **Caching**: Implement appropriate caching strategies
+  </performance_optimization>
+
+  <error_handling>
+    - **Graceful Degradation**: Handle errors without crashes
+    - **User Feedback**: Provide clear error messages
+    - **Logging**: Implement proper logging for debugging
+    - **Validation**: Validate inputs and edge cases
+  </error_handling>
+</refactoring_guidelines>
+
+<user_approval_process>
+  BEFORE starting refactoring:
+    - Present refactoring analysis to user
+    - Show specific improvements planned
+    - Ask: "Should I proceed with these code optimizations?"
+    - Wait for explicit user approval
+    - If user suggests changes: Update plan and get re-approval
+</user_approval_process>
+
+<refactoring_constraints>
+  - **No Functional Changes**: All existing functionality must work exactly the same
+  - **No UI Changes**: User interface must remain identical
+  - **No API Changes**: External interfaces must be preserved
+  - **Test Preservation**: All existing tests must continue to pass
+  - **User Approval**: Only proceed with user-confirmed improvements
+</refactoring_constraints>
+
+<post_refactoring_validation>
+  AFTER refactoring completion:
+    - [ ] All tests pass (100% success rate)
+    - [ ] UI functionality identical to before refactoring
+    - [ ] Performance metrics maintained or improved
+    - [ ] Code quality metrics improved
+    - [ ] User confirms refactoring is successful
+    - [ ] Document any lessons learned for future refactoring
+</post_refactoring_validation>
 
 </step>
 

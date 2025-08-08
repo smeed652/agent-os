@@ -69,6 +69,26 @@ Before starting implementation:
 5. **Implement**: Only after explicit approval
 6. **Verify**: Confirm implementation matches user expectations
 
+### Refactoring Phase (Post-UI Approval)
+After user approval of the implementation, perform code optimization while preserving functionality:
+1. **UI Approval First**: Only refactor after UI/UX has been approved
+2. **Analyze Codebase**: Identify optimization opportunities and code duplication
+3. **Plan Refactoring**: Create detailed plan and get user approval
+4. **Extract Common Code**: Eliminate duplication and create reusable modules
+5. **Split Large Files**: Keep files under 250 lines for maintainability
+6. **Optimize Performance**: Improve efficiency without changing behavior
+7. **Validate Changes**: Ensure all tests pass and functionality remains identical
+8. **User Confirmation**: Get final approval that refactoring is successful
+
+### Feature Branch Creation (Mandatory)
+Always create a feature branch for spec implementation to ensure proper isolation:
+1. **Branch Naming**: Use format `feature/spec-name` (exclude date prefix)
+2. **Create from Main**: Always branch from the main branch
+3. **Clean Working Directory**: Ensure no uncommitted changes before branching
+4. **User Confirmation**: Verify branch creation with user before proceeding
+5. **Isolation**: Keep all spec work isolated on the feature branch
+6. **Code Review**: Enable proper review process through pull requests
+
 ### Implementation Checklist
 Before starting implementation:
 - [ ] Scan existing codebase to understand current implementation patterns

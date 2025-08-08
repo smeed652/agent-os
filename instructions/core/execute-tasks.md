@@ -100,23 +100,78 @@ Check for any running development server and ask user permission to shut it down
 
 Use the git-workflow subagent to manage git branches to ensure proper isolation by creating or switching to the appropriate branch for the spec.
 
+<branch_creation_requirement>
+  <mandatory>ALWAYS create a feature branch for spec implementation</mandatory>
+  <rationale>
+    - Keeps main branch clean and stable
+    - Enables proper code review process
+    - Allows for easy rollback if needed
+    - Prevents conflicts between different specs
+  </rationale>
+</branch_creation_requirement>
+
 <instructions>
   ACTION: Use git-workflow subagent
-  REQUEST: "Check and manage branch for spec: [SPEC_FOLDER]
-            - Create branch if needed
-            - Switch to correct branch
-            - Handle any uncommitted changes"
+  REQUEST: "Create and switch to feature branch for spec: [SPEC_FOLDER]
+            - Create branch if it doesn't exist
+            - Switch to the correct branch
+            - Handle any uncommitted changes
+            - Ensure clean working directory"
   WAIT: For branch setup completion
+  VERIFY: Branch creation and switching successful
 </instructions>
 
-<branch_naming>
+<branch_naming_convention>
   <source>spec folder name</source>
-  <format>exclude date prefix</format>
-  <example>
+  <format>feature/spec-name (exclude date prefix)</format>
+  <examples>
     - folder: 2025-03-15-password-reset
-    - branch: password-reset
-  </example>
-</branch_naming>
+    - branch: feature/password-reset
+    - folder: 2025-08-07-commit-message-validation
+    - branch: feature/commit-message-validation
+  </examples>
+  <validation>
+    - Must start with "feature/"
+    - Use kebab-case from spec folder
+    - Exclude date prefix (YYYY-MM-DD-)
+    - Maximum 50 characters
+  </validation>
+</branch_naming_convention>
+
+<branch_workflow>
+  <check_current_branch>
+    - Verify we're not on main branch
+    - Confirm we're on the correct feature branch
+    - Handle any uncommitted changes
+  </check_current_branch>
+  
+  <create_if_needed>
+    - Create feature branch from main
+    - Switch to the new branch
+    - Verify branch creation successful
+  </create_if_needed>
+  
+  <switch_if_exists>
+    - Switch to existing feature branch
+    - Stash any uncommitted changes if needed
+    - Verify clean working directory
+  </switch_if_exists>
+</branch_workflow>
+
+<error_handling>
+  <if_branch_creation_fails>
+    - Report error to user
+    - Ask for manual intervention
+    - Wait for user to resolve
+  </if_branch_creation_fails>
+  
+  <if_uncommitted_changes>
+    - Stash changes temporarily
+    - Create/switch to feature branch
+    - Apply stashed changes if appropriate
+    - Ask user if stashed changes should be committed
+  </if_uncommitted_changes>
+</error_handling>
 
 </step>
 

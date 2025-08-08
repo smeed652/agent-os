@@ -12,7 +12,6 @@ module.exports = {
     'scope-enum': [2, 'always', []], // Allow any scope
     'scope-empty': [2, 'never'],
     'scope-max-length': [2, 'always', 20],
-    'scope-format': [2, 'always', /^[a-z0-9_-]+$/],
     'header-max-length': [2, 'always', 72],
     'body-leading-blank': [2, 'always'],
     'footer-leading-blank': [2, 'always']
