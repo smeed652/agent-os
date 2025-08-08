@@ -1,0 +1,3 @@
+# Spec Summary (Lite)
+
+Implement a comprehensive commit message validation system using Husky hooks to prevent conventional commit format violations and reduce development cycle rework. The system will include local validation via git hooks, interactive commit creation with Commitizen, CI/CD pipeline validation, enhanced documentation, and automated fixing tools to ensure consistent commit standards across the team. 

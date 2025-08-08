@@ -62,14 +62,16 @@ When implementing features or changes:
 
 ### Implementation Approval Process
 Before starting implementation:
-1. **Read Spec**: Understand requirements completely
-2. **Present Plan**: Show user exactly what will be implemented
-3. **Get Approval**: Wait for user confirmation before proceeding
-4. **Implement**: Only after explicit approval
-5. **Verify**: Confirm implementation matches user expectations
+1. **Scan Existing Code**: Analyze current codebase to understand existing implementation patterns and avoid duplicating functionality
+2. **Read Spec**: Understand requirements completely
+3. **Present Plan**: Show user exactly what will be implemented
+4. **Get Approval**: Wait for user confirmation before proceeding
+5. **Implement**: Only after explicit approval
+6. **Verify**: Confirm implementation matches user expectations
 
 ### Implementation Checklist
 Before starting implementation:
+- [ ] Scan existing codebase to understand current implementation patterns
 - [ ] Read the complete spec document thoroughly
 - [ ] Identify exactly what needs to be changed
 - [ ] List any assumptions or unclear requirements
@@ -167,6 +169,8 @@ Follow the proven workflow: Feature Branch → Main → Release Branch → Produ
 
 ### Test-Driven Development
 - **Bug Fixes**: Write tests first to detect issues, then implement fixes
+- **Failing Tests First**: When bugs are found but tests are passing, first update tests to detect the issue, then fix the bug
+- **Documentation Updates**: Update project documentation to reflect this workflow
 - **Quality Gates**: All tests must pass before release creation
 - **Comprehensive Testing**: Unit tests + E2E tests before deployment
 - **Test Coverage**: Aim for high coverage, especially for critical paths
@@ -176,4 +180,61 @@ Follow the proven workflow: Feature Branch → Main → Release Branch → Produ
 - **Environment Parity**: Keep staging and production environments as similar as possible
 - **Monitoring**: Monitor production after deployment for issues
 - **Documentation**: Update changelog and release notes for user communication
+</conditional-block>
+
+<conditional-block context-check="testing-practices" task-condition="feature-implementation">
+IF current task involves implementing features or changes:
+  IF Testing Practices section already read in current context:
+    SKIP: Re-reading this section
+    NOTE: "Using Testing Practices guidelines already in context"
+  ELSE:
+    READ: The following guidelines
+ELSE:
+  SKIP: Testing Practices section not relevant to current task
+
+## Testing Best Practices
+
+### Pre-Push Testing Requirements
+Before pushing any changes to remote branches:
+1. **Run Full Test Suite**: Always run `npm test` locally before pushing
+2. **Test Affected Components**: Run tests for any components you modified
+3. **Test New Dependencies**: If adding new context providers or hooks, test all components that might use them
+4. **Environment Parity**: Ensure local test environment matches CI/CD as closely as possible
+
+### Context Provider Testing
+When adding new React Context providers:
+1. **Identify All Consumers**: Find all components that use the new context
+2. **Update Test Wrappers**: Add provider wrappers to all test files for affected components
+3. **Test Integration**: Verify that components work correctly with the new context
+4. **Check for Missing Providers**: Look for "must be used within a Provider" errors
+
+### Test Environment Differences
+Be aware of differences between local and CI/CD environments:
+- **Local**: May have more permissive context or shared state between tests
+- **CI/CD**: Stricter isolation, requires explicit provider wrapping
+- **Solution**: Always wrap test components with required providers, even if they work locally
+
+### Systematic Testing Approach
+When implementing features that affect multiple components:
+1. **Map Dependencies**: Identify all components that might be affected
+2. **Test Each Component**: Run tests for each affected component individually
+3. **Test Integration**: Run integration tests that use multiple components together
+4. **Full Suite**: Run the complete test suite before pushing
+
+### Common Testing Pitfalls
+Avoid these common mistakes:
+- **Assuming Local Works**: Just because it works locally doesn't mean it will work in CI/CD
+- **Missing Provider Wrappers**: Not wrapping test components with required context providers
+- **Incomplete Test Coverage**: Not testing all affected components
+- **Environment Assumptions**: Assuming test environment behavior without verification
+
+### Testing Checklist
+Before pushing changes:
+- [ ] Run `npm test` (full test suite)
+- [ ] Test any new context providers with all consumer components
+- [ ] Verify test wrappers include required providers
+- [ ] Check for "must be used within a Provider" errors
+- [ ] Test affected components individually
+- [ ] Run integration tests if applicable
+- [ ] Verify CI/CD environment compatibility
 </conditional-block>

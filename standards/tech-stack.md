@@ -14,7 +14,7 @@ Global tech stack defaults for Agent OS projects, overridable in project-specifi
 - Package Manager: npm
 - Node Version: 22 LTS
 - CSS Framework: TailwindCSS 4.0+
-- UI Components: Instrumental Components latest
+- UI Components: shadcn/ui latest
 - UI Installation: Via development gems group
 - Font Provider: Google Fonts
 - Font Loading: Self-hosted for performance
