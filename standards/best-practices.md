@@ -55,3 +55,46 @@ When adding third-party dependencies:
   - Number of stars/downloads
   - Clear documentation
 </conditional-block>
+
+<conditional-block context-check="deployment-workflow" task-condition="production-deployment">
+IF current task involves production deployment or release management:
+  IF Deployment Workflow section already read in current context:
+    SKIP: Re-reading this section
+    NOTE: "Using Deployment Workflow guidelines already in context"
+  ELSE:
+    READ: The following guidelines
+ELSE:
+  SKIP: Deployment Workflow section not relevant to current task
+
+## Deployment Workflow
+
+### Conventional Commits
+All commits must follow conventional commit format for automatic changelog generation:
+```bash
+<type>(<scope>): <description>
+```
+**Types:** feat, fix, docs, style, refactor, perf, test, chore
+**Examples:**
+- `feat(auth): add OAuth2 authentication`
+- `fix(dashboard): resolve quarterly metrics display issue`
+- `docs(workflow): update deployment guide`
+
+### Release Branch Workflow
+Follow the proven workflow: Feature Branch → Main → Release Branch → Production
+1. **Development**: Work on main branch with conventional commits
+2. **Release Creation**: `npm run release:create` - creates release branch with automatic changelog
+3. **Production Deployment**: `npm run deploy:production:release` - deploys release branch
+4. **Version Management**: Use semantic versioning (major.minor.patch)
+
+### Test-Driven Development
+- **Bug Fixes**: Write tests first to detect issues, then implement fixes
+- **Quality Gates**: All tests must pass before release creation
+- **Comprehensive Testing**: Unit tests + E2E tests before deployment
+- **Test Coverage**: Aim for high coverage, especially for critical paths
+
+### Deployment Best Practices
+- **Rollback Strategy**: Always have a rollback plan for production issues
+- **Environment Parity**: Keep staging and production environments as similar as possible
+- **Monitoring**: Monitor production after deployment for issues
+- **Documentation**: Update changelog and release notes for user communication
+</conditional-block>

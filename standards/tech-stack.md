@@ -29,5 +29,11 @@ Global tech stack defaults for Agent OS projects, overridable in project-specifi
 - CI/CD Platform: GitHub Actions
 - CI/CD Trigger: Push to main/staging branches
 - Tests: Run before deployment
-- Production Environment: main branch
-- Staging Environment: staging branch
+- Production Environment: production branch (manual deployment)
+- Staging Environment: main branch (auto-deploy)
+- Release Management: Release branches with automatic changelog generation
+- Version Control: Git with conventional commits
+- Deployment Platform: AWS Amplify (or project-specific)
+- Release Workflow: Feature Branch → Main → Release Branch → Production
+- Changelog Generation: Automatic from conventional commits
+- Version Management: Semantic versioning (major.minor.patch)
