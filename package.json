@@ -1,29 +1,33 @@
 {
-  "name": "agent-os-config",
-  "version": "1.0.0",
-  "description": "Agent OS Configuration Backup",
+  "name": "agent-os",
+  "version": "1.4.0",
+  "description": "Agent OS - A system for better planning and executing software development tasks with your AI agents",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "prepare": "husky install",
-    "commit": "git-cz",
-    "dashboard": "node scripts/spec-dashboard-generator.js",
-    "dashboard:simple": "node scripts/simple-dashboard-generator.js",
-    "dashboard:global": "node scripts/global-dashboard-generator.js",
-    "test:lifecycle": "node scripts/test-lifecycle.js"
+    "test": "node scripts/enhanced-test-runner.js",
+    "test:basic": "node scripts/test-runner.js",
+    "test:enhanced": "node scripts/enhanced-test-runner.js",
+    "test:lifecycle": "node scripts/test-lifecycle.js",
+    "test:validators": "node scripts/test-validators.js",
+    "test:rules": "node scripts/test-rules.js",
+    "test:rules:parser": "node scripts/test-rule-parser.js",
+    "test:all": "npm run test && npm run test:rules && npm run test:rules:parser",
+    "test:coverage": "npm run test:enhanced",
+    "coverage": "node scripts/coverage-analyzer.js",
+    "dashboard": "node scripts/simple-dashboard-generator.js",
+    "dashboard:global": "node scripts/global-dashboard-generator.js"
   },
   "keywords": [
     "agent-os",
-    "configuration",
-    "development-standards"
+    "ai",
+    "development",
+    "workflow",
+    "lifecycle-management"
   ],
-  "author": "Agent OS Team",
+  "author": "Agent OS Community",
   "license": "MIT",
-  "devDependencies": {
-    "@commitlint/cli": "^19.8.1",
-    "@commitlint/config-conventional": "^19.8.1",
-    "husky": "^9.0.0",
-    "jest": "^29.0.0"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/buildermethods/agent-os.git"
   }
 }

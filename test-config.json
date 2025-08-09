@@ -1,0 +1,26 @@
+{
+  "testSuites": [
+    {
+      "name": "Validator Tests",
+      "script": "test-validators.js",
+      "description": "Tests for spec creation and task completion validators",
+      "enabled": true,
+      "timeout": 30000
+    },
+    {
+      "name": "Lifecycle Tests",
+      "script": "test-lifecycle.js", 
+      "description": "Tests for lifecycle management system",
+      "enabled": true,
+      "timeout": 15000
+    }
+  ],
+  "reporting": {
+    "verbose": true,
+    "showOutput": true,
+    "exitOnFailure": true
+  },
+  "environment": {
+    "NODE_ENV": "test"
+  }
+}

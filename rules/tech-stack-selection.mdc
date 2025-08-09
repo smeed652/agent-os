@@ -1,0 +1,327 @@
+---
+alwaysApply: true
+---
+
+# Tech Stack Selection
+
+Universal criteria and decision-making framework for selecting technology stacks that align with project requirements, team capabilities, and long-term maintainability.
+
+## Selection Principles
+
+### Business Alignment
+- **Project requirements**: Technology must meet functional and non-functional requirements
+- **Timeline constraints**: Consider learning curve and development speed
+- **Budget considerations**: Factor in licensing, infrastructure, and maintenance costs
+- **Scalability needs**: Ensure technology can grow with business requirements
+
+### Technical Considerations
+- **Team expertise**: Leverage existing team skills or plan for training
+- **Community support**: Active community, documentation, and ecosystem
+- **Performance requirements**: Meet latency, throughput, and resource constraints
+- **Integration capabilities**: Compatibility with existing systems and tools
+
+### Long-term Viability
+- **Maintenance burden**: Consider long-term support and update requirements
+- **Vendor lock-in**: Evaluate dependency on specific vendors or platforms
+- **Technology maturity**: Balance innovation with stability
+- **Migration path**: Plan for future technology transitions
+
+## Decision Framework
+
+### Requirements Assessment
+```yaml
+requirements_matrix:
+  functional:
+    - core_features: [list key features]
+    - user_experience: [performance, accessibility, usability]
+    - integration_needs: [apis, databases, third_party_services]
+    
+  non_functional:
+    - performance: [response_time, throughput, scalability]
+    - security: [authentication, authorization, data_protection]
+    - reliability: [uptime, error_handling, disaster_recovery]
+    - maintainability: [code_quality, testing, documentation]
+```
+
+### Evaluation Criteria
+```yaml
+evaluation_criteria:
+  technical_fit: 30%
+    - meets_requirements: critical
+    - performance_characteristics: high
+    - integration_capabilities: high
+    
+  team_readiness: 25%
+    - existing_expertise: high
+    - learning_curve: medium
+    - training_availability: medium
+    
+  ecosystem_health: 20%
+    - community_size: medium
+    - documentation_quality: high
+    - third_party_support: medium
+    
+  business_factors: 15%
+    - development_speed: high
+    - total_cost_ownership: high
+    - vendor_stability: medium
+    
+  future_proofing: 10%
+    - technology_trajectory: medium
+    - migration_options: low
+    - innovation_potential: low
+```
+
+### Decision Matrix Template
+```
+| Technology | Technical Fit | Team Readiness | Ecosystem | Business | Future | Total Score |
+|------------|---------------|----------------|-----------|----------|--------|-------------|
+| Option A   | 8/10 (2.4)   | 6/10 (1.5)    | 9/10 (1.8)| 7/10 (1.05)| 8/10 (0.8)| 7.55/10    |
+| Option B   | 9/10 (2.7)   | 4/10 (1.0)    | 7/10 (1.4)| 8/10 (1.2) | 6/10 (0.6)| 6.9/10     |
+| Option C   | 7/10 (2.1)   | 9/10 (2.25)   | 8/10 (1.6)| 6/10 (0.9) | 7/10 (0.7)| 7.55/10    |
+```
+
+## Technology Categories
+
+### Frontend Technologies
+```yaml
+frontend_options:
+  frameworks:
+    react:
+      strengths: [large_ecosystem, component_reusability, team_familiarity]
+      weaknesses: [complexity_for_simple_apps, frequent_updates]
+      best_for: [interactive_uis, complex_state_management, large_teams]
+      
+    vue:
+      strengths: [gentle_learning_curve, excellent_documentation, flexible]
+      weaknesses: [smaller_ecosystem, less_job_market]
+      best_for: [rapid_prototyping, small_to_medium_projects, mixed_skill_teams]
+      
+    angular:
+      strengths: [full_framework, typescript_first, enterprise_ready]
+      weaknesses: [steep_learning_curve, heavyweight, opinionated]
+      best_for: [large_applications, enterprise_environments, long_term_projects]
+      
+    vanilla_js:
+      strengths: [no_dependencies, fast_loading, full_control]
+      weaknesses: [more_development_time, reinventing_wheels, maintenance_burden]
+      best_for: [simple_sites, performance_critical, minimal_dependencies]
+```
+
+### Backend Technologies
+```yaml
+backend_options:
+  runtime_environments:
+    nodejs:
+      strengths: [javascript_everywhere, npm_ecosystem, async_by_default]
+      weaknesses: [single_threaded, cpu_intensive_tasks, callback_complexity]
+      best_for: [api_servers, real_time_apps, javascript_teams]
+      
+    python:
+      strengths: [readable_syntax, rich_libraries, data_science_integration]
+      weaknesses: [performance_limitations, gil_constraints, deployment_complexity]
+      best_for: [data_processing, machine_learning, rapid_development]
+      
+    serverless:
+      strengths: [auto_scaling, pay_per_use, no_server_management]
+      weaknesses: [cold_starts, vendor_lock_in, debugging_complexity]
+      best_for: [event_driven, variable_load, cost_optimization]
+```
+
+### Database Technologies
+```yaml
+database_options:
+  relational:
+    postgresql:
+      strengths: [acid_compliance, advanced_features, open_source]
+      weaknesses: [complexity_for_simple_apps, resource_intensive]
+      best_for: [complex_queries, data_integrity, analytical_workloads]
+      
+    mysql:
+      strengths: [wide_adoption, good_performance, easy_to_learn]
+      weaknesses: [limited_advanced_features, licensing_considerations]
+      best_for: [web_applications, read_heavy_workloads, cost_sensitive]
+      
+  nosql:
+    mongodb:
+      strengths: [flexible_schema, horizontal_scaling, json_documents]
+      weaknesses: [eventual_consistency, memory_usage, complex_queries]
+      best_for: [rapid_development, varied_data_structures, content_management]
+      
+    dynamodb:
+      strengths: [managed_service, predictable_performance, serverless_integration]
+      weaknesses: [vendor_lock_in, limited_query_flexibility, cost_at_scale]
+      best_for: [aws_ecosystem, predictable_access_patterns, high_availability]
+```
+
+## Selection Process
+
+### Phase 1: Requirements Gathering
+1. **Functional Requirements**
+   - Core features and capabilities
+   - User experience expectations
+   - Integration requirements
+   - Data handling needs
+
+2. **Non-Functional Requirements**
+   - Performance benchmarks
+   - Security requirements
+   - Scalability projections
+   - Availability targets
+
+3. **Constraints**
+   - Budget limitations
+   - Timeline restrictions
+   - Team skill limitations
+   - Compliance requirements
+
+### Phase 2: Technology Research
+1. **Market Research**
+   - Industry trends and adoption
+   - Competitor technology choices
+   - Expert recommendations
+   - Community feedback
+
+2. **Technical Evaluation**
+   - Proof of concept development
+   - Performance benchmarking
+   - Integration testing
+   - Security assessment
+
+3. **Cost Analysis**
+   - Development costs
+   - Infrastructure costs
+   - Maintenance costs
+   - Training costs
+
+### Phase 3: Decision Making
+1. **Scoring Matrix**
+   - Weight criteria by importance
+   - Score each option objectively
+   - Calculate weighted totals
+   - Document reasoning
+
+2. **Risk Assessment**
+   - Technical risks
+   - Business risks
+   - Mitigation strategies
+   - Contingency plans
+
+3. **Final Decision**
+   - Present findings to stakeholders
+   - Make informed decision
+   - Document decision rationale
+   - Plan implementation approach
+
+## Common Anti-patterns
+
+### Technology Selection Mistakes
+- ❌ **Resume-driven development**: Choosing tech for learning rather than project needs
+- ❌ **Shiny object syndrome**: Always picking the newest technology
+- ❌ **One-size-fits-all**: Using same stack for every project regardless of requirements
+- ❌ **Vendor lock-in ignorance**: Not considering migration costs and options
+
+### Decision Process Mistakes
+- ❌ **Insufficient research**: Making decisions without proper evaluation
+- ❌ **Ignoring team capabilities**: Choosing tech team can't effectively use
+- ❌ **Short-term thinking**: Not considering long-term maintenance and evolution
+- ❌ **Analysis paralysis**: Over-researching without making timely decisions
+
+## Documentation Template
+
+### Technology Decision Record (TDR)
+```markdown
+# TDR-001: Frontend Framework Selection
+
+## Status
+Accepted
+
+## Context
+We need to select a frontend framework for our new customer portal project.
+
+## Requirements
+- Interactive dashboard with real-time updates
+- Mobile-responsive design
+- Integration with existing REST APIs
+- Team has React experience
+- 6-month development timeline
+
+## Options Considered
+
+### React
+- **Pros**: Team expertise, large ecosystem, component reusability
+- **Cons**: Complexity for simple components, frequent updates
+- **Score**: 8.5/10
+
+### Vue
+- **Pros**: Gentle learning curve, excellent documentation
+- **Cons**: Smaller ecosystem, team learning required
+- **Score**: 6.5/10
+
+### Angular
+- **Pros**: Full framework, TypeScript support
+- **Cons**: Steep learning curve, heavyweight for our needs
+- **Score**: 5.5/10
+
+## Decision
+React - Best alignment with team skills and project requirements.
+
+## Consequences
+- Leverage existing team React expertise
+- Access to large ecosystem of components and tools
+- Need to manage complexity and keep dependencies updated
+- Plan for regular framework updates
+
+## Implementation Plan
+1. Set up React project with TypeScript
+2. Configure build tools and development environment
+3. Establish component library and design system
+4. Implement core dashboard functionality
+5. Add real-time features and mobile responsiveness
+```
+
+## Technology Radar
+
+### Adopt (Recommended for new projects)
+- Technologies with proven track record
+- Strong community support
+- Align with team capabilities
+- Meet current project needs
+
+### Trial (Worth exploring)
+- Emerging technologies with potential
+- Suitable for non-critical projects
+- Good for learning and experimentation
+- May become "Adopt" in future
+
+### Assess (Keep watching)
+- Interesting but not ready for adoption
+- Need more evaluation or maturity
+- Potential future candidates
+- Worth staying informed about
+
+### Hold (Avoid for new projects)
+- Technologies being phased out
+- Better alternatives available
+- High maintenance burden
+- Limited future support
+
+## Success Metrics
+
+### Decision Quality
+- **Requirements satisfaction**: Technology meets functional and non-functional requirements
+- **Timeline adherence**: Project delivered on schedule
+- **Budget compliance**: Development costs within budget
+- **Quality outcomes**: Code quality, performance, and maintainability goals met
+
+### Team Effectiveness
+- **Productivity**: Development velocity and efficiency
+- **Learning curve**: Time to productive development
+- **Job satisfaction**: Team happiness with technology choices
+- **Knowledge retention**: Skills applicable to future projects
+
+### Long-term Success
+- **Maintenance burden**: Effort required for ongoing maintenance
+- **Scalability**: Technology scales with business growth
+- **Evolution capability**: Ability to add features and adapt to changes
+- **Migration readiness**: Clear path for future technology transitions

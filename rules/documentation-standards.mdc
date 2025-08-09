@@ -1,0 +1,171 @@
+---
+alwaysApply: true
+---
+
+# Documentation Standards
+
+Universal documentation standards that ensure consistency, maintainability, and clarity across all projects.
+
+## Core Principles
+
+### Single Source of Truth
+- Each piece of information exists in exactly one place
+- Use references and links instead of duplicating content
+- Maintain centralized definitions for shared concepts
+
+### Modular Design
+- Break documentation into reusable components
+- Use `{{include:}}` syntax for modular assembly
+- Separate universal patterns from project-specific details
+
+### Clear Information Architecture
+- Organize by user intent: guides, reference, modules, archive
+- Use consistent naming conventions across all documentation
+- Provide clear navigation and cross-references
+
+## File Size Guidelines
+
+### Documentation Files (.md)
+- **No strict limit** - Documentation can be comprehensive as needed
+- **Prefer modular approach** - Break large documents into logical sections
+- **Use includes** - Reference smaller modules rather than copying content
+
+### Code Files
+- **Code files (.ts, .tsx, .js, .jsx)**: Under 250 lines
+- **Test files (.test.ts, .spec.ts)**: Aim for under 500 lines
+- **Configuration files**: Keep concise and well-commented
+
+## Directory Structure Standards
+
+### Required Directories
+```
+docs/
+├── README.md                    # Main documentation index
+├── guides/                      # User-focused consolidated guides
+├── modules/                     # Reusable documentation components
+├── reference/                   # Implementation-specific details
+├── archive/                     # Historical and outdated content
+└── projects/                    # Project-specific assemblies
+```
+
+### Module Organization
+```
+docs/modules/
+├── standards/                   # Coding and quality standards
+│   ├── coding/
+│   ├── testing/
+│   ├── security/
+│   └── documentation/
+├── tech-stacks/                 # Technology stack options
+│   ├── frontend/
+│   ├── backend/
+│   ├── database/
+│   └── infrastructure/
+├── workflows/                   # Development workflows
+│   ├── git/
+│   ├── deployment/
+│   └── release/
+├── architecture/                # Architecture patterns
+│   ├── patterns/
+│   └── system/
+└── patterns/                    # Implementation patterns
+    ├── authentication/
+    ├── caching/
+    └── error-handling/
+```
+
+## Content Quality Standards
+
+### Writing Style
+- **Clear and concise** - Use simple, direct language
+- **Action-oriented** - Focus on what the reader should do
+- **Consistent terminology** - Define terms once and use consistently
+- **Examples included** - Provide concrete examples for abstract concepts
+
+### Code Examples
+- **Complete and runnable** - Examples should work as-is
+- **Well-commented** - Explain non-obvious logic
+- **Current syntax** - Use latest language features and best practices
+- **Error handling** - Show proper error handling patterns
+
+### Cross-References
+- **Use relative links** - Link to other documentation sections
+- **Link to source** - Reference actual implementation when relevant
+- **Maintain links** - Keep cross-references current during updates
+
+## Maintenance Requirements
+
+### Regular Updates
+- **Review quarterly** - Check for outdated information
+- **Update with changes** - Modify documentation when code changes
+- **Validate links** - Ensure all cross-references remain valid
+- **Archive obsolete content** - Move outdated docs to archive
+
+### Version Control
+- **Meaningful commits** - Use descriptive commit messages for doc changes
+- **Review process** - Have documentation changes reviewed
+- **Track major changes** - Document significant architectural decisions
+
+## Template Requirements
+
+### All Documents Must Include
+- **Clear title** - Descriptive and specific
+- **Purpose statement** - Why this document exists
+- **Target audience** - Who should read this
+- **Last updated** - When the content was last reviewed
+
+### Guides Should Include
+- **Prerequisites** - What readers need to know first
+- **Step-by-step instructions** - Clear, ordered procedures
+- **Troubleshooting** - Common issues and solutions
+- **Next steps** - Where to go after completing the guide
+
+### Reference Documents Should Include
+- **Complete API/interface definitions** - All available options
+- **Parameter descriptions** - What each option does
+- **Examples for each feature** - How to use each capability
+- **Related concepts** - Links to relevant guides or patterns
+
+## Forbidden Practices
+
+### Content Duplication
+- ❌ **Never copy-paste** documentation between files
+- ❌ **Don't duplicate** configuration or setup instructions
+- ❌ **Avoid redundant** explanations of the same concept
+
+### Poor Organization
+- ❌ **No orphaned files** - Every document should be linked from somewhere
+- ❌ **No unclear naming** - File names should clearly indicate content
+- ❌ **No mixed concerns** - Don't combine unrelated topics in one file
+
+### Maintenance Issues
+- ❌ **No outdated examples** - Keep code examples current
+- ❌ **No broken links** - Validate all cross-references
+- ❌ **No TODO sections** - Complete documentation before publishing
+
+## Implementation Checklist
+
+When creating new documentation:
+
+- [ ] Choose appropriate directory based on content type
+- [ ] Use modular approach with includes where applicable
+- [ ] Follow file size guidelines for your content type
+- [ ] Include all required template elements
+- [ ] Add cross-references to related content
+- [ ] Validate all links and examples
+- [ ] Update main README.md index if needed
+- [ ] Consider if content should be archived when obsolete
+
+## Success Metrics
+
+### Documentation Effectiveness
+- **Findability** - Users can locate relevant information quickly
+- **Completeness** - All necessary information is available
+- **Accuracy** - Information matches current implementation
+- **Usability** - Instructions can be followed successfully
+
+### Maintenance Health
+- **Link validity** - No broken internal or external links
+- **Content freshness** - Regular updates reflect current state
+- **Organization clarity** - Logical structure and navigation
+- **Duplication elimination** - Single source of truth maintained

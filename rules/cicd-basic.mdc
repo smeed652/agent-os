@@ -1,0 +1,334 @@
+---
+alwaysApply: true
+---
+
+# Basic CI/CD Pipeline
+
+Universal CI/CD pipeline patterns that ensure reliable, automated testing, building, and deployment processes across all projects.
+
+## Pipeline Philosophy
+
+### Continuous Integration
+- **Automated testing** on every commit
+- **Fast feedback** to developers
+- **Quality gates** prevent broken code from advancing
+- **Consistent environments** across all stages
+
+### Continuous Deployment
+- **Automated deployments** to staging environments
+- **Manual approval gates** for production
+- **Rollback capabilities** for quick recovery
+- **Environment parity** between stages
+
+## Basic Pipeline Stages
+
+### 1. Source Control Integration
+```yaml
+trigger:
+  branches: [main, develop, feature/*]
+  paths:
+    exclude: [docs/*, README.md]
+```
+
+### 2. Build Stage
+```yaml
+build:
+  steps:
+    - checkout: self
+    - install_dependencies: npm ci
+    - lint: npm run lint
+    - type_check: npm run type-check
+    - build: npm run build
+    - artifact_storage: upload build artifacts
+```
+
+### 3. Test Stage
+```yaml
+test:
+  parallel:
+    unit_tests:
+      - npm run test:unit -- --coverage
+    integration_tests:
+      - npm run test:integration
+    e2e_tests:
+      - npm run test:e2e:ci
+```
+
+### 4. Security & Quality
+```yaml
+security:
+  steps:
+    - dependency_scan: npm audit
+    - security_scan: npm run security:scan
+    - code_quality: sonarqube analysis
+```
+
+### 5. Deployment Stages
+```yaml
+deploy:
+  staging:
+    trigger: automatic (main branch)
+    environment: staging
+  production:
+    trigger: manual approval
+    environment: production
+    requires: [staging_tests_pass]
+```
+
+## GitHub Actions Implementation
+
+### Basic Workflow
+```yaml
+# .github/workflows/ci-cd.yml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Run linting
+      run: npm run lint
+      
+    - name: Run type checking
+      run: npm run type-check
+      
+    - name: Run unit tests
+      run: npm run test:unit -- --coverage
+      
+    - name: Run integration tests
+      run: npm run test:integration
+      
+    - name: Build application
+      run: npm run build
+      
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-files
+        path: dist/
+        
+  e2e-tests:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Download build artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: build-files
+        path: dist/
+        
+    - name: Run E2E tests
+      run: npm run test:e2e:ci
+      
+  deploy-staging:
+    needs: [build-and-test, e2e-tests]
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Deploy to staging
+      run: |
+        echo "Deploying to staging environment"
+        # Add deployment commands here
+        
+  deploy-production:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    
+    steps:
+    - name: Deploy to production
+      run: |
+        echo "Deploying to production environment"
+        # Add production deployment commands here
+```
+
+## Quality Gates
+
+### Pre-merge Requirements
+- ✅ All tests pass (unit, integration, E2E)
+- ✅ Code coverage meets minimum threshold (80%)
+- ✅ Linting passes without errors
+- ✅ Type checking passes
+- ✅ Build succeeds without warnings
+- ✅ Security scan passes
+- ✅ Code review approved
+
+### Deployment Gates
+- ✅ All quality gates pass
+- ✅ Staging deployment successful
+- ✅ Staging tests pass
+- ✅ Manual approval for production
+- ✅ No critical vulnerabilities
+- ✅ Performance benchmarks met
+
+## Environment Management
+
+### Environment Configuration
+```yaml
+# environments.yml
+development:
+  api_url: http://localhost:3001
+  debug_mode: true
+  log_level: debug
+  
+staging:
+  api_url: https://api-staging.example.com
+  debug_mode: false
+  log_level: info
+  
+production:
+  api_url: https://api.example.com
+  debug_mode: false
+  log_level: error
+```
+
+### Secret Management
+```yaml
+# GitHub Secrets
+secrets:
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  API_KEY: ${{ secrets.API_KEY }}
+  DEPLOY_TOKEN: ${{ secrets.DEPLOY_TOKEN }}
+```
+
+## Monitoring & Notifications
+
+### Build Status Notifications
+```yaml
+notifications:
+  slack:
+    webhook: ${{ secrets.SLACK_WEBHOOK }}
+    channel: "#deployments"
+    on_success: true
+    on_failure: true
+    
+  email:
+    recipients: ["team@example.com"]
+    on_failure: true
+```
+
+### Health Checks
+```yaml
+health_checks:
+  post_deploy:
+    - name: API Health Check
+      url: https://api.example.com/health
+      expected_status: 200
+      timeout: 30s
+      
+    - name: Database Connectivity
+      command: npm run db:health-check
+      timeout: 10s
+```
+
+## Rollback Procedures
+
+### Automatic Rollback Triggers
+- Health check failures post-deployment
+- Error rate spike above threshold
+- Response time degradation
+- Critical service unavailability
+
+### Manual Rollback Process
+```bash
+# Rollback script
+#!/bin/bash
+PREVIOUS_VERSION=$1
+
+if [ -z "$PREVIOUS_VERSION" ]; then
+  echo "Usage: ./rollback.sh <version>"
+  exit 1
+fi
+
+echo "Rolling back to version $PREVIOUS_VERSION..."
+
+# Revert deployment
+kubectl set image deployment/app app=myapp:$PREVIOUS_VERSION
+
+# Verify rollback
+kubectl rollout status deployment/app
+
+echo "Rollback completed successfully"
+```
+
+## Performance Optimization
+
+### Build Optimization
+- **Dependency caching**: Cache node_modules between builds
+- **Incremental builds**: Only rebuild changed components
+- **Parallel execution**: Run independent jobs concurrently
+- **Artifact reuse**: Share build artifacts between stages
+
+### Test Optimization
+- **Test parallelization**: Run tests concurrently
+- **Smart test selection**: Only run tests affected by changes
+- **Test result caching**: Cache test results for unchanged code
+- **Flaky test handling**: Retry flaky tests automatically
+
+## Best Practices
+
+### Pipeline Design
+- **Fail fast**: Run quick checks first
+- **Parallel execution**: Run independent tasks concurrently
+- **Clear feedback**: Provide actionable error messages
+- **Consistent environments**: Use same tools across all stages
+
+### Security
+- **Secret management**: Never expose secrets in logs
+- **Least privilege**: Minimal permissions for each stage
+- **Audit logging**: Track all deployment activities
+- **Vulnerability scanning**: Regular security checks
+
+### Maintenance
+- **Pipeline as code**: Version control all pipeline definitions
+- **Regular updates**: Keep tools and dependencies current
+- **Performance monitoring**: Track pipeline execution times
+- **Documentation**: Maintain clear pipeline documentation
+
+## Success Metrics
+
+### Performance Metrics
+- **Build time**: Target < 5 minutes for full pipeline
+- **Test execution**: Target < 10 minutes for all tests
+- **Deployment time**: Target < 2 minutes per environment
+- **Pipeline reliability**: > 95% success rate
+
+### Quality Metrics
+- **Defect detection**: High percentage of issues caught pre-production
+- **False positive rate**: Low rate of pipeline failures due to flaky tests
+- **Coverage trends**: Maintain or improve test coverage over time
+- **Security compliance**: Zero critical vulnerabilities in production

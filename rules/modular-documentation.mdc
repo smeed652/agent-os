@@ -1,0 +1,275 @@
+---
+alwaysApply: true
+---
+
+# Modular Documentation
+
+DRY (Don't Repeat Yourself) principles applied to documentation through modular, reusable components that can be assembled into project-specific guides.
+
+## Philosophy
+
+### Composition Over Duplication
+- Create small, focused modules that do one thing well
+- Assemble modules into comprehensive guides for specific contexts
+- Maintain single source of truth for each concept or process
+
+### Separation of Concerns
+- **Universal patterns** → `docs/modules/` (reusable across projects)
+- **Project assembly** → `docs/guides/` (composed from modules)
+- **Implementation details** → `docs/reference/` (project-specific)
+- **Historical context** → `docs/archive/` (outdated but preserved)
+
+## Module Types
+
+### Standards Modules
+**Location**: `docs/modules/standards/`
+**Purpose**: Universal quality and process standards
+**Examples**:
+- `coding/typescript-style.md` - TypeScript coding conventions
+- `testing/unit-testing.md` - Unit testing standards
+- `security/security-policies.md` - Security requirements
+- `documentation/style-guide.md` - Documentation writing standards
+
+### Tech Stack Modules
+**Location**: `docs/modules/tech-stacks/`
+**Purpose**: Modular technology stack components
+**Structure**:
+```
+tech-stacks/
+├── frontend/
+│   ├── react-typescript.md
+│   ├── vue-typescript.md
+│   └── angular.md
+├── backend/
+│   ├── node-express.md
+│   ├── python-fastapi.md
+│   └── serverless-aws.md
+├── database/
+│   ├── postgresql.md
+│   ├── mongodb.md
+│   └── dynamodb.md
+└── infrastructure/
+    ├── aws-amplify.md
+    ├── vercel.md
+    └── docker.md
+```
+
+### Workflow Modules
+**Location**: `docs/modules/workflows/`
+**Purpose**: Reusable development workflows
+**Examples**:
+- `git/feature-branch.md` - Feature branch workflow
+- `deployment/ci-cd-basic.md` - Basic CI/CD pipeline
+- `release/semantic-versioning.md` - Release management
+
+### Architecture Modules
+**Location**: `docs/modules/architecture/`
+**Purpose**: Universal architecture patterns
+**Examples**:
+- `patterns/business-logic.md` - Business logic separation
+- `patterns/caching.md` - Caching strategies
+- `system/overview.md` - System architecture template
+
+### Pattern Modules
+**Location**: `docs/modules/patterns/`
+**Purpose**: Implementation patterns for common problems
+**Examples**:
+- `authentication/oauth-flow.md` - OAuth implementation
+- `error-handling/frontend-errors.md` - Frontend error handling
+- `data-processing/etl-patterns.md` - Data processing patterns
+
+## Assembly Patterns
+
+### Include Syntax
+Use `{{include:path/to/module.md}}` to reference modules:
+
+```markdown
+# Development Guide
+
+## Code Standards
+{{include:modules/standards/coding/typescript-style.md}}
+
+## Testing Approach
+{{include:modules/standards/testing/unit-testing.md}}
+{{include:modules/standards/testing/integration-testing.md}}
+
+## Git Workflow
+{{include:modules/workflows/git/feature-branch.md}}
+```
+
+### Conditional Assembly
+Include modules based on project characteristics:
+
+```markdown
+# Project Tech Stack
+
+## Frontend Stack
+{{include:modules/tech-stacks/frontend/react-typescript.md}}
+
+## Backend Stack
+<!-- For serverless projects -->
+{{include:modules/tech-stacks/backend/serverless-aws.md}}
+
+<!-- For traditional server projects -->
+<!-- {{include:modules/tech-stacks/backend/node-express.md}} -->
+
+## Database Stack
+{{include:modules/tech-stacks/database/dynamodb.md}}
+```
+
+### Guide Templates
+**Location**: `docs/guides/`
+**Purpose**: Project-specific assemblies of modules
+
+#### Development Guide Template
+```markdown
+# Development Guide
+
+## Getting Started
+{{include:modules/standards/coding/setup-requirements.md}}
+
+## Code Standards
+{{include:modules/standards/coding/typescript-style.md}}
+
+## Testing Strategy
+{{include:modules/standards/testing/unit-testing.md}}
+{{include:modules/standards/testing/integration-testing.md}}
+
+## Git Workflow
+{{include:modules/workflows/git/feature-branch.md}}
+{{include:modules/workflows/git/commit-standards.md}}
+
+## Project-Specific Setup
+<!-- Project-specific content goes here -->
+```
+
+#### Deployment Guide Template
+```markdown
+# Deployment Guide
+
+## CI/CD Pipeline
+{{include:modules/workflows/deployment/ci-cd-basic.md}}
+
+## Environment Management
+{{include:modules/workflows/deployment/environment-config.md}}
+
+## Release Process
+{{include:modules/workflows/release/semantic-versioning.md}}
+
+## Infrastructure
+{{include:modules/tech-stacks/infrastructure/aws-amplify.md}}
+
+## Project-Specific Configuration
+<!-- Environment variables, secrets, etc. -->
+```
+
+## Module Creation Guidelines
+
+### Module Size and Scope
+- **Focus on one concept** - Each module covers a single topic thoroughly
+- **Optimal size**: 100-300 lines for most modules
+- **Self-contained** - Module should make sense independently
+- **Well-linked** - Reference related modules and concepts
+
+### Module Structure Template
+```markdown
+# Module Title
+
+## Overview
+Brief description of what this module covers and when to use it.
+
+## Prerequisites
+What readers need to know or have set up before using this module.
+
+## Implementation
+Detailed instructions, code examples, and configuration.
+
+## Best Practices
+Recommended approaches and common pitfalls to avoid.
+
+## Troubleshooting
+Common issues and their solutions.
+
+## Related Modules
+Links to complementary or alternative modules.
+```
+
+### Universal Module Requirements
+- **Technology agnostic** - Focus on patterns, not specific tools
+- **Version independent** - Avoid version-specific instructions
+- **Environment neutral** - Work across different deployment environments
+- **Well-tested** - Validate instructions across multiple projects
+
+## Assembly Best Practices
+
+### Guide Composition
+- **Start with overview** - Explain the assembled guide's purpose
+- **Logical flow** - Order modules in a sensible learning sequence
+- **Bridge content** - Add context between modules when needed
+- **Project specifics last** - Universal modules first, then customizations
+
+### Maintenance Strategy
+- **Update modules centrally** - Changes propagate to all guides using them
+- **Version modules carefully** - Breaking changes require new module versions
+- **Track usage** - Know which guides use which modules
+- **Test assemblies** - Verify complete guides work end-to-end
+
+### Content Boundaries
+- **Universal in modules** - Patterns, standards, and processes
+- **Specific in guides** - Project context, customizations, and assembly
+- **Details in reference** - API docs, configuration options, examples
+- **History in archive** - Outdated approaches and legacy information
+
+## Migration from Monolithic Docs
+
+### Extraction Process
+1. **Identify reusable content** - Find patterns used across multiple documents
+2. **Create focused modules** - Extract each pattern into its own module
+3. **Update assemblies** - Replace duplicated content with includes
+4. **Archive obsolete content** - Move superseded documents to archive
+5. **Validate completeness** - Ensure assembled guides cover all original content
+
+### Common Extraction Patterns
+- **Setup instructions** → `modules/standards/setup/`
+- **Coding conventions** → `modules/standards/coding/`
+- **Deployment procedures** → `modules/workflows/deployment/`
+- **Architecture decisions** → `modules/architecture/patterns/`
+- **Troubleshooting guides** → `modules/patterns/troubleshooting/`
+
+## Quality Assurance
+
+### Module Quality Checklist
+- [ ] Single, focused topic
+- [ ] Self-contained and complete
+- [ ] Universal applicability
+- [ ] Clear prerequisites stated
+- [ ] Working code examples
+- [ ] Troubleshooting section included
+- [ ] Related modules referenced
+- [ ] Regular review scheduled
+
+### Assembly Quality Checklist
+- [ ] Logical module ordering
+- [ ] Smooth transitions between modules
+- [ ] Project-specific context provided
+- [ ] No duplicate content
+- [ ] All includes resolve correctly
+- [ ] Complete guide tested end-to-end
+- [ ] Navigation and cross-references work
+
+## Success Metrics
+
+### Reusability
+- **Module usage count** - How many guides include each module
+- **Cross-project adoption** - Modules used in multiple projects
+- **Maintenance efficiency** - Time saved through centralized updates
+
+### Quality
+- **Content accuracy** - Modules work as documented
+- **User success rate** - People can follow assembled guides successfully
+- **Maintenance burden** - Low effort to keep content current
+
+### Developer Experience
+- **Setup time** - New projects can be documented quickly
+- **Consistency** - Similar concepts documented similarly everywhere
+- **Discoverability** - Developers can find relevant modules easily

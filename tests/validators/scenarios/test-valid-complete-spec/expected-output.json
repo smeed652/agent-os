@@ -1,0 +1,136 @@
+{
+  "validation_status": "PASS",
+  "spec_name": "User Authentication",
+  "spec_directory": "2025-08-09-user-authentication",
+  "timestamp": "2025-08-09T12:00:00Z",
+  "validations": {
+    "directory_structure": {
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "Directory exists with proper YYYY-MM-DD- prefix",
+          "result": "PASS",
+          "details": "Directory name '2025-08-09-user-authentication' follows correct format"
+        },
+        {
+          "check": "Spec name is kebab-case and ≤5 words",
+          "result": "PASS", 
+          "details": "Spec name 'user-authentication' is 2 words in kebab-case"
+        },
+        {
+          "check": "Directory is in .agent-os/specs/",
+          "result": "PASS",
+          "details": "Correct location: .agent-os/specs/2025-08-09-user-authentication/"
+        },
+        {
+          "check": "Date format is valid (YYYY-MM-DD)",
+          "result": "PASS",
+          "details": "Date '2025-08-09' is valid ISO format"
+        }
+      ]
+    },
+    "required_files": {
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "spec.md exists",
+          "result": "PASS",
+          "details": "File found and readable"
+        },
+        {
+          "check": "spec-lite.md exists",
+          "result": "PASS",
+          "details": "File found and readable"
+        },
+        {
+          "check": "tasks.md exists", 
+          "result": "PASS",
+          "details": "File found and readable"
+        },
+        {
+          "check": "status.md exists",
+          "result": "PASS",
+          "details": "File found and readable"
+        },
+        {
+          "check": "sub-specs/technical-spec.md exists",
+          "result": "PASS",
+          "details": "File found and readable"
+        },
+        {
+          "check": "Conditional files present when needed",
+          "result": "PASS",
+          "details": "database-schema.md and api-spec.md found as expected"
+        }
+      ]
+    },
+    "content_structure": {
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "spec.md has required sections",
+          "result": "PASS",
+          "details": "All sections present: Overview, User Stories, Spec Scope, Out of Scope, Expected Deliverable"
+        },
+        {
+          "check": "spec-lite.md has proper summary",
+          "result": "PASS",
+          "details": "Contains 1-3 sentence summary for AI context"
+        },
+        {
+          "check": "technical-spec.md has required structure",
+          "result": "PASS",
+          "details": "Has header, spec reference, technical requirements, and external dependencies"
+        },
+        {
+          "check": "tasks.md has proper task structure",
+          "result": "PASS",
+          "details": "Numbered checklist with subtasks in decimal notation, TDD approach"
+        },
+        {
+          "check": "status.md has required fields",
+          "result": "PASS",
+          "details": "All required fields present: spec name, dates, status, history, actions"
+        }
+      ]
+    },
+    "content_quality": {
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "Overview section length (1-2 sentences)",
+          "result": "PASS",
+          "details": "Overview is 1 sentence with clear goal and objective"
+        },
+        {
+          "check": "User stories format and count (1-3)",
+          "result": "PASS",
+          "details": "2 user stories with proper format and workflow descriptions"
+        },
+        {
+          "check": "Spec scope count and format (1-5 features)",
+          "result": "PASS",
+          "details": "5 features in numbered list with one-sentence descriptions"
+        },
+        {
+          "check": "Expected deliverables are testable (1-3)",
+          "result": "PASS",
+          "details": "3 browser-testable outcomes specified"
+        },
+        {
+          "check": "Tasks follow TDD approach",
+          "result": "PASS",
+          "details": "Each major task starts with 'Write tests' and ends with 'Verify tests pass'"
+        }
+      ]
+    }
+  },
+  "summary": {
+    "total_checks": 20,
+    "passed_checks": 20,
+    "failed_checks": 0,
+    "warnings": 0,
+    "overall_status": "PASS"
+  },
+  "recommendations": []
+}

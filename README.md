@@ -1,54 +1,89 @@
-# Agent OS - AI Development Workflow System
+<img width="1280" height="640" alt="agent-os-og" src="https://github.com/user-attachments/assets/e897628e-7063-4bab-a69a-7bb6d7ac8403" />
 
-This repository contains the Agent OS configuration files for managing AI coding agents across multiple projects.
+## Your system for spec-driven agentic development.
 
-## Quick Start
+[Agent OS](https://buildermethods.com/agent-os) transforms AI coding agents from confused interns into productive developers. With structured workflows that capture your standards, your stack, and the unique details of your codebase, Agent OS gives your agents the specs they need to ship quality code on the first try—not the fifth.
 
-### 1. Install Agent OS Globally
+Use it with:
+
+✅ Claude Code, Cursor, or any other AI coding tool.
+
+✅ New products or established codebases.
+
+✅ Big features, small fixes, or anything in between.
+
+✅ Any language or framework.
+
+---
+
+### Documentation & Installation
+
+📖 **Complete Setup Guide**: See [SETUP-GUIDE.md](SETUP-GUIDE.md) for detailed installation and configuration instructions.
+
+🚀 **Quick Start**: 
 ```bash
-git clone https://github.com/your-username/agent-os ~/.agent-os
-```
+# Global installation (recommended)
+git clone https://github.com/buildermethods/agent-os ~/.agent-os
+cd ~/.agent-os && npm install
 
-### 2. Set Up Your Project
-```bash
-# In your project directory
+# Start with project analysis
 @~/.agent-os/instructions/core/analyze-product.md
 ```
 
-### 3. Create Your First Spec
+🔧 **New Features**:
+- **Lifecycle Management**: Track and manage spec progress with automated dashboards
+- **Universal Rules System**: 15 comprehensive development rules with full validation
+- **Enhanced Testing Suite**: 96+ automated tests with coverage analysis
+- **Test Command**: `@~/.agent-os/instructions/core/test-lifecycle.md` to set up lifecycle management
+- **Dashboard Generation**: `npm run dashboard` to generate spec status dashboards
+
+📚 **Full Documentation**: [buildermethods.com/agent-os](https://buildermethods.com/agent-os)
+
+## 🧪 Testing & Quality Assurance
+
+Agent OS includes a comprehensive testing suite with 100% success rate:
+
 ```bash
-@~/.agent-os/instructions/core/create-spec.md
+# Run all tests with enhanced presentation
+npm test
+
+# Run detailed coverage analysis  
+npm run coverage
+
+# Run specific test suites
+npm run test:rules        # Universal rules validation
+npm run test:lifecycle    # Lifecycle management tests
+npm run test:validators   # Spec and task validation
 ```
 
-## Structure
+**Test Coverage**:
+- ✅ **14 Universal Rules** - 100% coverage with structure, content & integration tests
+- ✅ **6 Core Features** - Comprehensive test suites for critical functionality  
+- ✅ **96+ Individual Tests** - Automated validation across all components
+- ✅ **Performance Benchmarks** - Ensures system scales efficiently
 
-- `standards/` - Core development standards (best practices, tech stack, code style)
-- `instructions/` - Agent instructions for different workflows
-  - `core/` - Main instruction files (create-spec, execute-tasks, etc.)
-  - `meta/` - Meta instructions (pre-flight checks)
-- `scripts/` - Utility scripts for lifecycle management
+## ⚙️ Universal Rules System
 
-## Usage
+Agent OS includes 15 universal development rules that apply across all projects:
 
-### For New Projects
-Use `@~/.agent-os/instructions/core/plan-product.md` to set up Agent OS in a new project.
+**Foundation Rules (Tier 1)**:
+- Documentation Standards, Modular Documentation, TypeScript Standards
+- File Organization, Git Workflow, Commit Standards
 
-### For Existing Projects  
-Use `@~/.agent-os/instructions/core/analyze-product.md` to install Agent OS in existing codebases.
+**Process Rules (Tier 2)**:  
+- Testing Standards, Test Organization, CI/CD Basic, Deployment Safety
 
-### Available Commands
-- `@~/.agent-os/instructions/core/create-spec.md` - Create new feature specifications
-- `@~/.agent-os/instructions/core/execute-tasks.md [SPEC_PATH]` - Execute spec tasks
-- `@~/.agent-os/instructions/core/test-lifecycle.md` - Test lifecycle management system
+**Architecture Rules (Tier 3)**:
+- Tech Stack Selection, Tech Stack Documentation, Architecture Patterns, Code Organization
 
-## Backup Strategy
+📖 **See [rules/README.md](rules/README.md)** for complete universal development standards.
 
-- All changes are version controlled
-- Each major update should be committed
-- Use conventional commits for changes
-- Tag releases for important updates
+---
 
-## Deployment Integration
+### Created by Brian Casel @ Builder Methods
 
-This repository will be updated to include deployment workflow standards
-that apply across all projects.
+Created by Brian Casel, the creator of [Builder Methods](https://buildermethods.com), where Brian helps professional software developers and teams build with AI.
+
+Get Brian's free resources on building with AI:
+- [Builder Briefing newsletter](https://buildermethods.com)
+- [YouTube](https://youtube.com/@briancasel)

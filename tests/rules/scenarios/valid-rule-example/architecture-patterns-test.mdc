@@ -1,0 +1,35 @@
+---
+alwaysApply: false
+---
+
+# Test Architecture Pattern Rule
+
+Universal architecture patterns for testing purposes.
+
+## Core Principles
+
+### Separation of Concerns
+- Single Responsibility: Each component has one clear purpose
+- Loose Coupling: Minimize dependencies between components
+
+## Implementation Example
+
+```typescript
+class UserService {
+  constructor(private userRepository: UserRepository) {}
+  
+  async createUser(userData: CreateUserData): Promise<User> {
+    // Business logic here
+    return this.userRepository.save(userData);
+  }
+}
+```
+
+## Testing Standards
+
+### Unit Tests
+- Test individual components in isolation
+- Mock external dependencies
+- Focus on business logic validation
+
+This is a test rule with sufficient content and proper structure.

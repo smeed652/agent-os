@@ -1,0 +1,383 @@
+---
+alwaysApply: true
+---
+
+# Tech Stack Documentation
+
+Universal standards for documenting technology stacks in a modular, reusable way that enables easy comparison, selection, and maintenance across projects.
+
+## Documentation Philosophy
+
+### Modular Approach
+- **Separate concerns**: Each technology documented independently
+- **Composable stacks**: Mix and match components for different projects
+- **Reusable patterns**: Common documentation structure across all technologies
+- **Version independence**: Focus on patterns rather than specific versions
+
+### Comprehensive Coverage
+- **Technical specifications**: Capabilities, limitations, and requirements
+- **Implementation guidance**: Setup, configuration, and best practices
+- **Integration patterns**: How technologies work together
+- **Maintenance considerations**: Updates, monitoring, and troubleshooting
+
+## Documentation Structure
+
+### Technology Module Template
+```markdown
+# Technology Name
+
+## Overview
+Brief description of the technology and its primary purpose.
+
+## Use Cases
+- **Primary use case**: Main scenarios where this technology excels
+- **Secondary use cases**: Additional appropriate applications
+- **Anti-patterns**: Situations where this technology is not recommended
+
+## Technical Specifications
+- **Performance characteristics**: Speed, scalability, resource usage
+- **System requirements**: Hardware, software, and infrastructure needs
+- **Compatibility**: Operating systems, browsers, other technologies
+- **Limitations**: Known constraints and boundaries
+
+## Implementation Guide
+- **Installation**: Step-by-step setup instructions
+- **Configuration**: Essential configuration options
+- **Development workflow**: Typical development process
+- **Build and deployment**: Production preparation steps
+
+## Integration Patterns
+- **Compatible technologies**: Works well with these other technologies
+- **Common combinations**: Frequently used together
+- **Integration challenges**: Known difficulties and solutions
+- **Alternative options**: Comparable technologies for comparison
+
+## Best Practices
+- **Development practices**: Coding standards and patterns
+- **Performance optimization**: Tips for optimal performance
+- **Security considerations**: Important security practices
+- **Testing strategies**: How to test effectively with this technology
+
+## Maintenance and Operations
+- **Update procedures**: How to handle updates and migrations
+- **Monitoring**: Key metrics and monitoring strategies
+- **Troubleshooting**: Common issues and solutions
+- **Support resources**: Where to get help
+
+## Decision Factors
+- **Strengths**: What this technology does exceptionally well
+- **Weaknesses**: Areas where it may not be the best choice
+- **Learning curve**: Difficulty for new developers
+- **Community and ecosystem**: Support, documentation, third-party tools
+
+## Examples
+- **Basic setup**: Minimal working example
+- **Common patterns**: Typical implementation examples
+- **Advanced usage**: Complex scenarios and solutions
+```
+
+### Stack Assembly Template
+```markdown
+# Project Tech Stack
+
+## Stack Overview
+Brief description of the complete technology stack and its purpose.
+
+## Architecture Diagram
+```
+[Frontend] -> [API Gateway] -> [Backend Services] -> [Database]
+     |              |               |                    |
+   React         AWS API         Node.js            PostgreSQL
+ TypeScript      Gateway        Express            with Redis
+```
+
+## Technology Components
+
+### Frontend Stack
+{{include:modules/tech-stacks/frontend/react-typescript.md}}
+
+### Backend Stack
+{{include:modules/tech-stacks/backend/node-express.md}}
+
+### Database Stack
+{{include:modules/tech-stacks/database/postgresql.md}}
+
+### Infrastructure Stack
+{{include:modules/tech-stacks/infrastructure/aws-amplify.md}}
+
+## Integration Architecture
+Description of how the components work together.
+
+## Development Workflow
+How developers work with this complete stack.
+
+## Deployment Strategy
+How the stack is deployed and maintained.
+```
+
+## Technology Categories
+
+### Frontend Technologies
+```
+docs/modules/tech-stacks/frontend/
+├── react-typescript.md
+├── vue-composition.md
+├── angular.md
+├── svelte.md
+├── vanilla-js.md
+└── next-js.md
+```
+
+### Backend Technologies
+```
+docs/modules/tech-stacks/backend/
+├── node-express.md
+├── python-fastapi.md
+├── java-spring.md
+├── serverless-aws.md
+├── serverless-vercel.md
+└── graphql-apollo.md
+```
+
+### Database Technologies
+```
+docs/modules/tech-stacks/database/
+├── postgresql.md
+├── mysql.md
+├── mongodb.md
+├── dynamodb.md
+├── redis.md
+└── elasticsearch.md
+```
+
+### Infrastructure Technologies
+```
+docs/modules/tech-stacks/infrastructure/
+├── aws-amplify.md
+├── vercel.md
+├── netlify.md
+├── docker.md
+├── kubernetes.md
+└── serverless-framework.md
+```
+
+## Example Technology Documentation
+
+### React + TypeScript Module
+```markdown
+# React + TypeScript
+
+## Overview
+React with TypeScript provides type-safe component development with excellent developer experience and compile-time error checking.
+
+## Use Cases
+- **Interactive web applications**: Complex user interfaces with state management
+- **Component libraries**: Reusable UI component development
+- **Enterprise applications**: Large-scale applications requiring type safety
+- **Progressive web apps**: Modern web applications with native-like features
+
+## Technical Specifications
+- **Bundle size**: ~42KB (React) + ~10KB (TypeScript runtime)
+- **Performance**: Virtual DOM with reconciliation, good for frequent updates
+- **Browser support**: Modern browsers (IE11+ with polyfills)
+- **Build requirements**: Node.js 14+, npm/yarn, bundler (Webpack, Vite)
+
+## Implementation Guide
+
+### Installation
+```bash
+npx create-react-app my-app --template typescript
+cd my-app
+npm start
+```
+
+### Basic Component Structure
+```typescript
+interface Props {
+  title: string;
+  onAction?: () => void;
+}
+
+export const MyComponent: React.FC<Props> = ({ title, onAction }) => {
+  const [count, setCount] = useState<number>(0);
+  
+  return (
+    <div>
+      <h1>{title}</h1>
+      <button onClick={() => setCount(c => c + 1)}>
+        Count: {count}
+      </button>
+      {onAction && <button onClick={onAction}>Action</button>}
+    </div>
+  );
+};
+```
+
+### Configuration
+```json
+// tsconfig.json
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
+  }
+}
+```
+
+## Integration Patterns
+
+### Compatible Backend APIs
+- **REST APIs**: Fetch API, Axios, SWR
+- **GraphQL**: Apollo Client, Relay, urql
+- **Real-time**: Socket.io, WebSocket API
+- **State management**: Redux, Zustand, Context API
+
+### Common Combinations
+- **React + Node.js + PostgreSQL**: Full-stack JavaScript
+- **React + Python/FastAPI + PostgreSQL**: Python backend with React frontend
+- **React + Serverless + DynamoDB**: Serverless-first architecture
+- **React + Next.js + Vercel**: Full-stack React with SSR
+
+## Best Practices
+
+### Component Design
+- Use functional components with hooks
+- Implement proper TypeScript interfaces for props
+- Follow single responsibility principle
+- Use React.memo for performance optimization
+
+### State Management
+- Use useState for local component state
+- Use useContext for shared state across components
+- Consider external state management (Redux, Zustand) for complex applications
+- Implement proper error boundaries
+
+### Performance
+- Code splitting with React.lazy and Suspense
+- Optimize re-renders with useMemo and useCallback
+- Use React DevTools for performance profiling
+- Implement proper key props for list rendering
+
+## Decision Factors
+
+### Strengths
+- **Type safety**: Compile-time error checking prevents runtime errors
+- **Developer experience**: Excellent tooling, debugging, and IDE support
+- **Large ecosystem**: Extensive third-party library support
+- **Community**: Large, active community with abundant resources
+- **Performance**: Virtual DOM provides good performance for most applications
+
+### Weaknesses
+- **Learning curve**: TypeScript adds complexity for JavaScript developers
+- **Build complexity**: Requires build step and configuration
+- **Bundle size**: Larger than vanilla JavaScript solutions
+- **Rapid changes**: Frequent updates require staying current
+
+### When to Choose
+- Team has React experience or can invest in learning
+- Application requires complex user interactions
+- Type safety is important for code quality
+- Long-term maintenance is a priority
+- Performance requirements are moderate (not extremely performance-critical)
+
+### When to Avoid
+- Simple static websites with minimal interactivity
+- Extremely performance-critical applications
+- Team lacks JavaScript/TypeScript experience
+- Very short-term projects with tight deadlines
+```
+
+## Stack Comparison Framework
+
+### Comparison Matrix
+```markdown
+| Factor | React+TS | Vue+TS | Angular | Svelte |
+|--------|----------|--------|---------|--------|
+| Learning Curve | Medium | Easy | Hard | Easy |
+| Performance | Good | Good | Good | Excellent |
+| Ecosystem | Excellent | Good | Excellent | Growing |
+| TypeScript Support | Excellent | Good | Native | Good |
+| Bundle Size | Medium | Small | Large | Smallest |
+| Community | Largest | Large | Large | Growing |
+| Enterprise Ready | Yes | Yes | Yes | Emerging |
+```
+
+### Decision Tree
+```markdown
+## Frontend Framework Selection
+
+### Start Here: What type of project?
+- **Simple website** → Consider Vanilla JS or Svelte
+- **Interactive web app** → Continue below
+- **Enterprise application** → Consider Angular or React
+
+### Team Experience?
+- **Strong JavaScript/TypeScript** → Any framework
+- **Limited experience** → Vue or Svelte
+- **Existing React knowledge** → React
+
+### Performance Requirements?
+- **Extremely performance-critical** → Svelte or Vanilla JS
+- **Standard performance needs** → Any modern framework
+- **Complex state management** → React or Angular
+
+### Project Timeline?
+- **Very short (< 1 month)** → Use team's existing expertise
+- **Medium (1-6 months)** → Any framework
+- **Long-term (> 6 months)** → Consider maintainability and team growth
+```
+
+## Maintenance and Updates
+
+### Technology Lifecycle Management
+```markdown
+## Technology Update Strategy
+
+### Regular Review Schedule
+- **Monthly**: Security updates and patches
+- **Quarterly**: Minor version updates
+- **Annually**: Major version updates and technology review
+
+### Update Decision Framework
+1. **Security updates**: Apply immediately
+2. **Bug fixes**: Apply within 1 week
+3. **Feature updates**: Evaluate benefit vs. risk
+4. **Major versions**: Plan migration strategy
+
+### Migration Planning
+- **Impact assessment**: Analyze breaking changes
+- **Testing strategy**: Comprehensive test plan
+- **Rollback plan**: Ability to revert if needed
+- **Team training**: Ensure team is prepared for changes
+```
+
+### Documentation Maintenance
+- **Regular reviews**: Quarterly documentation review
+- **Version updates**: Update docs with technology changes
+- **Example updates**: Keep code examples current
+- **Link validation**: Ensure all references remain valid
+
+## Success Metrics
+
+### Documentation Quality
+- **Completeness**: All sections filled with relevant information
+- **Accuracy**: Information matches current technology state
+- **Usability**: Developers can successfully follow guidance
+- **Maintainability**: Documentation is easy to update
+
+### Technology Adoption
+- **Selection accuracy**: Chosen technologies meet project needs
+- **Implementation success**: Projects completed successfully with chosen stack
+- **Team satisfaction**: Developers are productive and satisfied
+- **Long-term viability**: Technologies continue to meet evolving needs

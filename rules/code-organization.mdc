@@ -1,0 +1,727 @@
+---
+alwaysApply: true
+---
+
+# Code Organization
+
+Universal principles for organizing code that promotes maintainability, scalability, and developer productivity through clear separation of concerns and logical structure.
+
+## Organization Principles
+
+### Separation of Concerns
+- **Business logic**: Core domain logic independent of infrastructure
+- **Infrastructure**: Database, APIs, external services
+- **Presentation**: User interfaces, controllers, formatting
+- **Configuration**: Environment variables, settings, constants
+
+### Dependency Direction
+- **Inward dependencies**: Outer layers depend on inner layers
+- **Abstraction boundaries**: Use interfaces to define contracts
+- **Dependency inversion**: Depend on abstractions, not concretions
+- **Single direction flow**: Avoid circular dependencies
+
+### Cohesion and Coupling
+- **High cohesion**: Related functionality grouped together
+- **Low coupling**: Minimize dependencies between modules
+- **Interface segregation**: Create focused, specific interfaces
+- **Encapsulation**: Hide implementation details behind clear APIs
+
+## Layer Organization
+
+### Clean Architecture Structure
+```
+src/
+├── domain/                    # Enterprise Business Rules
+│   ├── entities/             # Core business objects
+│   ├── value-objects/        # Immutable value types
+│   └── services/             # Domain services
+├── application/              # Application Business Rules
+│   ├── use-cases/           # Application-specific business rules
+│   ├── ports/               # Interface definitions
+│   └── services/            # Application services
+├── infrastructure/          # Frameworks & Drivers
+│   ├── database/            # Database implementations
+│   ├── external/            # External service clients
+│   ├── messaging/           # Message queue implementations
+│   └── repositories/        # Repository implementations
+└── presentation/            # Interface Adapters
+    ├── controllers/         # HTTP controllers
+    ├── dto/                 # Data transfer objects
+    ├── middleware/          # Request/response middleware
+    └── validators/          # Input validation
+```
+
+### Implementation Example
+```typescript
+// Domain Layer - Pure business logic
+export class User {
+  constructor(
+    private id: UserId,
+    private email: Email,
+    private profile: UserProfile
+  ) {}
+  
+  updateProfile(newProfile: UserProfile): void {
+    this.validateProfileUpdate(newProfile);
+    this.profile = newProfile;
+  }
+  
+  private validateProfileUpdate(profile: UserProfile): void {
+    if (!profile.name.trim()) {
+      throw new Error('Name cannot be empty');
+    }
+  }
+}
+
+// Application Layer - Use cases
+export class UpdateUserProfileUseCase {
+  constructor(
+    private userRepository: UserRepository,
+    private eventPublisher: EventPublisher
+  ) {}
+  
+  async execute(userId: string, profileData: UpdateProfileRequest): Promise<void> {
+    const user = await this.userRepository.findById(new UserId(userId));
+    if (!user) {
+      throw new Error('User not found');
+    }
+    
+    const newProfile = new UserProfile(profileData);
+    user.updateProfile(newProfile);
+    
+    await this.userRepository.save(user);
+    await this.eventPublisher.publish(new UserProfileUpdatedEvent(user));
+  }
+}
+
+// Infrastructure Layer - Database implementation
+export class PostgresUserRepository implements UserRepository {
+  constructor(private db: Database) {}
+  
+  async findById(id: UserId): Promise<User | null> {
+    const row = await this.db.query(
+      'SELECT * FROM users WHERE id = $1',
+      [id.value]
+    );
+    return row ? this.mapRowToUser(row) : null;
+  }
+  
+  async save(user: User): Promise<void> {
+    await this.db.query(
+      'UPDATE users SET profile_data = $2 WHERE id = $1',
+      [user.id.value, JSON.stringify(user.profile)]
+    );
+  }
+}
+
+// Presentation Layer - HTTP controller
+export class UserController {
+  constructor(private updateProfileUseCase: UpdateUserProfileUseCase) {}
+  
+  async updateProfile(req: Request, res: Response): Promise<void> {
+    try {
+      await this.updateProfileUseCase.execute(
+        req.params.userId,
+        req.body
+      );
+      res.status(200).json({ success: true });
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  }
+}
+```
+
+## Business Logic Organization
+
+### Domain-Driven Design Structure
+```typescript
+// Domain Entities
+export class Order {
+  private items: OrderItem[] = [];
+  private status: OrderStatus = OrderStatus.PENDING;
+  
+  constructor(
+    private id: OrderId,
+    private customerId: CustomerId,
+    private createdAt: Date
+  ) {}
+  
+  addItem(product: Product, quantity: number): void {
+    this.validateItemAddition(product, quantity);
+    
+    const existingItem = this.findItem(product.id);
+    if (existingItem) {
+      existingItem.increaseQuantity(quantity);
+    } else {
+      this.items.push(new OrderItem(product, quantity));
+    }
+  }
+  
+  calculateTotal(): Money {
+    return this.items.reduce(
+      (total, item) => total.add(item.getSubtotal()),
+      Money.zero()
+    );
+  }
+  
+  private validateItemAddition(product: Product, quantity: number): void {
+    if (this.status !== OrderStatus.PENDING) {
+      throw new Error('Cannot modify confirmed order');
+    }
+    if (quantity <= 0) {
+      throw new Error('Quantity must be positive');
+    }
+    if (!product.isAvailable()) {
+      throw new Error('Product is not available');
+    }
+  }
+}
+
+// Value Objects
+export class Money {
+  constructor(private amount: number, private currency: string) {
+    if (amount < 0) {
+      throw new Error('Amount cannot be negative');
+    }
+  }
+  
+  add(other: Money): Money {
+    this.validateSameCurrency(other);
+    return new Money(this.amount + other.amount, this.currency);
+  }
+  
+  static zero(): Money {
+    return new Money(0, 'USD');
+  }
+  
+  private validateSameCurrency(other: Money): void {
+    if (this.currency !== other.currency) {
+      throw new Error('Cannot operate on different currencies');
+    }
+  }
+}
+
+// Domain Services
+export class OrderPricingService {
+  constructor(private discountRules: DiscountRule[]) {}
+  
+  calculateOrderTotal(order: Order): Money {
+    const subtotal = order.calculateTotal();
+    const discount = this.calculateDiscount(order);
+    return subtotal.subtract(discount);
+  }
+  
+  private calculateDiscount(order: Order): Money {
+    return this.discountRules.reduce(
+      (totalDiscount, rule) => {
+        const ruleDiscount = rule.calculateDiscount(order);
+        return totalDiscount.add(ruleDiscount);
+      },
+      Money.zero()
+    );
+  }
+}
+```
+
+### Service Layer Organization
+```typescript
+// Application Services - Orchestrate use cases
+export class OrderApplicationService {
+  constructor(
+    private orderRepository: OrderRepository,
+    private productRepository: ProductRepository,
+    private pricingService: OrderPricingService,
+    private paymentService: PaymentService,
+    private eventPublisher: EventPublisher
+  ) {}
+  
+  async createOrder(request: CreateOrderRequest): Promise<OrderResponse> {
+    // Validation
+    const customer = await this.validateCustomer(request.customerId);
+    
+    // Domain logic
+    const order = new Order(
+      OrderId.generate(),
+      new CustomerId(request.customerId),
+      new Date()
+    );
+    
+    for (const item of request.items) {
+      const product = await this.productRepository.findById(item.productId);
+      if (!product) {
+        throw new Error(`Product ${item.productId} not found`);
+      }
+      order.addItem(product, item.quantity);
+    }
+    
+    // Calculate pricing
+    const total = this.pricingService.calculateOrderTotal(order);
+    
+    // Persistence
+    await this.orderRepository.save(order);
+    
+    // Events
+    await this.eventPublisher.publish(new OrderCreatedEvent(order));
+    
+    return new OrderResponse(order, total);
+  }
+}
+
+// Domain Services - Pure business logic
+export class InventoryService {
+  constructor(private inventoryRepository: InventoryRepository) {}
+  
+  async reserveItems(orderItems: OrderItem[]): Promise<ReservationResult> {
+    const reservations: ItemReservation[] = [];
+    
+    for (const item of orderItems) {
+      const available = await this.inventoryRepository.getAvailableQuantity(
+        item.productId
+      );
+      
+      if (available < item.quantity) {
+        // Rollback previous reservations
+        await this.releaseReservations(reservations);
+        return ReservationResult.insufficient(item.productId);
+      }
+      
+      const reservation = await this.inventoryRepository.reserve(
+        item.productId,
+        item.quantity
+      );
+      reservations.push(reservation);
+    }
+    
+    return ReservationResult.success(reservations);
+  }
+}
+```
+
+## Data Access Organization
+
+### Repository Pattern Implementation
+```typescript
+// Repository Interface (in domain layer)
+export interface UserRepository {
+  findById(id: UserId): Promise<User | null>;
+  findByEmail(email: Email): Promise<User | null>;
+  save(user: User): Promise<void>;
+  delete(id: UserId): Promise<void>;
+  findAll(specification: UserSpecification): Promise<User[]>;
+}
+
+// Specification Pattern for Queries
+export abstract class UserSpecification {
+  abstract isSatisfiedBy(user: User): boolean;
+  abstract toQuery(): QueryObject;
+}
+
+export class ActiveUsersSpecification extends UserSpecification {
+  isSatisfiedBy(user: User): boolean {
+    return user.isActive();
+  }
+  
+  toQuery(): QueryObject {
+    return {
+      where: { status: 'active' },
+      orderBy: { createdAt: 'desc' }
+    };
+  }
+}
+
+// Repository Implementation (in infrastructure layer)
+export class PostgresUserRepository implements UserRepository {
+  constructor(private db: Database) {}
+  
+  async findById(id: UserId): Promise<User | null> {
+    const row = await this.db.query(
+      'SELECT * FROM users WHERE id = $1',
+      [id.value]
+    );
+    return row ? this.mapRowToUser(row) : null;
+  }
+  
+  async findAll(specification: UserSpecification): Promise<User[]> {
+    const query = specification.toQuery();
+    const rows = await this.db.query(this.buildSqlQuery(query));
+    return rows.map(row => this.mapRowToUser(row));
+  }
+  
+  private mapRowToUser(row: any): User {
+    return new User(
+      new UserId(row.id),
+      new Email(row.email),
+      new UserProfile({
+        name: row.name,
+        avatar: row.avatar,
+        preferences: JSON.parse(row.preferences || '{}')
+      })
+    );
+  }
+}
+```
+
+### Query Object Pattern
+```typescript
+// Query Builder
+export class QueryBuilder {
+  private query: QueryObject = {};
+  
+  where(field: string, value: any): QueryBuilder {
+    this.query.where = { ...this.query.where, [field]: value };
+    return this;
+  }
+  
+  orderBy(field: string, direction: 'asc' | 'desc' = 'asc'): QueryBuilder {
+    this.query.orderBy = { [field]: direction };
+    return this;
+  }
+  
+  limit(count: number): QueryBuilder {
+    this.query.limit = count;
+    return this;
+  }
+  
+  build(): QueryObject {
+    return { ...this.query };
+  }
+}
+
+// Usage in Repository
+export class ProductRepository {
+  async findFeaturedProducts(): Promise<Product[]> {
+    const query = new QueryBuilder()
+      .where('featured', true)
+      .where('status', 'active')
+      .orderBy('priority', 'desc')
+      .limit(10)
+      .build();
+      
+    return await this.executeQuery(query);
+  }
+}
+```
+
+## Error Handling Organization
+
+### Error Hierarchy
+```typescript
+// Base Error Classes
+export abstract class DomainError extends Error {
+  constructor(message: string, public readonly code: string) {
+    super(message);
+    this.name = this.constructor.name;
+  }
+}
+
+export abstract class ApplicationError extends Error {
+  constructor(message: string, public readonly code: string) {
+    super(message);
+    this.name = this.constructor.name;
+  }
+}
+
+// Specific Error Types
+export class UserNotFoundError extends DomainError {
+  constructor(userId: string) {
+    super(`User with ID ${userId} not found`, 'USER_NOT_FOUND');
+  }
+}
+
+export class InvalidEmailError extends DomainError {
+  constructor(email: string) {
+    super(`Invalid email address: ${email}`, 'INVALID_EMAIL');
+  }
+}
+
+export class InsufficientInventoryError extends DomainError {
+  constructor(productId: string, requested: number, available: number) {
+    super(
+      `Insufficient inventory for product ${productId}. Requested: ${requested}, Available: ${available}`,
+      'INSUFFICIENT_INVENTORY'
+    );
+  }
+}
+
+// Application Layer Error Handling
+export class OrderCreationUseCase {
+  async execute(request: CreateOrderRequest): Promise<Result<Order, ApplicationError>> {
+    try {
+      // Validation
+      const validationResult = this.validateRequest(request);
+      if (!validationResult.success) {
+        return Result.failure(new ValidationError(validationResult.errors));
+      }
+      
+      // Business logic
+      const order = await this.createOrder(request);
+      
+      return Result.success(order);
+    } catch (error) {
+      if (error instanceof DomainError) {
+        return Result.failure(new BusinessRuleViolationError(error.message));
+      }
+      
+      // Unexpected errors
+      this.logger.error('Unexpected error in order creation', error);
+      return Result.failure(new InternalServerError('Order creation failed'));
+    }
+  }
+}
+```
+
+### Result Pattern Implementation
+```typescript
+// Result Type
+export class Result<T, E = Error> {
+  private constructor(
+    private _success: boolean,
+    private _value?: T,
+    private _error?: E
+  ) {}
+  
+  static success<T>(value: T): Result<T, never> {
+    return new Result(true, value);
+  }
+  
+  static failure<E>(error: E): Result<never, E> {
+    return new Result(false, undefined, error);
+  }
+  
+  get success(): boolean {
+    return this._success;
+  }
+  
+  get value(): T {
+    if (!this._success) {
+      throw new Error('Cannot access value of failed result');
+    }
+    return this._value!;
+  }
+  
+  get error(): E {
+    if (this._success) {
+      throw new Error('Cannot access error of successful result');
+    }
+    return this._error!;
+  }
+  
+  map<U>(fn: (value: T) => U): Result<U, E> {
+    if (this._success) {
+      return Result.success(fn(this._value!));
+    }
+    return Result.failure(this._error!);
+  }
+  
+  flatMap<U>(fn: (value: T) => Result<U, E>): Result<U, E> {
+    if (this._success) {
+      return fn(this._value!);
+    }
+    return Result.failure(this._error!);
+  }
+}
+```
+
+## Configuration Organization
+
+### Environment Configuration
+```typescript
+// Configuration Schema
+interface AppConfig {
+  server: {
+    port: number;
+    host: string;
+  };
+  database: {
+    url: string;
+    poolSize: number;
+    ssl: boolean;
+  };
+  redis: {
+    url: string;
+    ttl: number;
+  };
+  auth: {
+    jwtSecret: string;
+    tokenExpiration: string;
+  };
+  external: {
+    paymentService: {
+      baseUrl: string;
+      apiKey: string;
+    };
+    emailService: {
+      provider: string;
+      apiKey: string;
+    };
+  };
+}
+
+// Configuration Loader
+export class ConfigLoader {
+  static load(): AppConfig {
+    const config: AppConfig = {
+      server: {
+        port: this.getNumber('PORT', 3000),
+        host: this.getString('HOST', '0.0.0.0')
+      },
+      database: {
+        url: this.getString('DATABASE_URL'),
+        poolSize: this.getNumber('DB_POOL_SIZE', 10),
+        ssl: this.getBoolean('DB_SSL', false)
+      },
+      redis: {
+        url: this.getString('REDIS_URL'),
+        ttl: this.getNumber('CACHE_TTL', 3600)
+      },
+      auth: {
+        jwtSecret: this.getString('JWT_SECRET'),
+        tokenExpiration: this.getString('TOKEN_EXPIRATION', '24h')
+      },
+      external: {
+        paymentService: {
+          baseUrl: this.getString('PAYMENT_SERVICE_URL'),
+          apiKey: this.getString('PAYMENT_API_KEY')
+        },
+        emailService: {
+          provider: this.getString('EMAIL_PROVIDER', 'sendgrid'),
+          apiKey: this.getString('EMAIL_API_KEY')
+        }
+      }
+    };
+    
+    this.validateConfig(config);
+    return config;
+  }
+  
+  private static getString(key: string, defaultValue?: string): string {
+    const value = process.env[key] || defaultValue;
+    if (!value) {
+      throw new Error(`Missing required environment variable: ${key}`);
+    }
+    return value;
+  }
+  
+  private static getNumber(key: string, defaultValue?: number): number {
+    const value = process.env[key];
+    if (!value) {
+      if (defaultValue === undefined) {
+        throw new Error(`Missing required environment variable: ${key}`);
+      }
+      return defaultValue;
+    }
+    
+    const parsed = parseInt(value, 10);
+    if (isNaN(parsed)) {
+      throw new Error(`Invalid number for environment variable ${key}: ${value}`);
+    }
+    return parsed;
+  }
+}
+```
+
+## Testing Organization
+
+### Test Structure
+```typescript
+// Test Organization by Layer
+describe('UserService', () => {
+  describe('Domain Logic', () => {
+    it('should create user with valid data', () => {
+      // Test pure domain logic
+      const userData = new CreateUserData('john@example.com', 'John Doe');
+      const user = new User(UserId.generate(), userData);
+      
+      expect(user.email.value).toBe('john@example.com');
+      expect(user.profile.name).toBe('John Doe');
+    });
+    
+    it('should reject invalid email', () => {
+      expect(() => {
+        new Email('invalid-email');
+      }).toThrow(InvalidEmailError);
+    });
+  });
+  
+  describe('Application Logic', () => {
+    let userService: UserApplicationService;
+    let mockRepository: jest.Mocked<UserRepository>;
+    
+    beforeEach(() => {
+      mockRepository = createMockUserRepository();
+      userService = new UserApplicationService(mockRepository);
+    });
+    
+    it('should create user successfully', async () => {
+      const request = new CreateUserRequest('john@example.com', 'John Doe');
+      
+      const result = await userService.createUser(request);
+      
+      expect(result.success).toBe(true);
+      expect(mockRepository.save).toHaveBeenCalledWith(
+        expect.any(User)
+      );
+    });
+  });
+  
+  describe('Infrastructure Integration', () => {
+    let repository: PostgresUserRepository;
+    let testDb: TestDatabase;
+    
+    beforeAll(async () => {
+      testDb = await setupTestDatabase();
+      repository = new PostgresUserRepository(testDb);
+    });
+    
+    it('should persist user to database', async () => {
+      const user = createTestUser();
+      
+      await repository.save(user);
+      const retrieved = await repository.findById(user.id);
+      
+      expect(retrieved).toEqual(user);
+    });
+  });
+});
+```
+
+## Best Practices
+
+### Code Organization Guidelines
+- **Feature-based organization**: Group related functionality together
+- **Layer separation**: Clear boundaries between domain, application, and infrastructure
+- **Dependency direction**: Dependencies point inward toward business logic
+- **Interface segregation**: Create focused, specific interfaces
+
+### Common Anti-patterns
+- ❌ **Anemic domain models**: Domain objects with no behavior
+- ❌ **God classes**: Classes that do too many things
+- ❌ **Circular dependencies**: Components that depend on each other
+- ❌ **Leaky abstractions**: Implementation details exposed through interfaces
+
+### Refactoring Strategies
+- **Extract method**: Break large methods into smaller ones
+- **Extract class**: Separate concerns into different classes
+- **Move method**: Place methods in appropriate classes
+- **Replace conditional with polymorphism**: Use inheritance instead of conditionals
+
+## Success Metrics
+
+### Code Quality Metrics
+- **Cyclomatic complexity**: Measure of code complexity
+- **Coupling metrics**: Degree of interdependence between modules
+- **Cohesion metrics**: Degree of relatedness within modules
+- **Test coverage**: Percentage of code covered by tests
+
+### Developer Productivity
+- **Feature delivery time**: Time from requirement to deployment
+- **Bug fix time**: Time to identify and resolve issues
+- **Code review time**: Time to review and approve changes
+- **Onboarding time**: Time for new developers to become productive
+
+### Maintainability Indicators
+- **Code duplication**: Amount of repeated code
+- **Technical debt**: Accumulated shortcuts and suboptimal solutions
+- **Documentation coverage**: Extent of code documentation
+- **Refactoring frequency**: How often code needs to be restructured

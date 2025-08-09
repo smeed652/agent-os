@@ -1,0 +1,9 @@
+# Broken Rule Example
+
+This rule is missing:
+- YAML frontmatter
+- Proper sections
+- Sufficient content
+- Code examples
+
+This should fail validation tests.

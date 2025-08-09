@@ -1,0 +1,486 @@
+---
+alwaysApply: true
+---
+
+# Commit Standards
+
+Universal commit standards that ensure reliable, safe, and informative version control practices across all projects.
+
+## Conventional Commit Specification
+
+### Commit Message Format
+```
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+### Required Elements
+- **Type**: Categorizes the nature of the change
+- **Description**: Brief summary of what changed (imperative mood)
+- **Subject line limit**: 50 characters maximum
+- **Body line limit**: 72 characters per line maximum
+
+### Commit Types
+- **feat**: New feature for the user (correlates with MINOR in semantic versioning)
+- **fix**: Bug fix for the user (correlates with PATCH in semantic versioning)
+- **docs**: Documentation only changes
+- **style**: Changes that do not affect code meaning (formatting, missing semicolons, etc.)
+- **refactor**: Code change that neither fixes a bug nor adds a feature
+- **perf**: Code change that improves performance
+- **test**: Adding missing tests or correcting existing tests
+- **chore**: Changes to build process, auxiliary tools, or maintenance tasks
+
+### Scope Guidelines
+- **Optional but recommended** for larger projects
+- **Use kebab-case**: `auth`, `user-management`, `api-client`
+- **Be consistent**: Establish scope names and stick to them
+- **Keep specific**: Avoid overly broad scopes like `app` or `core`
+
+## Commit Message Examples
+
+### Feature Commits
+```bash
+feat(auth): add OAuth integration with Google
+feat(dashboard): implement real-time user analytics
+feat(api): add user preference endpoints
+feat: add dark mode toggle to settings
+
+# With body
+feat(payment): integrate Stripe payment processing
+
+Add comprehensive Stripe integration including:
+- Payment intent creation
+- Webhook handling for payment status
+- Error handling for failed payments
+- Support for multiple payment methods
+```
+
+### Bug Fix Commits
+```bash
+fix(login): resolve validation error display
+fix(api): handle null response in user service
+fix(ui): correct button alignment in mobile view
+fix: prevent memory leak in data fetcher
+
+# With body and footer
+fix(auth): resolve token refresh race condition
+
+The token refresh mechanism was susceptible to race conditions
+when multiple requests triggered refresh simultaneously.
+
+Fixes #123
+```
+
+### Breaking Changes
+```bash
+# Using ! indicator
+feat(api)!: change authentication method to OAuth
+
+# Using footer
+feat(api): update user authentication method
+
+BREAKING CHANGE: authentication now requires OAuth tokens instead of API keys.
+Migration guide available in docs/migration.md
+```
+
+### Documentation Commits
+```bash
+docs(readme): update installation instructions
+docs(api): add authentication endpoint documentation
+docs: fix typos in contributing guide
+docs(deployment): add Docker setup instructions
+```
+
+### Maintenance Commits
+```bash
+chore(deps): update dependencies to latest versions
+chore(build): optimize webpack configuration
+chore: add pre-commit hooks for code quality
+chore(release): prepare version 1.2.0
+```
+
+## Safe Commit Practices
+
+### Pre-commit Validation
+Ensure commits are safe and don't break the build:
+
+```bash
+# Automated validation pipeline
+1. Lint code (ESLint, Prettier)
+2. Type checking (TypeScript)
+3. Run unit tests
+4. Run integration tests
+5. Build application
+6. Optional: Run E2E tests (non-blocking)
+```
+
+### Safe Commit Script Pattern
+```bash
+#!/bin/bash
+# safe-commit.sh
+
+COMMIT_MSG="$1"
+FORCE_MODE="$2"
+
+# Validate commit message format
+validate_commit_message() {
+    local msg="$1"
+    local pattern='^(feat|fix|docs|style|refactor|perf|test|chore)(\(.+\))?: .{1,50}$'
+    
+    if ! echo "$msg" | grep -qE "$pattern"; then
+        echo "❌ Invalid commit message format"
+        echo ""
+        echo "Required format: type(scope): description"
+        echo "Example: feat(auth): add login functionality"
+        echo ""
+        echo "Valid types: feat, fix, docs, style, refactor, perf, test, chore"
+        return 1
+    fi
+    return 0
+}
+
+# Main commit logic
+main() {
+    if ! validate_commit_message "$COMMIT_MSG"; then
+        exit 1
+    fi
+    
+    echo "🔍 Running pre-commit checks..."
+    
+    # Try normal commit with all checks
+    if git commit -m "$COMMIT_MSG"; then
+        echo "✅ Commit successful!"
+        echo "📝 $(git log -1 --oneline)"
+        echo "🔗 $(git rev-parse HEAD)"
+    else
+        echo "❌ Pre-commit checks failed"
+        
+        if [ "$FORCE_MODE" = "--force" ]; then
+            echo "⚠️  Forcing commit despite failures..."
+            git commit --no-verify -m "$COMMIT_MSG"
+            echo "✅ Force commit successful!"
+            echo "🚨 Please address the issues that caused pre-commit to fail"
+        else
+            echo ""
+            echo "💡 Options:"
+            echo "  1. Fix the issues and try again"
+            echo "  2. Use --force to bypass checks: $0 \"$COMMIT_MSG\" --force"
+            echo "  3. Use --skip-hooks for docs/config changes"
+            exit 1
+        fi
+    fi
+}
+
+main "$@"
+```
+
+### Commit Recovery Strategies
+```bash
+# Undo last commit (keep changes staged)
+git reset --soft HEAD~1
+
+# Undo last commit (keep changes unstaged)
+git reset HEAD~1
+
+# Undo last commit (discard all changes)
+git reset --hard HEAD~1
+
+# Amend last commit message
+git commit --amend -m "corrected commit message"
+
+# Amend last commit with additional changes
+git add forgotten-file.txt
+git commit --amend --no-edit
+
+# Interactive rebase to edit multiple commits
+git rebase -i HEAD~3
+```
+
+## Commit Quality Guidelines
+
+### Writing Effective Commit Messages
+
+#### Subject Line Rules
+- **Use imperative mood**: "Add feature" not "Added feature" or "Adds feature"
+- **Start with lowercase**: "add user authentication" not "Add user authentication"
+- **No trailing period**: "fix login bug" not "fix login bug."
+- **Be specific**: "fix login validation" not "fix bug"
+- **Limit to 50 characters**: Forces concise, focused description
+
+#### Body Guidelines
+- **Separate subject and body**: Use blank line between subject and body
+- **Wrap at 72 characters**: Ensures readability in all Git tools
+- **Explain what and why**: Focus on motivation and context, not how
+- **Use bullet points**: For multiple changes or complex explanations
+- **Reference issues**: Include ticket numbers or issue references
+
+#### Footer Usage
+- **Breaking changes**: Use `BREAKING CHANGE:` footer for major version changes
+- **Issue references**: `Fixes #123`, `Closes #456`, `Refs #789`
+- **Co-authored commits**: `Co-authored-by: Name <email@example.com>`
+- **Reviewed by**: `Reviewed-by: Name <email@example.com>`
+
+### Commit Frequency and Size
+
+#### Optimal Commit Size
+- **Atomic commits**: Each commit represents one logical change
+- **Complete functionality**: Don't commit half-implemented features
+- **Buildable state**: Every commit should leave the project in a working state
+- **Focused scope**: One commit shouldn't mix multiple unrelated changes
+
+#### When to Commit
+- **Feature completion**: When a discrete piece of functionality is complete
+- **Bug fix completion**: When a specific issue is resolved
+- **Refactoring completion**: When a refactoring task is finished
+- **Before switching contexts**: Commit work before switching to different tasks
+
+#### Commit Frequency Best Practices
+- **Daily commits minimum**: Don't go days without committing
+- **Work-in-progress commits**: Use WIP commits for backup, squash before merging
+- **Logical checkpoints**: Commit at natural stopping points
+- **Before risky changes**: Commit stable state before attempting complex changes
+
+## Advanced Commit Patterns
+
+### Squash and Merge Strategy
+```bash
+# During feature development (multiple commits)
+git commit -m "feat(auth): add login form structure"
+git commit -m "feat(auth): implement form validation"
+git commit -m "feat(auth): add API integration"
+git commit -m "fix(auth): resolve validation edge case"
+
+# Before merging, squash into single commit
+git rebase -i HEAD~4
+# Choose 'squash' for commits 2-4, keep 'pick' for first commit
+# Result: Single commit with comprehensive message
+
+feat(auth): implement user authentication system
+
+Add complete login functionality including:
+- Responsive login form with validation
+- Integration with authentication API
+- Error handling for invalid credentials
+- Automatic redirect after successful login
+
+Fixes #123
+```
+
+### Conventional Commit Automation
+```bash
+# Package.json scripts for commit assistance
+{
+  "scripts": {
+    "commit": "./scripts/safe-commit.sh",
+    "commit:feat": "npm run commit \"feat: \"",
+    "commit:fix": "npm run commit \"fix: \"",
+    "commit:docs": "npm run commit \"docs: \"",
+    "commit:chore": "npm run commit \"chore: \"",
+    "commit:interactive": "npx git-cz"
+  }
+}
+
+# Usage
+npm run commit "feat(auth): add OAuth integration"
+npm run commit:fix "resolve login validation issue"
+```
+
+### Semantic Release Integration
+```yaml
+# .releaserc.yml - Automatic versioning based on commits
+branches:
+  - main
+plugins:
+  - "@semantic-release/commit-analyzer"
+  - "@semantic-release/release-notes-generator"
+  - "@semantic-release/changelog"
+  - "@semantic-release/npm"
+  - "@semantic-release/github"
+
+# Commit types that trigger releases
+releaseRules:
+  - type: "feat"
+    release: "minor"
+  - type: "fix"
+    release: "patch"
+  - type: "perf"
+    release: "patch"
+  - breaking: true
+    release: "major"
+```
+
+## Commit Hook Configuration
+
+### Pre-commit Hook Setup
+```bash
+#!/bin/sh
+# .husky/pre-commit
+
+echo "🔍 Running pre-commit validation..."
+
+# Stage check
+if git diff --cached --quiet; then
+  echo "❌ No staged changes found"
+  exit 1
+fi
+
+# Lint staged files
+npx lint-staged
+
+# Type checking
+npm run type-check
+if [ $? -ne 0 ]; then
+  echo "❌ TypeScript compilation failed"
+  exit 1
+fi
+
+# Unit tests
+npm run test:unit
+if [ $? -ne 0 ]; then
+  echo "❌ Unit tests failed"
+  exit 1
+fi
+
+echo "✅ Pre-commit checks passed"
+```
+
+### Commit Message Hook
+```bash
+#!/bin/sh
+# .husky/commit-msg
+
+# Read commit message
+commit_message=$(cat "$1")
+
+# Validate format
+commit_pattern='^(feat|fix|docs|style|refactor|perf|test|chore)(\(.+\))?: .{1,50}(\n\n.*)?$'
+
+if ! echo "$commit_message" | grep -qE "$commit_pattern"; then
+    echo "❌ Invalid commit message format!"
+    echo ""
+    echo "Required format:"
+    echo "  type(scope): description"
+    echo ""
+    echo "Valid types:"
+    echo "  feat     - New feature"
+    echo "  fix      - Bug fix"
+    echo "  docs     - Documentation changes"
+    echo "  style    - Code style changes"
+    echo "  refactor - Code refactoring"
+    echo "  perf     - Performance improvements"
+    echo "  test     - Test changes"
+    echo "  chore    - Maintenance tasks"
+    echo ""
+    echo "Examples:"
+    echo "  feat(auth): add OAuth integration"
+    echo "  fix(api): resolve timeout issues"
+    echo "  docs(readme): update setup instructions"
+    exit 1
+fi
+
+# Check subject line length
+subject_line=$(echo "$commit_message" | head -n1)
+if [ ${#subject_line} -gt 50 ]; then
+    echo "❌ Subject line too long (${#subject_line} chars, max 50)"
+    echo "Current: $subject_line"
+    exit 1
+fi
+
+echo "✅ Commit message format valid"
+```
+
+## Troubleshooting Commit Issues
+
+### Common Problems and Solutions
+
+#### Commit Message Validation Failures
+```bash
+# Problem: Commit rejected due to format
+# Solution: Use proper conventional commit format
+git commit -m "feat(component): add new functionality"
+
+# Problem: Subject line too long
+# Solution: Shorten description, use body for details
+git commit -m "feat(auth): add OAuth support
+
+Implement comprehensive OAuth integration with Google and GitHub providers.
+Includes token refresh and error handling."
+```
+
+#### Pre-commit Hook Failures
+```bash
+# Problem: Linting errors block commit
+# Solution: Fix errors or use selective staging
+npm run lint:fix
+git add .
+git commit -m "fix(style): resolve linting issues"
+
+# Problem: Tests fail during commit
+# Solution: Fix tests or commit with --no-verify (emergency only)
+npm test
+# Fix failing tests
+git commit -m "fix(tests): resolve failing unit tests"
+
+# Emergency bypass (use sparingly)
+git commit --no-verify -m "fix(critical): emergency security patch"
+```
+
+#### Commit History Issues
+```bash
+# Problem: Need to change last commit message
+git commit --amend -m "corrected message"
+
+# Problem: Need to split large commit
+git reset HEAD~1
+git add file1.js
+git commit -m "feat(component): add component structure"
+git add file2.js
+git commit -m "feat(component): add component logic"
+
+# Problem: Need to combine multiple commits
+git rebase -i HEAD~3
+# Use 'squash' to combine commits
+```
+
+## Best Practices Summary
+
+### Daily Workflow
+- **Start with pull**: Always pull latest changes before starting work
+- **Commit frequently**: Make atomic commits throughout development
+- **Use descriptive messages**: Clear, concise commit descriptions
+- **Review before pushing**: Check commit history and messages before pushing
+
+### Quality Assurance
+- **Test before committing**: Ensure changes don't break existing functionality
+- **Use conventional format**: Consistent commit message formatting
+- **Keep commits focused**: One logical change per commit
+- **Document breaking changes**: Clear indication of compatibility impacts
+
+### Collaboration
+- **Write for others**: Commit messages should help team members understand changes
+- **Reference issues**: Link commits to relevant tickets or issues
+- **Be consistent**: Follow established project conventions
+- **Communicate context**: Use commit body to explain complex changes
+
+## Success Metrics
+
+### Commit Quality
+- **Format compliance**: High percentage of commits following conventional format
+- **Build success rate**: Commits that pass all automated checks
+- **Message clarity**: Descriptive, helpful commit messages
+- **Atomic commits**: Each commit represents one logical change
+
+### Development Velocity
+- **Commit frequency**: Regular, consistent commit patterns
+- **Review efficiency**: Quick understanding of changes through good messages
+- **Debugging speed**: Easy to trace issues through commit history
+- **Release automation**: Smooth automatic versioning and changelog generation
+
+### Team Collaboration
+- **Onboarding speed**: New team members can understand project history
+- **Code review quality**: Clear commits make reviews more effective
+- **Issue traceability**: Easy to link commits to requirements and bugs
+- **Knowledge sharing**: Commit messages serve as project documentation

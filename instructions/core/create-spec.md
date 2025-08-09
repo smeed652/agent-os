@@ -795,6 +795,7 @@ Evaluate readiness to begin implementation after completing all previous steps, 
 
 <execution_flow>
   IF user_confirms_yes:
+    EXECUTE: @~/.agent-os/instructions/validators/post-spec-creation.md
     REFERENCE: @~/.agent-os/instructions/core/execute-tasks.md
     FOCUS: Only Task 1 and its subtasks
     CONSTRAINT: Do not proceed to additional tasks without explicit user request

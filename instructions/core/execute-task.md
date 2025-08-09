@@ -256,4 +256,26 @@ Update the tasks.md file immediately after completing each task to track progres
 
 </step>
 
+<step number="8" name="validation_execution">
+
+### Step 8: Parent Task Validation
+
+Execute the parent task completion validator to verify all work was completed correctly.
+
+<validation_process>
+  EXECUTE: @~/.agent-os/instructions/validators/parent-task-completion.md [PARENT_TASK_NUMBER]
+  WAIT: For validation report
+  ADDRESS: Any issues found in the validation
+  CONFIRM: Task completion before proceeding
+</validation_process>
+
+<instructions>
+  ACTION: Run parent task completion validator
+  REVIEW: Validation report results  
+  FIX: Any issues identified by validator
+  DOCUMENT: Validation results in task completion
+</instructions>
+
+</step>
+
 </process_flow>

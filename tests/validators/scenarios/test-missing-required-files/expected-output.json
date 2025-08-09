@@ -1,0 +1,107 @@
+{
+  "validation_status": "FAIL",
+  "spec_name": "Missing Files Test",
+  "spec_directory": "2025-08-09-missing-files",
+  "timestamp": "2025-08-09T12:00:00Z",
+  "validations": {
+    "directory_structure": {
+      "status": "PASS",
+      "checks": [
+        {
+          "check": "Directory exists with proper YYYY-MM-DD- prefix",
+          "result": "PASS",
+          "details": "Directory name '2025-08-09-missing-files' follows correct format"
+        },
+        {
+          "check": "Spec name is kebab-case and ≤5 words",
+          "result": "PASS",
+          "details": "Spec name 'missing-files' is 2 words in kebab-case"
+        },
+        {
+          "check": "Directory is in .agent-os/specs/",
+          "result": "PASS",
+          "details": "Correct location: .agent-os/specs/2025-08-09-missing-files/"
+        },
+        {
+          "check": "Date format is valid (YYYY-MM-DD)",
+          "result": "PASS",
+          "details": "Date '2025-08-09' is valid ISO format"
+        }
+      ]
+    },
+    "required_files": {
+      "status": "FAIL",
+      "checks": [
+        {
+          "check": "spec.md exists",
+          "result": "PASS",
+          "details": "File found and readable"
+        },
+        {
+          "check": "spec-lite.md exists",
+          "result": "FAIL",
+          "details": "Required file spec-lite.md is missing"
+        },
+        {
+          "check": "tasks.md exists",
+          "result": "FAIL", 
+          "details": "Required file tasks.md is missing"
+        },
+        {
+          "check": "status.md exists",
+          "result": "PASS",
+          "details": "File found and readable"
+        },
+        {
+          "check": "sub-specs/technical-spec.md exists",
+          "result": "FAIL",
+          "details": "Required file sub-specs/technical-spec.md is missing"
+        }
+      ]
+    },
+    "content_structure": {
+      "status": "SKIP",
+      "checks": [
+        {
+          "check": "Content validation skipped",
+          "result": "SKIP",
+          "details": "Cannot validate content structure due to missing required files"
+        }
+      ]
+    },
+    "content_quality": {
+      "status": "SKIP", 
+      "checks": [
+        {
+          "check": "Quality validation skipped",
+          "result": "SKIP",
+          "details": "Cannot validate content quality due to missing required files"
+        }
+      ]
+    }
+  },
+  "summary": {
+    "total_checks": 9,
+    "passed_checks": 6,
+    "failed_checks": 3,
+    "warnings": 0,
+    "overall_status": "FAIL"
+  },
+  "recommendations": [
+    {
+      "type": "CRITICAL",
+      "message": "Create missing file: spec-lite.md",
+      "action": "Use @~/.agent-os/instructions/core/create-spec.md to generate proper spec-lite.md"
+    },
+    {
+      "type": "CRITICAL", 
+      "message": "Create missing file: tasks.md",
+      "action": "Use @~/.agent-os/instructions/core/create-spec.md to generate proper tasks.md"
+    },
+    {
+      "type": "CRITICAL",
+      "message": "Create missing file: sub-specs/technical-spec.md", 
+      "action": "Use @~/.agent-os/instructions/core/create-spec.md to generate technical specification"
+    }
+  ]
+}
