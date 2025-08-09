@@ -29,7 +29,7 @@ Universal TypeScript coding standards that ensure consistency, maintainability, 
 ## File Size Guidelines
 
 ### Code Files
-- **TypeScript/JavaScript files (.ts, .tsx, .js, .jsx)**: Under 250 lines
+- **TypeScript/JavaScript files (.ts, .tsx, .js, .jsx)**: Under 300 lines
 - **Reason**: Easier to understand, test, and maintain
 - **Action**: Refactor into smaller modules when exceeded
 - **Exception**: Generated files or complex algorithms with clear documentation

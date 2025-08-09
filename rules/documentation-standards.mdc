@@ -31,7 +31,7 @@ Universal documentation standards that ensure consistency, maintainability, and 
 - **Use includes** - Reference smaller modules rather than copying content
 
 ### Code Files
-- **Code files (.ts, .tsx, .js, .jsx)**: Under 250 lines
+- **Code files (.ts, .tsx, .js, .jsx)**: Under 300 lines
 - **Test files (.test.ts, .spec.ts)**: Aim for under 500 lines
 - **Configuration files**: Keep concise and well-commented
 

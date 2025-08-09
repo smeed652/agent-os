@@ -9,11 +9,11 @@ Universal file organization standards that ensure consistent project structure, 
 ## File Size Guidelines
 
 ### Code Files
-- **TypeScript/JavaScript (.ts, .tsx, .js, .jsx)**: Under 250 lines
-- **Rationale**: Easier to understand, test, and maintain
+- **TypeScript/JavaScript (.ts, .tsx, .js, .jsx)**: Under 300 lines
+- **Rationale**: Easier to understand, test, and maintain while allowing for reasonable complexity
 - **Action when exceeded**: Refactor into smaller, focused modules
 - **Measurement**: Exclude imports, exports, and comments from line count
-- **Exceptions**: Generated files, complex algorithms with comprehensive documentation
+- **Exceptions**: Generated files, complex algorithms with comprehensive documentation, test files, configuration files with extensive comments
 
 ### Test Files
 - **Test files (.test.ts, .test.tsx, .spec.ts)**: Aim for under 500 lines
@@ -265,7 +265,7 @@ import type { ComponentProps } from 'react';
 - **Include necessary documentation** - Add JSDoc comments for public interfaces
 
 ### Growth Management
-- **Monitor file size** - Regular review of growing files
+- **Monitor file size** - Regular review of files approaching 300 lines
 - **Refactor when needed** - Extract functionality before files become unwieldy
 - **Maintain focus** - Keep files focused on their original purpose
 - **Update documentation** - Keep comments and documentation current
@@ -280,7 +280,7 @@ import type { ComponentProps } from 'react';
 
 ### File Organization Checklist
 - [ ] File serves single, clear purpose
-- [ ] File size within guidelines for its type
+- [ ] File size within guidelines (300 lines for code, 500 for tests, flexible for docs)
 - [ ] Naming follows established conventions
 - [ ] Location appropriate for content type
 - [ ] Dependencies are minimal and clear

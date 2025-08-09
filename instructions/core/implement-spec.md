@@ -265,7 +265,7 @@ After user approval of the implementation, perform code refactoring and optimiza
 <refactoring_objectives>
   - **Code Quality**: Improve readability, maintainability, and performance
   - **DRY Principles**: Eliminate code duplication
-  - **File Size Management**: Keep files under 250 lines
+  - **File Size Management**: Keep files under 300 lines
   - **Design Patterns**: Ensure proper architectural patterns
   - **Performance**: Optimize without changing behavior
   - **Documentation**: Improve code comments and documentation
@@ -275,7 +275,7 @@ After user approval of the implementation, perform code refactoring and optimiza
   <analysis_phase>
     - [ ] Analyze codebase for optimization opportunities
     - [ ] Identify code duplication and extract common functionality
-    - [ ] Review file sizes and split large files if needed
+    - [ ] Review file sizes and split files over 300 lines if needed
     - [ ] Assess performance bottlenecks
     - [ ] Check for proper design pattern implementation
     - [ ] Review error handling and edge cases
@@ -318,7 +318,7 @@ After user approval of the implementation, perform code refactoring and optimiza
   </code_quality>
 
   <file_management>
-    - **Size Limit**: Keep files under 250 lines
+    - **Size Limit**: Keep files under 300 lines
     - **Single Responsibility**: Each file has one clear purpose
     - **Logical Grouping**: Related functionality in same files
     - **Clear Naming**: Descriptive file and folder names

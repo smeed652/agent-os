@@ -34,6 +34,7 @@ cd ~/.agent-os && npm install
 - **Lifecycle Management**: Track and manage spec progress with automated dashboards
 - **Universal Rules System**: 15 comprehensive development rules with full validation
 - **Enhanced Testing Suite**: 96+ automated tests with coverage analysis
+- **Comprehensive Validator Suite**: 6 validators across 2 tiers for complete quality assurance
 - **Test Command**: `@~/.agent-os/instructions/core/test-lifecycle.md` to set up lifecycle management
 - **Dashboard Generation**: `npm run dashboard` to generate spec status dashboards
 
@@ -54,6 +55,20 @@ npm run coverage
 npm run test:rules        # Universal rules validation
 npm run test:lifecycle    # Lifecycle management tests
 npm run test:validators   # Spec and task validation
+
+# Run comprehensive validation suite
+npm run validate:all              # Run all validators (comprehensive quality check)
+npm run validate:tier1            # Run Tier 1 validators (critical quality)
+npm run validate:tier2            # Run Tier 2 validators (development workflow)
+npm run validate:list             # List all available validators
+
+# Run individual validators
+npm run validate:code-quality     # File size, complexity, naming conventions
+npm run validate:spec-adherence   # Implementation matches spec requirements
+npm run validate:security         # Security vulnerabilities and best practices
+npm run validate:branch-strategy  # Git workflow and branching conventions
+npm run validate:testing          # Test coverage and TDD approach
+npm run validate:documentation    # Documentation completeness and quality
 ```
 
 **Test Coverage**:
@@ -77,6 +92,21 @@ Agent OS includes 15 universal development rules that apply across all projects:
 - Tech Stack Selection, Tech Stack Documentation, Architecture Patterns, Code Organization
 
 📖 **See [rules/README.md](rules/README.md)** for complete universal development standards.
+
+## 🔍 Comprehensive Validation System
+Agent OS includes a 6-validator quality assurance system organized into 2 tiers:
+
+**Tier 1 - Critical Quality**:
+- **Code Quality**: File size (300-line standard), complexity, duplication, naming conventions
+- **Spec Adherence**: Implementation matches specification requirements exactly
+
+**Tier 2 - Development Workflow**:
+- **Security**: Vulnerability detection, hardcoded secrets, insecure patterns, OWASP compliance
+- **Branch Strategy**: Git workflow, naming conventions, feature branch alignment with specs
+- **Testing Completeness**: Coverage analysis (80% target), TDD approach, test type distribution
+- **Documentation**: README completeness, API docs, code comments, setup instructions
+
+**Quality Scoring**: 90%+ Excellent | 75-89% Good | 60-74% Moderate | <60% Needs Work
 
 ---
 

@@ -75,7 +75,7 @@ After user approval of the implementation, perform code optimization while prese
 2. **Analyze Codebase**: Identify optimization opportunities and code duplication
 3. **Plan Refactoring**: Create detailed plan and get user approval
 4. **Extract Common Code**: Eliminate duplication and create reusable modules
-5. **Split Large Files**: Keep files under 250 lines for maintainability
+5. **Split Large Files**: Keep files under 300 lines for maintainability
 6. **Optimize Performance**: Improve efficiency without changing behavior
 7. **Validate Changes**: Ensure all tests pass and functionality remains identical
 8. **User Confirmation**: Get final approval that refactoring is successful

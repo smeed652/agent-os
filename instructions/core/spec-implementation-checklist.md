@@ -158,7 +158,7 @@ encoding: UTF-8
 ### Pre-Refactoring Analysis
 - [ ] Analyzed codebase for optimization opportunities
 - [ ] Identified code duplication and common patterns
-- [ ] Reviewed file sizes and identified large files (>250 lines)
+- [ ] Reviewed file sizes and identified large files (>300 lines)
 - [ ] Assessed performance bottlenecks and optimization targets
 - [ ] Checked for proper design pattern implementation
 - [ ] Reviewed error handling and edge case coverage
@@ -188,7 +188,7 @@ encoding: UTF-8
 - [ ] Ran comprehensive test suite (100% pass rate)
 - [ ] Checked for any performance regressions
 - [ ] Validated code quality improvements
-- [ ] Confirmed file sizes are under 250 lines where appropriate
+- [ ] Confirmed file sizes are under 300 lines where appropriate
 - [ ] Verified DRY principles are followed
 - [ ] Got user confirmation that refactoring is successful
 - [ ] Documented any lessons learned for future refactoring
