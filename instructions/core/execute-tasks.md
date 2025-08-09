@@ -321,21 +321,120 @@ Check @.agent-os/product/roadmap.md (if not in context) and update roadmap progr
   <caution>only mark complete if absolutely certain</caution>
 </roadmap_criteria>
 
-<instructions>
-  ACTION: First evaluate if roadmap check is needed
-  SKIP: If tasks clearly don't complete roadmap items
-  CHECK: If roadmap.md already in context
-  LOAD: Only if needed and not in context
-  EVALUATE: If current spec completes roadmap goals
-  UPDATE: Mark roadmap items complete if applicable
-  VERIFY: Certainty before marking complete
-</instructions>
+</step>
+
+<step number="9" name="spec_lifecycle_update">
+
+### Step 9: Spec Lifecycle Status Update
+
+Update the spec status based on completion level and move to appropriate lifecycle phase.
+
+<lifecycle_status_check>
+  <completion_assessment>
+    - All tasks completed: Move to "completed" status
+    - Some tasks completed: Update progress in "active" status
+    - No tasks completed: Keep in "active" status
+  </completion_assessment>
+</lifecycle_status_check>
+
+<status_update_process>
+  <if_all_tasks_complete>
+    - Update status.md to "completed"
+    - Add completion date to status history
+    - Move spec folder to completed-YYYY-MM-DD-spec-name
+    - Update current phase description
+    - Add completion notes
+  </if_all_tasks_complete>
+  
+  <if_partial_completion>
+    - Update status.md with progress percentage
+    - Update last updated date
+    - Add progress notes
+    - Keep in active status
+  </if_partial_completion>
+</status_update_process>
+
+<folder_movement>
+  <completed_specs>
+    - Move from: .agent-os/specs/active-YYYY-MM-DD-spec-name
+    - Move to: .agent-os/specs/completed-YYYY-MM-DD-spec-name
+    - Update status.md with completion details
+  </completed_specs>
+  
+  <active_specs>
+    - Keep in: .agent-os/specs/active-YYYY-MM-DD-spec-name
+    - Update progress in status.md
+    - Add completion percentage
+  </active_specs>
+</folder_movement>
+
+<status_file_template>
+  ```markdown
+  # Spec Status
+  
+  **Spec Name**: [SPEC_NAME]
+  **Created**: [CREATION_DATE]
+  **Current Status**: [completed|active]
+  **Last Updated**: [CURRENT_DATE]
+  
+  ## Status History
+  - [CREATION_DATE] - Created (planning)
+  - [START_DATE] - Started implementation (active)
+  - [COMPLETION_DATE] - Completed implementation (completed)
+  
+  ## Current Phase
+  [DESCRIPTION_OF_CURRENT_PHASE]
+  
+  ## Completion Summary
+  - [ ] All tasks completed
+  - [ ] All tests passing
+  - [ ] Implementation verified
+  - [ ] Ready for archiving
+  
+  ## Notes
+  [COMPLETION_NOTES_OR_ISSUES]
+  ```
+</status_file_template>
 
 </step>
 
-<step number="9" name="completion_notification">
+<step number="10" subagent="git-workflow" name="git_workflow">
 
-### Step 9: Task Completion Notification
+### Step 10: Git Workflow
+
+Use the git-workflow subagent to create git commit, push to GitHub, and create pull request for the implemented features.
+
+<instructions>
+  ACTION: Use git-workflow subagent
+  REQUEST: "Complete git workflow for [SPEC_NAME] feature:
+            - Spec: [SPEC_FOLDER_PATH]
+            - Changes: All modified files
+            - Target: main branch
+            - Description: [SUMMARY_OF_IMPLEMENTED_FEATURES]"
+  WAIT: For workflow completion
+  PROCESS: Save PR URL for summary
+</instructions>
+
+<commit_process>
+  <commit>
+    <message>descriptive summary of changes</message>
+    <format>conventional commits if applicable</format>
+  </commit>
+  <push>
+    <target>spec branch</target>
+    <remote>origin</remote>
+  </push>
+  <pull_request>
+    <title>descriptive PR title</title>
+    <description>functionality recap</description>
+  </pull_request>
+</commit_process>
+
+</step>
+
+<step number="11" name="completion_notification">
+
+### Step 11: Task Completion Notification
 
 Play a system sound to alert the user that tasks are complete.
 
@@ -350,9 +449,9 @@ Play a system sound to alert the user that tasks are complete.
 
 </step>
 
-<step number="10" name="completion_summary">
+<step number="12" name="completion_summary">
 
-### Step 10: Completion Summary
+### Step 12: Completion Summary
 
 Create a structured summary message with emojis showing what was done, any issues, testing instructions, and PR link.
 

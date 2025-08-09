@@ -517,9 +517,178 @@ Use the file-creator subagent to await user approval from step 11 and then creat
 
 </step>
 
-<step number="13" name="decision_documentation">
+<step number="13" subagent="file-creator" name="create_status">
 
-### Step 13: Decision Documentation (Conditional)
+### Step 13: Create status.md
+
+Use the file-creator subagent to create file: status.md for lifecycle management
+
+<file_template>
+  <header>
+    # Spec Status
+
+    **Spec Name**: [SPEC_NAME]
+    **Created**: [CURRENT_DATE]
+    **Current Status**: planning
+    **Last Updated**: [CURRENT_DATE]
+  </header>
+</file_template>
+
+<status_template>
+  ## Status History
+  - [CURRENT_DATE] - Created (planning)
+
+  ## Current Phase
+  Spec is in planning phase. Ready for implementation when resources are available.
+
+  ## Next Actions
+  - [ ] Review spec requirements
+  - [ ] Prioritize against other specs
+  - [ ] Begin implementation when approved
+
+  ## Notes
+  [ANY_RELEVANT_NOTES_FROM_SPEC_CREATION]
+</status_template>
+
+<lifecycle_integration>
+  <status_tracking>
+    - planning: Spec created, ready for implementation
+    - active: Implementation in progress
+    - completed: Implementation finished, ready for cleanup
+    - archived: Spec archived, minimal maintenance
+  </status_tracking>
+  
+  <folder_naming>
+    - planning-YYYY-MM-DD-spec-name (backlog)
+    - active-YYYY-MM-DD-spec-name (in progress)
+    - completed-YYYY-MM-DD-spec-name (done)
+    - archived/YYYY-MM-DD-spec-name (archived)
+  </folder_naming>
+</lifecycle_integration>
+
+</step>
+
+<step number="14" subagent="file-creator" name="create_lifecycle_files">
+
+### Step 14: Create Lifecycle Management Files
+
+Use the file-creator subagent to create lifecycle management files for the project.
+
+<lifecycle_files>
+  <specs_dashboard>
+    <file_path>.agent-os/specs/specs-dashboard.md</file_path>
+    <template>
+      # Specs Dashboard
+
+      > Auto-generated dashboard for spec lifecycle management
+      > Last updated: [CURRENT_DATE]
+
+      ## 📋 Planning (Backlog)
+      *No planning specs*
+
+      ## 🔄 Active (In Progress)
+      *No active specs*
+
+      ## ✅ Completed (Done)
+      *No completed specs*
+
+      ## 🗄️ Archived
+      *No archived specs*
+
+      ## 📊 Summary
+      - **Planning**: 0 specs
+      - **Active**: 0 specs
+      - **Completed**: 0 specs
+      - **Archived**: 0 specs
+      - **Total**: 0 specs
+
+      ---
+      *Dashboard generated automatically. Update spec status files to refresh this dashboard.*
+    </template>
+  </specs_dashboard>
+  
+  <lifecycle_guide>
+    <file_path>.agent-os/spec-lifecycle-guide.md</file_path>
+    <template>
+      # Spec Lifecycle Management Guide
+
+      ## Quick Reference
+
+      ### Status Categories
+      - **Planning**: Specs ready for implementation
+      - **Active**: Specs currently being implemented
+      - **Completed**: Specs finished and tested
+      - **Archived**: Specs cleaned up and archived
+
+      ### Folder Naming Convention
+      - `planning-YYYY-MM-DD-spec-name` (backlog)
+      - `active-YYYY-MM-DD-spec-name` (in progress)
+      - `completed-YYYY-MM-DD-spec-name` (done)
+      - `archived/YYYY-MM-DD-spec-name` (archived)
+
+      ### Commands
+      ```bash
+      # Generate dashboard
+      npm run dashboard
+
+      # Move spec to active
+      mv .agent-os/specs/planning-YYYY-MM-DD-spec-name .agent-os/specs/active-YYYY-MM-DD-spec-name
+
+      # Move spec to completed
+      mv .agent-os/specs/active-YYYY-MM-DD-spec-name .agent-os/specs/completed-YYYY-MM-DD-spec-name
+
+      # Archive completed spec
+      mv .agent-os/specs/completed-YYYY-MM-DD-spec-name .agent-os/specs/archived/YYYY-MM-DD-spec-name
+      ```
+
+      ## Status File Template
+      Each spec should have a `status.md` file:
+      ```markdown
+      # Spec Status
+
+      **Spec Name**: [SPEC_NAME]
+      **Created**: [YYYY-MM-DD]
+      **Current Status**: [planning|active|completed|archived]
+      **Last Updated**: [YYYY-MM-DD]
+
+      ## Status History
+      - [YYYY-MM-DD] - Created (planning)
+
+      ## Current Phase
+      [DESCRIPTION_OF_CURRENT_PHASE]
+
+      ## Next Actions
+      - [ ] [NEXT_ACTION_1]
+      - [ ] [NEXT_ACTION_2]
+
+      ## Notes
+      [ANY_RELEVANT_NOTES]
+      ```
+    </template>
+  </lifecycle_guide>
+</lifecycle_files>
+
+<conditional_creation>
+  <if_first_spec>
+    - Create specs-dashboard.md if it doesn't exist
+    - Create spec-lifecycle-guide.md if it doesn't exist
+    - Add dashboard generation script to package.json if it doesn't exist
+    - Create scripts/ directory if it doesn't exist
+    - Create scripts/simple-dashboard-generator.js if it doesn't exist
+  </if_first_spec>
+  
+  <if_not_first_spec>
+    - Skip creating dashboard and guide files
+    - Skip creating dashboard script
+    - Only create status.md for current spec
+  </if_not_first_spec>
+</conditional_creation>
+
+</step>
+
+<step number="15" name="decision_documentation">
+
+### Step 15: Decision Documentation (Conditional)
 
 Evaluate strategic impact without loading decisions.md and update it only if there's significant deviation from mission/roadmap and user approves.
 
@@ -596,9 +765,9 @@ Evaluate strategic impact without loading decisions.md and update it only if the
 
 </step>
 
-<step number="14" name="execution_readiness">
+<step number="16" name="execution_readiness">
 
-### Step 14: Execution Readiness Check
+### Step 16: Execution Readiness Check
 
 Evaluate readiness to begin implementation after completing all previous steps, presenting the first task summary and requesting user confirmation to proceed.
 
@@ -636,6 +805,45 @@ Evaluate readiness to begin implementation after completing all previous steps, 
 </step>
 
 </process_flow>
+
+## Lifecycle Management Commands
+
+### Test Lifecycle Management
+Use `@test-lifecycle` to test the lifecycle management system in your project:
+
+<test_lifecycle_command>
+  <trigger>@test-lifecycle</trigger>
+  <actions>
+    1. Check if .agent-os/specs directory exists
+    2. Generate dashboard if specs exist
+    3. Create test lifecycle files if needed
+    4. Show lifecycle management status
+    5. Provide next steps for implementation
+  </actions>
+</test_lifecycle_command>
+
+<test_lifecycle_process>
+  <check_project_structure>
+    - Verify .agent-os/specs directory exists
+    - Count existing specs
+    - Check for dashboard files
+    - Verify package.json scripts
+  </check_project_structure>
+  
+  <generate_test_files>
+    - Create specs-dashboard.md if missing
+    - Create spec-lifecycle-guide.md if missing
+    - Add dashboard script to package.json if missing
+    - Create test status.md files for existing specs
+  </generate_test_files>
+  
+  <show_results>
+    - Display current spec status
+    - Show dashboard preview
+    - List available commands
+    - Provide implementation guidance
+  </show_results>
+</test_lifecycle_process>
 
 ## Execution Standards
 

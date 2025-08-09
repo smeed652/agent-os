@@ -6,7 +6,12 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "commit": "git-cz",
+    "dashboard": "node scripts/spec-dashboard-generator.js",
+    "dashboard:simple": "node scripts/simple-dashboard-generator.js",
+    "dashboard:global": "node scripts/global-dashboard-generator.js",
+    "test:lifecycle": "node scripts/test-lifecycle.js"
   },
   "keywords": [
     "agent-os",
