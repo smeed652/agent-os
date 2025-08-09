@@ -507,12 +507,12 @@ const localUrl = 'http://localhost:3000'; // This should be OK
     await this.runValidatorTest(SecurityValidator, 'Vulnerable dependencies', async (validator) => {
       const vulnerablePackage = JSON.stringify({
         dependencies: {
-          "lodash": "^3.0.0",
-          "moment": "^2.0.0",
-          "request": "^2.88.0"
+          'lodash': '^3.0.0',
+          'moment': '^2.0.0',
+          'request': '^2.88.0'
         },
         devDependencies: {
-          "node-sass": "^4.0.0"
+          'node-sass': '^4.0.0'
         }
       });
       
@@ -529,9 +529,9 @@ const localUrl = 'http://localhost:3000'; // This should be OK
     await this.runValidatorTest(SecurityValidator, 'Wildcard versions', async (validator) => {
       const wildcardPackage = JSON.stringify({
         dependencies: {
-          "express": "*",
-          "lodash": "x.x.x",
-          "react": "^18.0.0"
+          'express': '*',
+          'lodash': 'x.x.x',
+          'react': '^18.0.0'
         }
       });
       
@@ -628,8 +628,8 @@ app.post('/eval', (req, res) => {
 module.exports = app;`,
       'package.json': JSON.stringify({
         dependencies: {
-          "express": "^4.18.0",
-          "lodash": "^3.0.0"
+          'express': '^4.18.0',
+          'lodash': '^3.0.0'
         }
       })
     });
@@ -677,10 +677,10 @@ app.get('/search', (req, res) => {
 module.exports = app;`,
       'package.json': JSON.stringify({
         dependencies: {
-          "express": "^4.18.0",
-          "helmet": "^6.0.0",
-          "express-rate-limit": "^6.0.0",
-          "validator": "^13.0.0"
+          'express': '^4.18.0',
+          'helmet': '^6.0.0',
+          'express-rate-limit': '^6.0.0',
+          'validator': '^13.0.0'
         }
       })
     });

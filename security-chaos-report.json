@@ -1,0 +1,312 @@
+[
+  {
+    "test": "SQL Injection",
+    "status": "completed",
+    "results": [
+      {
+        "payload": "' OR '1'='1",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payload": "'; DROP TABLE users; --",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payload": "' UNION SELECT * FROM users --",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payload": "admin'--",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payload": "1' OR '1' = '1' --",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payload": "' OR 1=1#",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payload": "'; EXEC xp_cmdshell('dir'); --",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      }
+    ],
+    "timestamp": "2025-08-09T23:28:18.995Z"
+  },
+  {
+    "test": "XSS Attacks",
+    "status": "completed",
+    "results": [
+      {
+        "payload": "<script>alert('XSS')</script>",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payload": "<img src=x onerror=alert('XSS')>",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payload": "javascript:alert('XSS')",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payload": "<svg onload=alert('XSS')>",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payload": "'\"><script>alert('XSS')</script>",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payload": "<iframe src=javascript:alert('XSS')></iframe>",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payload": "<body onload=alert('XSS')>",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      }
+    ],
+    "timestamp": "2025-08-09T23:28:19.501Z"
+  },
+  {
+    "test": "Path Traversal",
+    "status": "completed",
+    "results": [
+      {
+        "payload": "../../../etc/passwd",
+        "statusCode": 404,
+        "response": "{\"error\":\"Not Found\",\"message\":\"Route GET /api/user/../../../etc/passwd not found\",\"timestamp\":\"2025"
+      },
+      {
+        "payload": "..\\..\\..\\windows\\system32\\drivers\\etc\\hosts",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payload": "....//....//....//etc/passwd",
+        "statusCode": 404,
+        "response": "{\"error\":\"Not Found\",\"message\":\"Route GET /api/user/....//....//....//etc/passwd not found\",\"timesta"
+      },
+      {
+        "payload": "%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payload": "..%252f..%252f..%252fetc%252fpasswd",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payload": "..%c0%af..%c0%af..%c0%afetc%c0%afpasswd",
+        "statusCode": 400,
+        "response": "{\"error\":\"Internal Server Error\",\"message\":\"Something went wrong\",\"timestamp\":\"2025-08-09T23:28:20.0"
+      }
+    ],
+    "timestamp": "2025-08-09T23:28:20.005Z"
+  },
+  {
+    "test": "Command Injection",
+    "status": "completed",
+    "results": [
+      {
+        "payload": "; ls -la",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payload": "| cat /etc/passwd",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payload": "&& whoami",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payload": "`id`",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payload": "$(whoami)",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payload": "; ping -c 1 127.0.0.1",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payload": "| nc -l 4444",
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      }
+    ],
+    "timestamp": "2025-08-09T23:28:20.510Z"
+  },
+  {
+    "test": "Buffer Overflow",
+    "status": "completed",
+    "results": [
+      {
+        "payloadLength": 1000,
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payloadLength": 10000,
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payloadLength": 100000,
+        "error": "read ECONNRESET"
+      },
+      {
+        "payloadLength": 1000,
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      },
+      {
+        "payloadLength": 10000,
+        "statusCode": 431,
+        "response": ""
+      },
+      {
+        "payloadLength": 3000,
+        "statusCode": 400,
+        "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+      }
+    ],
+    "timestamp": "2025-08-09T23:28:21.021Z"
+  },
+  {
+    "test": "Authentication Bypass",
+    "status": "completed",
+    "results": [
+      {
+        "payload": "{\"headers\":{\"Authorization\":\"Bearer null\"}}",
+        "statusCode": 200,
+        "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:21.523Z\",\"uptime"
+      },
+      {
+        "payload": "{\"headers\":{\"Authorization\":\"Bearer undefined\"}}",
+        "statusCode": 200,
+        "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:21.524Z\",\"uptime"
+      },
+      {
+        "payload": "{\"headers\":{\"Authorization\":\"Bearer \"}}",
+        "statusCode": 200,
+        "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:21.525Z\",\"uptime"
+      },
+      {
+        "payload": "{\"headers\":{\"Authorization\":\"Basic YWRtaW46YWRtaW4=\"}}",
+        "statusCode": 200,
+        "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:21.525Z\",\"uptime"
+      },
+      {
+        "payload": "{\"headers\":{\"X-API-Key\":\"null\"}}",
+        "statusCode": 200,
+        "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:21.526Z\",\"uptime"
+      },
+      {
+        "payload": "{\"headers\":{\"X-API-Key\":\"undefined\"}}",
+        "statusCode": 200,
+        "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:21.526Z\",\"uptime"
+      },
+      {
+        "payload": "{\"headers\":{\"X-API-Key\":\"\"}}",
+        "statusCode": 200,
+        "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:21.527Z\",\"uptime"
+      }
+    ],
+    "timestamp": "2025-08-09T23:28:21.527Z"
+  },
+  {
+    "test": "Header Injection",
+    "status": "completed",
+    "results": [
+      {
+        "payload": "{\"headers\":{\"X-Forwarded-For\":\"127.0.0.1\"}}",
+        "statusCode": 200,
+        "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:22.029Z\",\"uptime"
+      },
+      {
+        "payload": "{\"headers\":{\"X-Real-IP\":\"192.168.1.1\"}}",
+        "statusCode": 200,
+        "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:22.030Z\",\"uptime"
+      },
+      {
+        "payload": "{\"headers\":{\"X-Forwarded-Host\":\"evil.com\"}}",
+        "statusCode": 200,
+        "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:22.030Z\",\"uptime"
+      },
+      {
+        "payload": "{\"headers\":{\"X-Forwarded-Proto\":\"https\"}}",
+        "statusCode": 200,
+        "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:22.031Z\",\"uptime"
+      },
+      {
+        "payload": "{\"headers\":{\"X-Original-URL\":\"/admin\"}}",
+        "statusCode": 200,
+        "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:22.031Z\",\"uptime"
+      },
+      {
+        "payload": "{\"headers\":{\"X-Rewrite-URL\":\"/admin\"}}",
+        "statusCode": 200,
+        "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:22.032Z\",\"uptime"
+      }
+    ],
+    "timestamp": "2025-08-09T23:28:22.032Z"
+  },
+  {
+    "test": "Content Type Bypass",
+    "status": "completed",
+    "results": [
+      {
+        "payload": "{\"method\":\"POST\",\"body\":\"{\\\"test\\\": \\\"data\\\"}\",\"headers\":{\"Content-Type\":\"application/json\"}}",
+        "statusCode": 404,
+        "response": "{\"error\":\"Not Found\",\"message\":\"Route POST / not found\",\"timestamp\":\"2025-08-09T23:28:22.534Z\",\"avai"
+      },
+      {
+        "payload": "{\"method\":\"POST\",\"body\":\"{\\\"test\\\": \\\"data\\\"}\",\"headers\":{\"Content-Type\":\"text/plain\"}}",
+        "statusCode": 404,
+        "response": "{\"error\":\"Not Found\",\"message\":\"Route POST / not found\",\"timestamp\":\"2025-08-09T23:28:22.535Z\",\"avai"
+      },
+      {
+        "payload": "{\"method\":\"POST\",\"body\":\"{\\\"test\\\": \\\"data\\\"}\",\"headers\":{\"Content-Type\":\"application/xml\"}}",
+        "statusCode": 404,
+        "response": "{\"error\":\"Not Found\",\"message\":\"Route POST / not found\",\"timestamp\":\"2025-08-09T23:28:22.535Z\",\"avai"
+      },
+      {
+        "payload": "{\"method\":\"POST\",\"body\":\"<xml>test</xml>\",\"headers\":{\"Content-Type\":\"application/json\"}}",
+        "statusCode": 400,
+        "response": "{\"error\":\"Internal Server Error\",\"message\":\"Something went wrong\",\"timestamp\":\"2025-08-09T23:28:22.5"
+      },
+      {
+        "payload": "{\"method\":\"POST\",\"body\":\"test=data\",\"headers\":{\"Content-Type\":\"application/json\"}}",
+        "statusCode": 400,
+        "response": "{\"error\":\"Internal Server Error\",\"message\":\"Something went wrong\",\"timestamp\":\"2025-08-09T23:28:22.5"
+      }
+    ],
+    "timestamp": "2025-08-09T23:28:22.537Z"
+  }
+]

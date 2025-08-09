@@ -533,7 +533,7 @@ function process(data) {
     // Test project with issues
     const projectWithIssues = this.createMockProject('project-with-issues', {
       'large-file.js': Array(400).fill('console.log("line");').join('\n'),
-      'poor-naming.js': `function a(x) { const y = x + 1; return y; }`,
+      'poor-naming.js': 'function a(x) { const y = x + 1; return y; }',
       'no-comments.js': `function complexCalculation(a, b, c, d) {
         if (a > b) {
           while (c < d) {

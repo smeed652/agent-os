@@ -1,0 +1,1594 @@
+{
+  "timestamp": "2025-08-09T23:28:23.042Z",
+  "summary": {
+    "status": "excellent",
+    "score": 96,
+    "vulnerabilities": 0,
+    "recommendations": [
+      "Improve application resilience under stress conditions"
+    ]
+  },
+  "details": {
+    "regularTests": {
+      "numFailedTestSuites": 0,
+      "numFailedTests": 0,
+      "numPassedTestSuites": 3,
+      "numPassedTests": 68,
+      "numPendingTestSuites": 0,
+      "numPendingTests": 0,
+      "numRuntimeErrorTestSuites": 0,
+      "numTodoTests": 0,
+      "numTotalTestSuites": 3,
+      "numTotalTests": 68,
+      "openHandles": [],
+      "snapshot": {
+        "added": 0,
+        "didUpdate": false,
+        "failure": false,
+        "filesAdded": 0,
+        "filesRemoved": 0,
+        "filesRemovedList": [],
+        "filesUnmatched": 0,
+        "filesUpdated": 0,
+        "matched": 0,
+        "total": 0,
+        "unchecked": 0,
+        "uncheckedKeysByFile": [],
+        "unmatched": 0,
+        "updated": 0
+      },
+      "startTime": 1754782068643,
+      "success": true,
+      "testResults": [
+        {
+          "assertionResults": [
+            {
+              "ancestorTitles": [
+                "Hello World Application",
+                "GET /"
+              ],
+              "duration": 13,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Hello World Application GET / should return Hello World message",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 2,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should return Hello World message"
+            },
+            {
+              "ancestorTitles": [
+                "Hello World Application",
+                "GET /"
+              ],
+              "duration": 2,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Hello World Application GET / should return response within reasonable time",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should return response within reasonable time"
+            },
+            {
+              "ancestorTitles": [
+                "Hello World Application",
+                "GET /api/status"
+              ],
+              "duration": 2,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Hello World Application GET /api/status should return application status",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 3,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should return application status"
+            },
+            {
+              "ancestorTitles": [
+                "Hello World Application",
+                "GET /api/status"
+              ],
+              "duration": 1,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Hello World Application GET /api/status should return JSON content type",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should return JSON content type"
+            },
+            {
+              "ancestorTitles": [
+                "Hello World Application",
+                "GET /api/user/:id"
+              ],
+              "duration": 2,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Hello World Application GET /api/user/:id should return personalized greeting for valid user ID",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 4,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should return personalized greeting for valid user ID"
+            },
+            {
+              "ancestorTitles": [
+                "Hello World Application",
+                "GET /api/user/:id"
+              ],
+              "duration": 1,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Hello World Application GET /api/user/:id should handle special characters in user ID",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should handle special characters in user ID"
+            },
+            {
+              "ancestorTitles": [
+                "Hello World Application",
+                "GET /api/user/:id"
+              ],
+              "duration": 1,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Hello World Application GET /api/user/:id should return error for empty user ID",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 0,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should return error for empty user ID"
+            },
+            {
+              "ancestorTitles": [
+                "Hello World Application",
+                "Error Handling"
+              ],
+              "duration": 1,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Hello World Application Error Handling should return 404 for non-existent routes",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 0,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should return 404 for non-existent routes"
+            },
+            {
+              "ancestorTitles": [
+                "Hello World Application",
+                "Error Handling"
+              ],
+              "duration": 6,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Hello World Application Error Handling should handle malformed requests gracefully",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 0,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should handle malformed requests gracefully"
+            },
+            {
+              "ancestorTitles": [
+                "Hello World Application",
+                "Application Configuration"
+              ],
+              "duration": 1,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Hello World Application Application Configuration should have proper error handling middleware",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should have proper error handling middleware"
+            },
+            {
+              "ancestorTitles": [
+                "Application Integration"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Application Integration should start server without errors",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should start server without errors"
+            },
+            {
+              "ancestorTitles": [
+                "Performance Tests"
+              ],
+              "duration": 4,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Performance Tests should handle multiple concurrent requests",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 10,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should handle multiple concurrent requests"
+            },
+            {
+              "ancestorTitles": [
+                "Validator Test Coverage"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Validator Test Coverage should have adequate test coverage for Code Quality Validator",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should have adequate test coverage for Code Quality Validator"
+            },
+            {
+              "ancestorTitles": [
+                "Validator Test Coverage"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Validator Test Coverage should demonstrate TDD approach",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should demonstrate TDD approach"
+            }
+          ],
+          "endTime": 1754782068803,
+          "message": "",
+          "name": "/Users/fsconklin/.agent-os/tests/index.test.js",
+          "startTime": 1754782068660,
+          "status": "passed",
+          "summary": ""
+        },
+        {
+          "assertionResults": [
+            {
+              "ancestorTitles": [
+                "Utility Functions",
+                "formatMessage"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Functions formatMessage should format message with user ID",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should format message with user ID"
+            },
+            {
+              "ancestorTitles": [
+                "Utility Functions",
+                "formatMessage"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Functions formatMessage should handle empty user ID",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should handle empty user ID"
+            },
+            {
+              "ancestorTitles": [
+                "Utility Functions",
+                "formatMessage"
+              ],
+              "duration": 1,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Functions formatMessage should handle null user ID",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should handle null user ID"
+            },
+            {
+              "ancestorTitles": [
+                "Utility Functions",
+                "formatMessage"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Functions formatMessage should handle undefined user ID",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should handle undefined user ID"
+            },
+            {
+              "ancestorTitles": [
+                "Utility Functions",
+                "validateUserId"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Functions validateUserId should validate correct user ID format",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 3,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should validate correct user ID format"
+            },
+            {
+              "ancestorTitles": [
+                "Utility Functions",
+                "validateUserId"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Functions validateUserId should reject invalid user ID formats",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 5,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should reject invalid user ID formats"
+            },
+            {
+              "ancestorTitles": [
+                "Utility Functions",
+                "validateUserId"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Functions validateUserId should reject user IDs that are too short",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 2,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should reject user IDs that are too short"
+            },
+            {
+              "ancestorTitles": [
+                "Utility Functions",
+                "validateUserId"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Functions validateUserId should reject user IDs that are too long",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should reject user IDs that are too long"
+            },
+            {
+              "ancestorTitles": [
+                "Utility Functions",
+                "calculateUptime"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Functions calculateUptime should calculate uptime in seconds",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 2,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should calculate uptime in seconds"
+            },
+            {
+              "ancestorTitles": [
+                "Utility Functions",
+                "calculateUptime"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Functions calculateUptime should handle invalid start time",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should handle invalid start time"
+            },
+            {
+              "ancestorTitles": [
+                "Utility Functions",
+                "calculateUptime"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Functions calculateUptime should handle future start time",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should handle future start time"
+            },
+            {
+              "ancestorTitles": [
+                "Utility Functions",
+                "sanitizeInput"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Functions sanitizeInput should remove HTML tags",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should remove HTML tags"
+            },
+            {
+              "ancestorTitles": [
+                "Utility Functions",
+                "sanitizeInput"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Functions sanitizeInput should trim whitespace",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should trim whitespace"
+            },
+            {
+              "ancestorTitles": [
+                "Utility Functions",
+                "sanitizeInput"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Functions sanitizeInput should handle empty input",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 3,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should handle empty input"
+            },
+            {
+              "ancestorTitles": [
+                "Utility Functions",
+                "sanitizeInput"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Functions sanitizeInput should handle special characters",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should handle special characters"
+            },
+            {
+              "ancestorTitles": [
+                "Utility Functions",
+                "generateTimestamp"
+              ],
+              "duration": 1,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Functions generateTimestamp should generate valid ISO timestamp",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should generate valid ISO timestamp"
+            },
+            {
+              "ancestorTitles": [
+                "Utility Functions",
+                "generateTimestamp"
+              ],
+              "duration": 11,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Functions generateTimestamp should generate different timestamps when called multiple times",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should generate different timestamps when called multiple times"
+            },
+            {
+              "ancestorTitles": [
+                "Utility Functions",
+                "Complex Calculation (High Complexity)"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Functions Complex Calculation (High Complexity) should perform complex calculation",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should perform complex calculation"
+            },
+            {
+              "ancestorTitles": [
+                "Utility Functions",
+                "Complex Calculation (High Complexity)"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Functions Complex Calculation (High Complexity) should handle different operations",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 3,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should handle different operations"
+            },
+            {
+              "ancestorTitles": [
+                "Utility Functions",
+                "Poorly Named Function (Naming Convention Test)"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Functions Poorly Named Function (Naming Convention Test) should execute poorly named function",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should execute poorly named function"
+            },
+            {
+              "ancestorTitles": [
+                "Utility Functions",
+                "Duplicate Logic Tests"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Functions Duplicate Logic Tests should test duplicate logic function 1",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should test duplicate logic function 1"
+            },
+            {
+              "ancestorTitles": [
+                "Utility Functions",
+                "Duplicate Logic Tests"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Functions Duplicate Logic Tests should test duplicate logic function 2",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should test duplicate logic function 2"
+            },
+            {
+              "ancestorTitles": [
+                "Utility Integration Tests"
+              ],
+              "duration": 1,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Integration Tests should work together in user greeting workflow",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 2,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should work together in user greeting workflow"
+            },
+            {
+              "ancestorTitles": [
+                "Utility Integration Tests"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Utility Integration Tests should handle complete user interaction flow",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 3,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should handle complete user interaction flow"
+            },
+            {
+              "ancestorTitles": [
+                "Edge Cases and Error Handling"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Edge Cases and Error Handling should handle extreme inputs",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should handle extreme inputs"
+            },
+            {
+              "ancestorTitles": [
+                "Edge Cases and Error Handling"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Edge Cases and Error Handling should handle special Unicode characters",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 2,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should handle special Unicode characters"
+            },
+            {
+              "ancestorTitles": [
+                "Edge Cases and Error Handling"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Edge Cases and Error Handling should handle numeric inputs as strings",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 2,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should handle numeric inputs as strings"
+            },
+            {
+              "ancestorTitles": [
+                "Performance Tests"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Performance Tests should handle large number of validations efficiently",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should handle large number of validations efficiently"
+            },
+            {
+              "ancestorTitles": [
+                "Advanced Testing Patterns"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Advanced Testing Patterns should demonstrate mocking capabilities",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 1,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should demonstrate mocking capabilities"
+            }
+          ],
+          "endTime": 1754782068829,
+          "message": "",
+          "name": "/Users/fsconklin/.agent-os/tests/utils.test.js",
+          "startTime": 1754782068805,
+          "status": "passed",
+          "summary": ""
+        },
+        {
+          "assertionResults": [
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Valid Conventional Commits"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Valid Conventional Commits should accept valid feat commit",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 4,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should accept valid feat commit"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Valid Conventional Commits"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Valid Conventional Commits should accept valid fix commit",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 4,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should accept valid fix commit"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Valid Conventional Commits"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Valid Conventional Commits should accept valid docs commit",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 4,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should accept valid docs commit"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Valid Conventional Commits"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Valid Conventional Commits should accept valid style commit",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 4,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should accept valid style commit"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Valid Conventional Commits"
+              ],
+              "duration": 1,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Valid Conventional Commits should accept valid refactor commit",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 4,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should accept valid refactor commit"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Valid Conventional Commits"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Valid Conventional Commits should accept valid perf commit",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 4,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should accept valid perf commit"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Valid Conventional Commits"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Valid Conventional Commits should accept valid test commit",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 4,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should accept valid test commit"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Valid Conventional Commits"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Valid Conventional Commits should accept valid chore commit",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 4,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should accept valid chore commit"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Valid Conventional Commits"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Valid Conventional Commits should accept commit without scope",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 4,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should accept commit without scope"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Invalid Conventional Commits"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Invalid Conventional Commits should reject commit without type",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 2,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should reject commit without type"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Invalid Conventional Commits"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Invalid Conventional Commits should reject invalid commit type",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 2,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should reject invalid commit type"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Invalid Conventional Commits"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Invalid Conventional Commits should reject commit without description",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 2,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should reject commit without description"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Invalid Conventional Commits"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Invalid Conventional Commits should reject commit with empty description",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 2,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should reject commit with empty description"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Invalid Conventional Commits"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Invalid Conventional Commits should reject commit without colon",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 2,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should reject commit without colon"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Invalid Conventional Commits"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Invalid Conventional Commits should reject commit with uppercase first letter in description",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 2,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should reject commit with uppercase first letter in description"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Invalid Conventional Commits"
+              ],
+              "duration": 1,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Invalid Conventional Commits should reject commit with period at end",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 2,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should reject commit with period at end"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Invalid Conventional Commits"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Invalid Conventional Commits should reject commit that is too long",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 2,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should reject commit that is too long"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Edge Cases"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Edge Cases should handle empty string",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 2,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should handle empty string"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Edge Cases"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Edge Cases should handle null input",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 2,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should handle null input"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Edge Cases"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Edge Cases should handle undefined input",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 2,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should handle undefined input"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Edge Cases"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Edge Cases should handle whitespace-only input",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 2,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should handle whitespace-only input"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Scope Validation"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Scope Validation should accept valid scope with hyphens",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 2,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should accept valid scope with hyphens"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Scope Validation"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Scope Validation should accept valid scope with underscores",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 2,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should accept valid scope with underscores"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Scope Validation"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Scope Validation should reject scope with spaces",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 2,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should reject scope with spaces"
+            },
+            {
+              "ancestorTitles": [
+                "Commit Message Validation",
+                "Scope Validation"
+              ],
+              "duration": 0,
+              "failureDetails": [],
+              "failureMessages": [],
+              "fullName": "Commit Message Validation Scope Validation should reject scope with special characters",
+              "invocations": 1,
+              "location": null,
+              "numPassingAsserts": 2,
+              "retryReasons": [],
+              "status": "passed",
+              "title": "should reject scope with special characters"
+            }
+          ],
+          "endTime": 1754782068842,
+          "message": "",
+          "name": "/Users/fsconklin/.agent-os/tests/commit-validation.test.js",
+          "startTime": 1754782068830,
+          "status": "passed",
+          "summary": ""
+        }
+      ],
+      "wasInterrupted": false
+    },
+    "chaosTests": [
+      {
+        "scenario": "Memory Pressure",
+        "status": "completed",
+        "timestamp": "2025-08-09T23:27:48.942Z"
+      },
+      {
+        "scenario": "CPU Spike",
+        "status": "completed",
+        "duration": 9,
+        "timestamp": "2025-08-09T23:27:49.952Z"
+      },
+      {
+        "scenario": "Network Latency",
+        "status": "completed",
+        "timestamp": "2025-08-09T23:27:52.073Z"
+      },
+      {
+        "scenario": "Network Latency",
+        "status": "completed",
+        "timestamp": "2025-08-09T23:27:52.329Z"
+      },
+      {
+        "scenario": "Memory Leak",
+        "status": "completed",
+        "leakCount": 50,
+        "timestamp": "2025-08-09T23:27:52.952Z"
+      },
+      {
+        "scenario": "Random Errors",
+        "status": "error",
+        "error": "Simulated chaos error",
+        "timestamp": "2025-08-09T23:27:53.332Z"
+      },
+      {
+        "scenario": "Resource Exhaustion",
+        "status": "completed",
+        "timestamp": "2025-08-09T23:27:54.343Z"
+      },
+      {
+        "scenario": "Memory Leak",
+        "status": "completed",
+        "leakCount": 100,
+        "timestamp": "2025-08-09T23:27:54.956Z"
+      },
+      {
+        "scenario": "Concurrent Load",
+        "status": "completed",
+        "successCount": 10,
+        "failureCount": 0,
+        "timestamp": "2025-08-09T23:27:55.358Z"
+      },
+      {
+        "scenario": "Malformed Requests",
+        "status": "completed",
+        "successCount": 5,
+        "failureCount": 0,
+        "timestamp": "2025-08-09T23:27:56.362Z"
+      },
+      {
+        "scenario": "Resource Exhaustion",
+        "status": "completed",
+        "timestamp": "2025-08-09T23:27:56.956Z"
+      },
+      {
+        "scenario": "CPU Spike",
+        "status": "completed",
+        "duration": 8,
+        "timestamp": "2025-08-09T23:27:58.958Z"
+      },
+      {
+        "scenario": "Random Errors",
+        "status": "error",
+        "error": "Simulated chaos error",
+        "timestamp": "2025-08-09T23:28:00.950Z"
+      },
+      {
+        "scenario": "Random Errors",
+        "status": "error",
+        "error": "Chaos reference error",
+        "timestamp": "2025-08-09T23:28:02.952Z"
+      },
+      {
+        "scenario": "Extreme Load",
+        "status": "completed",
+        "successCount": 50,
+        "failureCount": 0,
+        "timestamp": "2025-08-09T23:28:04.975Z"
+      },
+      {
+        "scenario": "Memory Pressure",
+        "status": "completed",
+        "timestamp": "2025-08-09T23:28:06.966Z"
+      },
+      {
+        "scenario": "Network Latency",
+        "status": "completed",
+        "timestamp": "2025-08-09T23:28:10.440Z"
+      },
+      {
+        "scenario": "Resource Exhaustion",
+        "status": "completed",
+        "timestamp": "2025-08-09T23:28:10.965Z"
+      },
+      {
+        "scenario": "Memory Pressure",
+        "status": "completed",
+        "timestamp": "2025-08-09T23:28:12.964Z"
+      },
+      {
+        "scenario": "Resource Exhaustion",
+        "status": "completed",
+        "timestamp": "2025-08-09T23:28:14.967Z"
+      },
+      {
+        "scenario": "Extreme Load",
+        "status": "completed",
+        "successCount": 50,
+        "failureCount": 0,
+        "timestamp": "2025-08-09T23:28:16.980Z"
+      }
+    ],
+    "securityTests": [
+      {
+        "test": "SQL Injection",
+        "status": "completed",
+        "results": [
+          {
+            "payload": "' OR '1'='1",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payload": "'; DROP TABLE users; --",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payload": "' UNION SELECT * FROM users --",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payload": "admin'--",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payload": "1' OR '1' = '1' --",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payload": "' OR 1=1#",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payload": "'; EXEC xp_cmdshell('dir'); --",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          }
+        ],
+        "timestamp": "2025-08-09T23:28:18.995Z"
+      },
+      {
+        "test": "XSS Attacks",
+        "status": "completed",
+        "results": [
+          {
+            "payload": "<script>alert('XSS')</script>",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payload": "<img src=x onerror=alert('XSS')>",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payload": "javascript:alert('XSS')",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payload": "<svg onload=alert('XSS')>",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payload": "'\"><script>alert('XSS')</script>",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payload": "<iframe src=javascript:alert('XSS')></iframe>",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payload": "<body onload=alert('XSS')>",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          }
+        ],
+        "timestamp": "2025-08-09T23:28:19.501Z"
+      },
+      {
+        "test": "Path Traversal",
+        "status": "completed",
+        "results": [
+          {
+            "payload": "../../../etc/passwd",
+            "statusCode": 404,
+            "response": "{\"error\":\"Not Found\",\"message\":\"Route GET /api/user/../../../etc/passwd not found\",\"timestamp\":\"2025"
+          },
+          {
+            "payload": "..\\..\\..\\windows\\system32\\drivers\\etc\\hosts",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payload": "....//....//....//etc/passwd",
+            "statusCode": 404,
+            "response": "{\"error\":\"Not Found\",\"message\":\"Route GET /api/user/....//....//....//etc/passwd not found\",\"timesta"
+          },
+          {
+            "payload": "%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payload": "..%252f..%252f..%252fetc%252fpasswd",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payload": "..%c0%af..%c0%af..%c0%afetc%c0%afpasswd",
+            "statusCode": 400,
+            "response": "{\"error\":\"Internal Server Error\",\"message\":\"Something went wrong\",\"timestamp\":\"2025-08-09T23:28:20.0"
+          }
+        ],
+        "timestamp": "2025-08-09T23:28:20.005Z"
+      },
+      {
+        "test": "Command Injection",
+        "status": "completed",
+        "results": [
+          {
+            "payload": "; ls -la",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payload": "| cat /etc/passwd",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payload": "&& whoami",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payload": "`id`",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payload": "$(whoami)",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payload": "; ping -c 1 127.0.0.1",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payload": "| nc -l 4444",
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          }
+        ],
+        "timestamp": "2025-08-09T23:28:20.510Z"
+      },
+      {
+        "test": "Buffer Overflow",
+        "status": "completed",
+        "results": [
+          {
+            "payloadLength": 1000,
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payloadLength": 10000,
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payloadLength": 100000,
+            "error": "read ECONNRESET"
+          },
+          {
+            "payloadLength": 1000,
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          },
+          {
+            "payloadLength": 10000,
+            "statusCode": 431,
+            "response": ""
+          },
+          {
+            "payloadLength": 3000,
+            "statusCode": 400,
+            "response": "{\"error\":\"Invalid user ID format\",\"message\":\"User ID must be 3-50 characters, alphanumeric with dash"
+          }
+        ],
+        "timestamp": "2025-08-09T23:28:21.021Z"
+      },
+      {
+        "test": "Authentication Bypass",
+        "status": "completed",
+        "results": [
+          {
+            "payload": "{\"headers\":{\"Authorization\":\"Bearer null\"}}",
+            "statusCode": 200,
+            "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:21.523Z\",\"uptime"
+          },
+          {
+            "payload": "{\"headers\":{\"Authorization\":\"Bearer undefined\"}}",
+            "statusCode": 200,
+            "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:21.524Z\",\"uptime"
+          },
+          {
+            "payload": "{\"headers\":{\"Authorization\":\"Bearer \"}}",
+            "statusCode": 200,
+            "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:21.525Z\",\"uptime"
+          },
+          {
+            "payload": "{\"headers\":{\"Authorization\":\"Basic YWRtaW46YWRtaW4=\"}}",
+            "statusCode": 200,
+            "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:21.525Z\",\"uptime"
+          },
+          {
+            "payload": "{\"headers\":{\"X-API-Key\":\"null\"}}",
+            "statusCode": 200,
+            "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:21.526Z\",\"uptime"
+          },
+          {
+            "payload": "{\"headers\":{\"X-API-Key\":\"undefined\"}}",
+            "statusCode": 200,
+            "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:21.526Z\",\"uptime"
+          },
+          {
+            "payload": "{\"headers\":{\"X-API-Key\":\"\"}}",
+            "statusCode": 200,
+            "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:21.527Z\",\"uptime"
+          }
+        ],
+        "timestamp": "2025-08-09T23:28:21.527Z"
+      },
+      {
+        "test": "Header Injection",
+        "status": "completed",
+        "results": [
+          {
+            "payload": "{\"headers\":{\"X-Forwarded-For\":\"127.0.0.1\"}}",
+            "statusCode": 200,
+            "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:22.029Z\",\"uptime"
+          },
+          {
+            "payload": "{\"headers\":{\"X-Real-IP\":\"192.168.1.1\"}}",
+            "statusCode": 200,
+            "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:22.030Z\",\"uptime"
+          },
+          {
+            "payload": "{\"headers\":{\"X-Forwarded-Host\":\"evil.com\"}}",
+            "statusCode": 200,
+            "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:22.030Z\",\"uptime"
+          },
+          {
+            "payload": "{\"headers\":{\"X-Forwarded-Proto\":\"https\"}}",
+            "statusCode": 200,
+            "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:22.031Z\",\"uptime"
+          },
+          {
+            "payload": "{\"headers\":{\"X-Original-URL\":\"/admin\"}}",
+            "statusCode": 200,
+            "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:22.031Z\",\"uptime"
+          },
+          {
+            "payload": "{\"headers\":{\"X-Rewrite-URL\":\"/admin\"}}",
+            "statusCode": 200,
+            "response": "{\"status\":\"ok\",\"message\":\"Hello World API is running\",\"timestamp\":\"2025-08-09T23:28:22.032Z\",\"uptime"
+          }
+        ],
+        "timestamp": "2025-08-09T23:28:22.032Z"
+      },
+      {
+        "test": "Content Type Bypass",
+        "status": "completed",
+        "results": [
+          {
+            "payload": "{\"method\":\"POST\",\"body\":\"{\\\"test\\\": \\\"data\\\"}\",\"headers\":{\"Content-Type\":\"application/json\"}}",
+            "statusCode": 404,
+            "response": "{\"error\":\"Not Found\",\"message\":\"Route POST / not found\",\"timestamp\":\"2025-08-09T23:28:22.534Z\",\"avai"
+          },
+          {
+            "payload": "{\"method\":\"POST\",\"body\":\"{\\\"test\\\": \\\"data\\\"}\",\"headers\":{\"Content-Type\":\"text/plain\"}}",
+            "statusCode": 404,
+            "response": "{\"error\":\"Not Found\",\"message\":\"Route POST / not found\",\"timestamp\":\"2025-08-09T23:28:22.535Z\",\"avai"
+          },
+          {
+            "payload": "{\"method\":\"POST\",\"body\":\"{\\\"test\\\": \\\"data\\\"}\",\"headers\":{\"Content-Type\":\"application/xml\"}}",
+            "statusCode": 404,
+            "response": "{\"error\":\"Not Found\",\"message\":\"Route POST / not found\",\"timestamp\":\"2025-08-09T23:28:22.535Z\",\"avai"
+          },
+          {
+            "payload": "{\"method\":\"POST\",\"body\":\"<xml>test</xml>\",\"headers\":{\"Content-Type\":\"application/json\"}}",
+            "statusCode": 400,
+            "response": "{\"error\":\"Internal Server Error\",\"message\":\"Something went wrong\",\"timestamp\":\"2025-08-09T23:28:22.5"
+          },
+          {
+            "payload": "{\"method\":\"POST\",\"body\":\"test=data\",\"headers\":{\"Content-Type\":\"application/json\"}}",
+            "statusCode": 400,
+            "response": "{\"error\":\"Internal Server Error\",\"message\":\"Something went wrong\",\"timestamp\":\"2025-08-09T23:28:22.5"
+          }
+        ],
+        "timestamp": "2025-08-09T23:28:22.537Z"
+      }
+    ]
+  },
+  "metadata": {
+    "nodeVersion": "v23.11.0",
+    "platform": "darwin",
+    "arch": "arm64",
+    "cwd": "/Users/fsconklin/.agent-os"
+  }
+}
