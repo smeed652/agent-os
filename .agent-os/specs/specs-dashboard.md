@@ -4,7 +4,7 @@
 > Last updated: 2025-08-09
 
 ## 📋 Planning (Backlog)
-*No planning specs*
+- [ ] 2025-08-07-commit-message-validation
 
 ## 🔄 Active (In Progress)
 *No active specs*
@@ -16,11 +16,11 @@
 *No archived specs*
 
 ## 📊 Summary
-- **Planning**: 0 specs
+- **Planning**: 1 specs
 - **Active**: 0 specs
 - **Completed**: 0 specs
 - **Archived**: 0 specs
-- **Total**: 0 specs
+- **Total**: 1 specs
 
 ---
 *Dashboard generated automatically. Update spec status files to refresh this dashboard.*
