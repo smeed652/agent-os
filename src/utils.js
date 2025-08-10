@@ -10,7 +10,7 @@
  * - Various comment quality levels
  */
 
-const path = require('path');
+const path = require("path");
 
 /**
  * Formats a personalized greeting message for a user
@@ -28,7 +28,7 @@ function formatMessage(userId) {
  */
 function validateUserId(userId) {
   // Check if userId is null, undefined, or empty
-  if (!userId || typeof userId !== 'string') {
+  if (!userId || typeof userId !== "string") {
     return false;
   }
 
@@ -48,7 +48,7 @@ function validateUserId(userId) {
  * @returns {number} Uptime in seconds
  */
 function calculateUptime(startTime) {
-  if (!startTime || typeof startTime !== 'number') {
+  if (!startTime || typeof startTime !== "number") {
     return 0;
   }
 
@@ -69,29 +69,29 @@ function calculateUptime(startTime) {
  * @returns {string} Sanitized string
  */
 function sanitizeInput(input) {
-  if (!input || typeof input !== 'string') {
-    return '';
+  if (!input || typeof input !== "string") {
+    return "";
   }
 
   // Remove HTML tags and script content
-  let sanitized = input.replace(/<[^>]*>/g, '');
-  sanitized = sanitized.replace(/javascript:/gi, '');
-  sanitized = sanitized.replace(/on\w+\s*=/gi, '');
+  let sanitized = input.replace(/<[^>]*>/g, "");
+  sanitized = sanitized.replace(/javascript:/gi, "");
+  sanitized = sanitized.replace(/on\w+\s*=/gi, "");
 
   // Remove path traversal attempts
-  sanitized = sanitized.replace(/\.\./g, '');
-  sanitized = sanitized.replace(/\/+/g, '/');
+  sanitized = sanitized.replace(/\.\./g, "");
+  sanitized = sanitized.replace(/\/+/g, "/");
 
   // Remove null bytes and control characters
-  sanitized = sanitized.replace(/\0/g, '');
+  sanitized = sanitized.replace(/\0/g, "");
   // Filter out control characters using a function
   sanitized = sanitized
-    .split('')
+    .split("")
     .filter((char) => {
       const code = char.charCodeAt(0);
       return code >= 32 && code !== 127;
     })
-    .join('');
+    .join("");
 
   // Trim whitespace
   sanitized = sanitized.trim();
@@ -110,7 +110,7 @@ function sanitizeInput(input) {
  * @returns {string|null} Sanitized path or null if invalid
  */
 function validateFilePath(filePath) {
-  if (!filePath || typeof filePath !== 'string') {
+  if (!filePath || typeof filePath !== "string") {
     return null;
   }
 
@@ -118,13 +118,13 @@ function validateFilePath(filePath) {
   const normalized = path.normalize(filePath);
 
   // Check for path traversal patterns
-  if (normalized.includes('..') || normalized.includes('//')) {
+  if (normalized.includes("..") || normalized.includes("//")) {
     return null;
   }
 
   // Ensure path is within allowed directory
   const resolved = path.resolve(normalized);
-  const allowedDir = path.resolve(__dirname, '../public');
+  const allowedDir = path.resolve(__dirname, "../public");
 
   if (!resolved.startsWith(allowedDir)) {
     return null;
@@ -151,7 +151,7 @@ function complexCalculation(a, b, operation) {
   let result = 0;
 
   // Intentionally complex nested conditions for testing
-  if (operation === 'add') {
+  if (operation === "add") {
     if (a > 0) {
       if (b > 0) {
         result = a + b;
@@ -185,7 +185,7 @@ function complexCalculation(a, b, operation) {
         result = a + b;
       }
     }
-  } else if (operation === 'subtract') {
+  } else if (operation === "subtract") {
     if (a > 0) {
       if (b > 0) {
         result = a - b;
@@ -211,7 +211,7 @@ function complexCalculation(a, b, operation) {
         result = a - b;
       }
     }
-  } else if (operation === 'multiply') {
+  } else if (operation === "multiply") {
     if (a === 0 || b === 0) {
       result = 0;
     } else if (a > 0) {
@@ -227,9 +227,9 @@ function complexCalculation(a, b, operation) {
         result = a * b;
       }
     }
-  } else if (operation === 'divide') {
+  } else if (operation === "divide") {
     if (b === 0) {
-      throw new Error('Division by zero');
+      throw new Error("Division by zero");
     } else if (a === 0) {
       result = 0;
     } else if (a > 0) {
@@ -246,7 +246,7 @@ function complexCalculation(a, b, operation) {
       }
     }
   } else {
-    throw new Error('Invalid operation');
+    throw new Error("Invalid operation");
   }
 
   return result;
@@ -254,7 +254,7 @@ function complexCalculation(a, b, operation) {
 
 // Poor naming convention - intentional for testing
 function xyz() {
-  return 'This function has a poor name for testing naming conventions';
+  return "This function has a poor name for testing naming conventions";
 }
 
 // Alias with better name for the same function
@@ -263,21 +263,21 @@ const poorlyNamedFunction = xyz;
 // DUPLICATE CODE - INTENTIONAL FOR TESTING
 function duplicateLogic1(input) {
   if (!input) {
-    return '';
+    return "";
   }
   const processed = input.toString().trim();
   const capitalized = processed.charAt(0).toUpperCase() + processed.slice(1);
-  const withSuffix = capitalized + ' - processed by function 1';
+  const withSuffix = capitalized + " - processed by function 1";
   return withSuffix;
 }
 
 function duplicateLogic2(input) {
   if (!input) {
-    return '';
+    return "";
   }
   const processed = input.toString().trim();
   const capitalized = processed.charAt(0).toUpperCase() + processed.slice(1);
-  const withSuffix = capitalized + ' - processed by function 2';
+  const withSuffix = capitalized + " - processed by function 2";
   return withSuffix;
 }
 
@@ -301,13 +301,13 @@ function processData(data) {
  */
 function addNumbers(num1, num2) {
   // Check if first number is provided
-  if (typeof num1 !== 'number') {
+  if (typeof num1 !== "number") {
     // If not a number, convert to number
     num1 = parseFloat(num1) || 0;
   }
 
   // Check if second number is provided
-  if (typeof num2 !== 'number') {
+  if (typeof num2 !== "number") {
     // If not a number, convert to number
     num2 = parseFloat(num2) || 0;
   }

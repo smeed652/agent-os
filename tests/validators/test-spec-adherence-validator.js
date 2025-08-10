@@ -6,10 +6,10 @@
  * Comprehensive unit tests for the Spec Adherence Validator
  */
 
-const ValidatorTestFramework = require('./test-framework');
-const SpecAdherenceValidator = require('../../scripts/validators/spec-adherence-validator');
-const fs = require('fs');
-const path = require('path');
+const ValidatorTestFramework = require("./test-framework");
+const SpecAdherenceValidator = require("../../scripts/validators/spec-adherence-validator");
+const fs = require("fs");
+const path = require("path");
 
 class SpecAdherenceValidatorTests extends ValidatorTestFramework {
   constructor() {
@@ -18,8 +18,8 @@ class SpecAdherenceValidatorTests extends ValidatorTestFramework {
   }
 
   async runAllTests() {
-    console.log('📋 Testing Spec Adherence Validator');
-    console.log('===================================\n');
+    console.log("📋 Testing Spec Adherence Validator");
+    console.log("===================================\n");
 
     try {
       // Main Integration Tests
@@ -33,20 +33,20 @@ class SpecAdherenceValidatorTests extends ValidatorTestFramework {
       
       this.displayResults();
     } catch (error) {
-      console.error('❌ Test execution failed:', error);
+      console.error("❌ Test execution failed:", error);
     } finally {
       this.cleanup();
     }
   }
 
   async testMainValidationMethod() {
-    console.log('🎯 Testing Main Validation Method...');
+    console.log("🎯 Testing Main Validation Method...");
 
     // Test basic spec adherence validation
-    await this.runValidatorTest(SpecAdherenceValidator, 'Basic spec adherence validation', async (validator) => {
+    await this.runValidatorTest(SpecAdherenceValidator, "Basic spec adherence validation", async (validator) => {
       // Create a simple spec
-      const specProject = this.createSpecProject('basic-spec', {
-        'spec.md': `# User Authentication Spec
+      const specProject = this.createSpecProject("basic-spec", {
+        "spec.md": `# User Authentication Spec
 
 ## Overview
 Implement basic user authentication with login functionality.
@@ -77,14 +77,14 @@ As a user, I want to log in so that I can access my account.
       });
 
       // Create a basic implementation
-      const implementationProject = this.createImplementationProject('basic-implementation', {
-        'package.json': JSON.stringify({
-          name: 'auth-app',
+      const implementationProject = this.createImplementationProject("basic-implementation", {
+        "package.json": JSON.stringify({
+          name: "auth-app",
           dependencies: {
-            'express': '^4.18.0'
+            "express": "^4.18.0"
           }
         }),
-        'server.js': `const express = require('express');
+        "server.js": `const express = require('express');
 const app = express();
 
 app.post('/api/login', (req, res) => {
@@ -97,7 +97,7 @@ app.post('/api/login', (req, res) => {
 });
 
 module.exports = app;`,
-        'test/login.test.js': `const request = require('supertest');
+        "test/login.test.js": `const request = require('supertest');
 const app = require('../server');
 
 describe('Login', () => {
@@ -115,17 +115,17 @@ describe('Login', () => {
       // This should work without throwing errors
       const result = await validator.validateSpecAdherence(specProject, implementationProject);
       
-      this.assert(result, 'Should return validation result');
-      this.assert(result.validations, 'Should have validations array');
-      this.assert(result.status, 'Should have overall status');
+      this.assert(result, "Should return validation result");
+      this.assert(result.validations, "Should have validations array");
+      this.assert(result.status, "Should have overall status");
       
       return result;
     });
 
     // Test validation with missing implementation
-    await this.runValidatorTest(SpecAdherenceValidator, 'Validation with incomplete implementation', async (validator) => {
-      const specProject = this.createSpecProject('detailed-spec', {
-        'spec.md': `# Complete Feature Spec
+    await this.runValidatorTest(SpecAdherenceValidator, "Validation with incomplete implementation", async (validator) => {
+      const specProject = this.createSpecProject("detailed-spec", {
+        "spec.md": `# Complete Feature Spec
 
 ## Overview
 Complete feature with multiple requirements.
@@ -153,12 +153,12 @@ As a user, I want to log in so that I can access my account.
 - Comprehensive tests`
       });
 
-      const incompleteImplementation = this.createImplementationProject('incomplete-implementation', {
-        'package.json': JSON.stringify({
-          name: 'incomplete-app',
-          dependencies: { 'express': '^4.18.0' }
+      const incompleteImplementation = this.createImplementationProject("incomplete-implementation", {
+        "package.json": JSON.stringify({
+          name: "incomplete-app",
+          dependencies: { "express": "^4.18.0" }
         }),
-        'server.js': `const express = require('express');
+        "server.js": `const express = require('express');
 const app = express();
 
 // Only login endpoint, missing registration
@@ -171,11 +171,11 @@ module.exports = app;`
 
       const result = await validator.validateSpecAdherence(specProject, incompleteImplementation);
       
-      this.assert(result, 'Should return validation result for incomplete implementation');
-      this.assert(result.validations && result.validations.length > 0, 'Should have validation results');
+      this.assert(result, "Should return validation result for incomplete implementation");
+      this.assert(result.validations && result.validations.length > 0, "Should have validation results");
       
       // Check that validation completed (may not necessarily fail for incomplete implementation)
-      this.assert(result.validations.length > 0, 'Should have performed validations');
+      this.assert(result.validations.length > 0, "Should have performed validations");
       
       return result;
     });
@@ -184,67 +184,67 @@ module.exports = app;`
   // Simplified tests focusing on core functionality
 
   async testErrorHandling() {
-    console.log('⚠️ Testing Error Handling...');
+    console.log("⚠️ Testing Error Handling...");
 
     // Test missing spec directory
-    await this.runValidatorTest(SpecAdherenceValidator, 'Missing spec directory handling', async (validator) => {
+    await this.runValidatorTest(SpecAdherenceValidator, "Missing spec directory handling", async (validator) => {
       try {
-        await validator.validateSpecAdherence('/non/existent/spec', './src');
-        this.assert(false, 'Should throw error for missing spec directory');
+        await validator.validateSpecAdherence("/non/existent/spec", "./src");
+        this.assert(false, "Should throw error for missing spec directory");
       } catch (error) {
-        this.assert(error.message.includes('Spec directory not found'), 'Should throw appropriate error');
+        this.assert(error.message.includes("Spec directory not found"), "Should throw appropriate error");
         return { error: error.message };
       }
     });
 
     // Test missing implementation directory
-    await this.runValidatorTest(SpecAdherenceValidator, 'Missing implementation directory handling', async (validator) => {
-      const specProject = this.createSpecProject('test-spec', {
-        'spec.md': '# Test Spec\n\n## Overview\nBasic spec.'
+    await this.runValidatorTest(SpecAdherenceValidator, "Missing implementation directory handling", async (validator) => {
+      const specProject = this.createSpecProject("test-spec", {
+        "spec.md": "# Test Spec\n\n## Overview\nBasic spec."
       });
 
       try {
-        await validator.validateSpecAdherence(specProject, '/non/existent/implementation');
-        this.assert(false, 'Should throw error for missing implementation directory');
+        await validator.validateSpecAdherence(specProject, "/non/existent/implementation");
+        this.assert(false, "Should throw error for missing implementation directory");
       } catch (error) {
-        this.assert(error.message.includes('Implementation directory not found'), 'Should throw appropriate error');
+        this.assert(error.message.includes("Implementation directory not found"), "Should throw appropriate error");
         return { error: error.message };
       }
     });
 
     // Test malformed spec file
-    await this.runValidatorTest(SpecAdherenceValidator, 'Malformed spec file handling', async (validator) => {
-      const malformedSpec = this.createSpecProject('malformed-spec', {
-        'spec.md': '# Incomplete\n\nThis spec is missing required sections and has malformed content.\n\n### Random Section\nContent without proper structure.'
+    await this.runValidatorTest(SpecAdherenceValidator, "Malformed spec file handling", async (validator) => {
+      const malformedSpec = this.createSpecProject("malformed-spec", {
+        "spec.md": "# Incomplete\n\nThis spec is missing required sections and has malformed content.\n\n### Random Section\nContent without proper structure."
       });
 
       // Should handle gracefully without throwing
       const specData = await validator.parseSpecification(malformedSpec);
-      this.assert(specData, 'Should return spec data even for malformed specs');
+      this.assert(specData, "Should return spec data even for malformed specs");
       
       return specData;
     });
   }
 
   async testEdgeCases() {
-    console.log('🔬 Testing Edge Cases...');
+    console.log("🔬 Testing Edge Cases...");
 
     // Test empty spec file
-    await this.runValidatorTest(SpecAdherenceValidator, 'Empty spec file handling', async (validator) => {
-      const emptySpec = this.createSpecProject('empty-spec', {
-        'spec.md': ''
+    await this.runValidatorTest(SpecAdherenceValidator, "Empty spec file handling", async (validator) => {
+      const emptySpec = this.createSpecProject("empty-spec", {
+        "spec.md": ""
       });
 
       const specData = await validator.parseSpecification(emptySpec);
-      this.assert(specData, 'Should handle empty spec file');
+      this.assert(specData, "Should handle empty spec file");
       
       return specData;
     });
 
     // Test spec with only headers
-    await this.runValidatorTest(SpecAdherenceValidator, 'Headers-only spec handling', async (validator) => {
-      const headersOnlySpec = this.createSpecProject('headers-only-spec', {
-        'spec.md': `# Title
+    await this.runValidatorTest(SpecAdherenceValidator, "Headers-only spec handling", async (validator) => {
+      const headersOnlySpec = this.createSpecProject("headers-only-spec", {
+        "spec.md": `# Title
 ## Overview
 ## User Stories
 ## Technical Requirements
@@ -252,32 +252,32 @@ module.exports = app;`
       });
 
       const specData = await validator.parseSpecification(headersOnlySpec);
-      this.assert(specData, 'Should handle spec with only headers');
+      this.assert(specData, "Should handle spec with only headers");
       
       return specData;
     });
 
     // Test implementation with no recognizable patterns
-    await this.runValidatorTest(SpecAdherenceValidator, 'Unrecognizable implementation patterns', async (validator) => {
-      const strangeImplementation = this.createImplementationProject('strange-implementation', {
-        'weird.file': 'This is not a recognized file type with strange content.',
-        'another.xyz': 'More unrecognizable content that should be handled gracefully.'
+    await this.runValidatorTest(SpecAdherenceValidator, "Unrecognizable implementation patterns", async (validator) => {
+      const strangeImplementation = this.createImplementationProject("strange-implementation", {
+        "weird.file": "This is not a recognized file type with strange content.",
+        "another.xyz": "More unrecognizable content that should be handled gracefully."
       });
 
       const implementationData = await validator.analyzeImplementation(strangeImplementation);
-      this.assert(implementationData, 'Should handle unrecognizable implementation');
+      this.assert(implementationData, "Should handle unrecognizable implementation");
       
       return implementationData;
     });
   }
 
   async testRealWorldScenarios() {
-    console.log('🏗️ Testing Real-World Scenarios...');
+    console.log("🏗️ Testing Real-World Scenarios...");
 
     // Test complete authentication system
-    await this.runValidatorTest(SpecAdherenceValidator, 'Complete authentication system validation', async (validator) => {
-      const authSpec = this.createSpecProject('auth-system-spec', {
-        'spec.md': `# Authentication System Spec
+    await this.runValidatorTest(SpecAdherenceValidator, "Complete authentication system validation", async (validator) => {
+      const authSpec = this.createSpecProject("auth-system-spec", {
+        "spec.md": `# Authentication System Spec
 
 ## Overview
 Complete user authentication system with registration, login, and profile management.
@@ -344,20 +344,20 @@ As a registered user, I want to log in so that I can access my account.
 - Security considerations document`
       });
 
-      const authImplementation = this.createImplementationProject('auth-system-implementation', {
-        'package.json': JSON.stringify({
-          name: 'auth-system',
+      const authImplementation = this.createImplementationProject("auth-system-implementation", {
+        "package.json": JSON.stringify({
+          name: "auth-system",
           dependencies: {
-            'express': '^4.18.0',
-            'mongoose': '^7.0.0',
-            'bcrypt': '^5.1.0',
-            'jsonwebtoken': '^9.0.0',
-            'nodemailer': '^6.9.0',
-            'express-validator': '^6.15.0',
-            'express-rate-limit': '^6.7.0'
+            "express": "^4.18.0",
+            "mongoose": "^7.0.0",
+            "bcrypt": "^5.1.0",
+            "jsonwebtoken": "^9.0.0",
+            "nodemailer": "^6.9.0",
+            "express-validator": "^6.15.0",
+            "express-rate-limit": "^6.7.0"
           }
         }),
-        'models/User.js': `const mongoose = require('mongoose');
+        "models/User.js": `const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
@@ -378,7 +378,7 @@ userSchema.methods.comparePassword = async function(password) {
 };
 
 module.exports = mongoose.model('User', userSchema);`,
-        'middleware/auth.js': `const jwt = require('jsonwebtoken');
+        "middleware/auth.js": `const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
 const authenticate = async (req, res, next) => {
@@ -403,7 +403,7 @@ const authenticate = async (req, res, next) => {
 };
 
 module.exports = { authenticate };`,
-        'routes/auth.js': `const express = require('express');
+        "routes/auth.js": `const express = require('express');
 const { body, validationResult } = require('express-validator');
 const rateLimit = require('express-rate-limit');
 const User = require('../models/User');
@@ -500,7 +500,7 @@ router.post('/logout', authenticate, (req, res) => {
 });
 
 module.exports = router;`,
-        'tests/auth.test.js': `const request = require('supertest');
+        "tests/auth.test.js": `const request = require('supertest');
 const app = require('../app');
 const User = require('../models/User');
 
@@ -578,17 +578,17 @@ describe('Authentication', () => {
 
       const result = await validator.validateSpecAdherence(authSpec, authImplementation);
       
-      this.assert(result.overallStatus === 'PASS' || result.overallStatus === 'WARNING', 
-        'Complete implementation should mostly pass');
+      this.assert(result.overallStatus === "PASS" || result.overallStatus === "WARNING", 
+        "Complete implementation should mostly pass");
       this.assert(result.validations && result.validations.length >= 4, 
-        'Should perform all validation checks');
+        "Should perform all validation checks");
       
       // Check specific validations
-      const reqValidation = result.validations.find(v => v.name === 'Spec Requirements');
-      this.assert(reqValidation, 'Should validate spec requirements');
+      const reqValidation = result.validations.find(v => v.name === "Spec Requirements");
+      this.assert(reqValidation, "Should validate spec requirements");
       
-      const storyValidation = result.validations.find(v => v.name === 'User Stories');
-      this.assert(storyValidation, 'Should validate user stories');
+      const storyValidation = result.validations.find(v => v.name === "User Stories");
+      this.assert(storyValidation, "Should validate user stories");
       
       return result;
     });
@@ -606,7 +606,7 @@ describe('Authentication', () => {
   }
 
   createTempFile(filename, content) {
-    const tempDir = path.join(this.tempTestDir, 'spec-adherence-files');
+    const tempDir = path.join(this.tempTestDir, "spec-adherence-files");
     if (!fs.existsSync(tempDir)) {
       fs.mkdirSync(tempDir, { recursive: true });
     }
@@ -621,7 +621,7 @@ describe('Authentication', () => {
 if (require.main === module) {
   const tester = new SpecAdherenceValidatorTests();
   tester.runAllTests().catch(error => {
-    console.error('❌ Spec Adherence Validator tests failed:', error);
+    console.error("❌ Spec Adherence Validator tests failed:", error);
     process.exit(1);
   });
 }

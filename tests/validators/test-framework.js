@@ -6,15 +6,15 @@
  * Comprehensive testing framework for all Agent OS validators
  */
 
-const fs = require('fs');
-const path = require('path');
-const { execSync } = require('child_process');
+const fs = require("fs");
+const path = require("path");
+const { execSync } = require("child_process");
 
 class ValidatorTestFramework {
   constructor() {
     this.testResults = [];
-    this.mockDataDir = path.join(__dirname, 'mock-data');
-    this.tempTestDir = path.join(__dirname, 'temp-projects');
+    this.mockDataDir = path.join(__dirname, "mock-data");
+    this.tempTestDir = path.join(__dirname, "temp-projects");
   }
 
   // Test result tracking
@@ -54,11 +54,11 @@ class ValidatorTestFramework {
     Object.entries(structure).forEach(([name, content]) => {
       const itemPath = path.join(basePath, name);
       
-      if (typeof content === 'string') {
+      if (typeof content === "string") {
         // It's a file
         fs.mkdirSync(path.dirname(itemPath), { recursive: true });
         fs.writeFileSync(itemPath, content);
-      } else if (typeof content === 'object' && content !== null) {
+      } else if (typeof content === "object" && content !== null) {
         // It's a directory
         fs.mkdirSync(itemPath, { recursive: true });
         this.createDirectoryStructure(itemPath, content);
@@ -81,23 +81,23 @@ class ValidatorTestFramework {
 
   // Mock project templates
   createBasicWebProject() {
-    return this.createMockProject('basic-web-project', {
-      'package.json': JSON.stringify({
-        name: 'test-project',
-        version: '1.0.0',
+    return this.createMockProject("basic-web-project", {
+      "package.json": JSON.stringify({
+        name: "test-project",
+        version: "1.0.0",
         scripts: {
-          start: 'node server.js',
-          test: 'jest'
+          start: "node server.js",
+          test: "jest"
         },
         dependencies: {
-          express: '^4.18.0',
-          bcrypt: '^5.1.0'
+          express: "^4.18.0",
+          bcrypt: "^5.1.0"
         },
         devDependencies: {
-          jest: '^29.0.0'
+          jest: "^29.0.0"
         }
       }, null, 2),
-      'README.md': `# Test Project
+      "README.md": `# Test Project
 
 This is a test project for validation.
 
@@ -119,8 +119,8 @@ npm start
 - Data management
 - API endpoints
 `,
-      'src/': {
-        'index.js': `const express = require('express');
+      "src/": {
+        "index.js": `const express = require('express');
 const bcrypt = require('bcrypt');
 
 const app = express();
@@ -146,8 +146,8 @@ app.post('/api/login', (req, res) => {
 });
 
 module.exports = app;`,
-        'auth/': {
-          'login.js': `// Login functionality
+        "auth/": {
+          "login.js": `// Login functionality
 function validateLogin(username, password) {
   // SQL injection vulnerability
   const query = "SELECT * FROM users WHERE username = '" + username + "'";
@@ -159,7 +159,7 @@ function hashPassword(password) {
 }
 
 module.exports = { validateLogin, hashPassword };`,
-          'middleware.js': `function authMiddleware(req, res, next) {
+          "middleware.js": `function authMiddleware(req, res, next) {
   const token = req.headers.authorization;
   if (!token) {
     return res.status(401).json({ error: 'No token provided' });
@@ -168,8 +168,8 @@ module.exports = { validateLogin, hashPassword };`,
   next();
 }`
         },
-        'components/': {
-          'UserCard.jsx': `import React from 'react';
+        "components/": {
+          "UserCard.jsx": `import React from 'react';
 
 // This component is over 300 lines - file size violation
 function UserCard({ user }) {
@@ -186,11 +186,11 @@ function UserCard({ user }) {
 export default UserCard;
 
 // Adding padding to make this file over 300 lines
-${Array(280).fill('// Padding comment').join('\n')}`
+${Array(280).fill("// Padding comment").join("\n")}`
         }
       },
-      'tests/': {
-        'auth.test.js': `const { validateLogin } = require('../src/auth/login');
+      "tests/": {
+        "auth.test.js": `const { validateLogin } = require('../src/auth/login');
 
 describe('Authentication', () => {
   it('should validate user login', () => {
@@ -203,8 +203,8 @@ describe('Authentication', () => {
     expect(true).toBe(true);
   });
 });`,
-        'components/': {
-          'UserCard.test.jsx': `import { render } from '@testing-library/react';
+        "components/": {
+          "UserCard.test.jsx": `import { render } from '@testing-library/react';
 import UserCard from '../../src/components/UserCard';
 
 describe('UserCard', () => {
@@ -215,10 +215,10 @@ describe('UserCard', () => {
 });`
         }
       },
-      '.agent-os/': {
-        'specs/': {
-          '2025-01-15-user-authentication/': {
-            'spec.md': `# User Authentication Spec
+      ".agent-os/": {
+        "specs/": {
+          "2025-01-15-user-authentication/": {
+            "spec.md": `# User Authentication Spec
 
 ## Overview
 Implement secure user authentication system with login, registration, and session management.
@@ -258,7 +258,7 @@ As a user, I want my password to be stored securely so that my account is protec
 1. Working login API endpoint
 2. Secure password storage system
 3. Authentication middleware for protected routes`,
-            'tasks.md': `# Spec Tasks
+            "tasks.md": `# Spec Tasks
 
 ## 1. Authentication Setup
 - [ ] 1.1 Write tests for authentication functions
@@ -278,7 +278,7 @@ As a user, I want my password to be stored securely so that my account is protec
 - [ ] 3.2 Create authentication middleware
 - [ ] 3.3 Add token validation logic
 - [ ] 3.4 Verify tests pass for middleware`,
-            'status.md': `# User Authentication Status
+            "status.md": `# User Authentication Status
 
 **Spec Name**: User Authentication
 **Created**: 2025-01-15
@@ -292,8 +292,8 @@ As a user, I want my password to be stored securely so that my account is protec
 - Complete authentication implementation
 - Add comprehensive tests
 - Security validation`,
-            'sub-specs/': {
-              'technical-spec.md': `# Technical Specification
+            "sub-specs/": {
+              "technical-spec.md": `# Technical Specification
 
 ## Spec Reference
 This technical specification supports the User Authentication spec.
@@ -328,8 +328,8 @@ This technical specification supports the User Authentication spec.
   }
 
   createInsecureProject() {
-    return this.createMockProject('insecure-project', {
-      'app.js': `const express = require('express');
+    return this.createMockProject("insecure-project", {
+      "app.js": `const express = require('express');
 const app = express();
 
 // Multiple security vulnerabilities for testing
@@ -353,7 +353,7 @@ app.post('/admin', (req, res) => {
 });
 
 module.exports = app;`,
-      'config.json': `{
+      "config.json": `{
   "database": {
     "password": "super-secret-password",
     "apiKey": "prod-api-key-12345"
@@ -362,23 +362,23 @@ module.exports = app;`,
     "secret": "my-jwt-secret-key"
   }
 }`,
-      '.env': `# Production environment variables
+      ".env": `# Production environment variables
 DATABASE_PASSWORD=actual-prod-password
 API_KEY=real-api-key-value
 JWT_SECRET=production-jwt-secret`,
-      'package.json': JSON.stringify({
-        name: 'insecure-project',
+      "package.json": JSON.stringify({
+        name: "insecure-project",
         dependencies: {
-          'lodash': '^3.0.0', // Vulnerable version
-          'moment': '^2.0.0'  // Vulnerable package
+          "lodash": "^3.0.0", // Vulnerable version
+          "moment": "^2.0.0"  // Vulnerable package
         }
       })
     });
   }
 
   createWellStructuredProject() {
-    return this.createMockProject('well-structured-project', {
-      'README.md': `# Well Structured Project
+    return this.createMockProject("well-structured-project", {
+      "README.md": `# Well Structured Project
 
 ## Description
 A well-organized project following best practices.
@@ -407,24 +407,24 @@ Please read CONTRIBUTING.md for guidelines.
 
 ## License
 MIT License`,
-      'package.json': JSON.stringify({
-        name: 'well-structured-project',
+      "package.json": JSON.stringify({
+        name: "well-structured-project",
         scripts: {
-          start: 'node server.js',
-          dev: 'nodemon server.js',
-          test: 'jest',
-          build: 'webpack'
+          start: "node server.js",
+          dev: "nodemon server.js",
+          test: "jest",
+          build: "webpack"
         },
         dependencies: {
-          express: '^4.18.0'
+          express: "^4.18.0"
         },
         devDependencies: {
-          jest: '^29.0.0',
-          nodemon: '^2.0.0'
+          jest: "^29.0.0",
+          nodemon: "^2.0.0"
         }
       }),
-      'src/': {
-        'server.js': `const express = require('express');
+      "src/": {
+        "server.js": `const express = require('express');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 
@@ -448,8 +448,8 @@ app.post('/api/auth', (req, res) => {
 });
 
 module.exports = app;`,
-        'utils/': {
-          'validator.js': `/**
+        "utils/": {
+          "validator.js": `/**
            * Input validation utilities
            */
           function validateEmail(email) {
@@ -464,8 +464,8 @@ module.exports = app;`,
           module.exports = { validateEmail, sanitizeInput };`
         }
       },
-      'tests/': {
-        'server.test.js': `const request = require('supertest');
+      "tests/": {
+        "server.test.js": `const request = require('supertest');
 const app = require('../src/server');
 
 describe('Server', () => {
@@ -477,8 +477,8 @@ describe('Server', () => {
     expect(response.status).toBe(200);
   });
 });`,
-        'utils/': {
-          'validator.test.js': `const { validateEmail, sanitizeInput } = require('../../src/utils/validator');
+        "utils/": {
+          "validator.test.js": `const { validateEmail, sanitizeInput } = require('../../src/utils/validator');
 
 describe('Validator', () => {
   describe('validateEmail', () => {
@@ -500,8 +500,8 @@ describe('Validator', () => {
 });`
         }
       },
-      'docs/': {
-        'api.md': `# API Documentation
+      "docs/": {
+        "api.md": `# API Documentation
 
 ## Authentication
 
@@ -531,10 +531,10 @@ Authenticate user with username and password.
   }
 
   createGitProject() {
-    const projectPath = this.createMockProject('git-project', {
-      'README.md': '# Git Test Project',
-      'src/': {
-        'main.js': 'console.log("Hello World");'
+    const projectPath = this.createMockProject("git-project", {
+      "README.md": "# Git Test Project",
+      "src/": {
+        "main.js": "console.log(\"Hello World\");"
       }
     });
 
@@ -543,24 +543,24 @@ Authenticate user with username and password.
       const originalCwd = process.cwd();
       process.chdir(projectPath);
       
-      execSync('git init', { stdio: 'ignore' });
-      execSync('git config user.email "test@example.com"', { stdio: 'ignore' });
-      execSync('git config user.name "Test User"', { stdio: 'ignore' });
-      execSync('git add .', { stdio: 'ignore' });
-      execSync('git commit -m "feat: initial commit"', { stdio: 'ignore' });
+      execSync("git init", { stdio: "ignore" });
+      execSync("git config user.email \"test@example.com\"", { stdio: "ignore" });
+      execSync("git config user.name \"Test User\"", { stdio: "ignore" });
+      execSync("git add .", { stdio: "ignore" });
+      execSync("git commit -m \"feat: initial commit\"", { stdio: "ignore" });
       
       // Create feature branch
-      execSync('git checkout -b feature/user-auth', { stdio: 'ignore' });
-      fs.writeFileSync(path.join(projectPath, 'src/auth.js'), 'module.exports = {};');
-      execSync('git add .', { stdio: 'ignore' });
-      execSync('git commit -m "feat(auth): add authentication module"', { stdio: 'ignore' });
+      execSync("git checkout -b feature/user-auth", { stdio: "ignore" });
+      fs.writeFileSync(path.join(projectPath, "src/auth.js"), "module.exports = {};");
+      execSync("git add .", { stdio: "ignore" });
+      execSync("git commit -m \"feat(auth): add authentication module\"", { stdio: "ignore" });
       
       // Create another branch with bad naming
-      execSync('git checkout -b badBranchName', { stdio: 'ignore' });
+      execSync("git checkout -b badBranchName", { stdio: "ignore" });
       
       process.chdir(originalCwd);
     } catch (error) {
-      console.warn('Could not initialize git repository for testing:', error.message);
+      console.warn("Could not initialize git repository for testing:", error.message);
     }
 
     return projectPath;
@@ -578,7 +578,7 @@ Authenticate user with username and password.
       this.recordTest(this.createTestResult(
         testName, 
         validatorClass.name, 
-        'PASS', 
+        "PASS", 
         { result, duration }
       ));
       
@@ -589,7 +589,7 @@ Authenticate user with username and password.
       this.recordTest(this.createTestResult(
         testName, 
         validatorClass.name, 
-        'FAIL', 
+        "FAIL", 
         { error: error.message, duration }
       ));
       
@@ -604,19 +604,19 @@ Authenticate user with username and password.
     }
   }
 
-  assertEqual(actual, expected, message = '') {
+  assertEqual(actual, expected, message = "") {
     if (actual !== expected) {
       throw new Error(`Assertion failed: ${message}. Expected: ${expected}, Actual: ${actual}`);
     }
   }
 
-  assertContains(array, item, message = '') {
+  assertContains(array, item, message = "") {
     if (!array.includes(item)) {
       throw new Error(`Assertion failed: ${message}. Array does not contain: ${item}`);
     }
   }
 
-  assertGreaterThan(actual, expected, message = '') {
+  assertGreaterThan(actual, expected, message = "") {
     if (actual <= expected) {
       throw new Error(`Assertion failed: ${message}. Expected ${actual} > ${expected}`);
     }
@@ -625,20 +625,20 @@ Authenticate user with username and password.
   // Result reporting
   displayResults() {
     const totalTests = this.testResults.length;
-    const passedTests = this.testResults.filter(r => r.status === 'PASS').length;
-    const failedTests = this.testResults.filter(r => r.status === 'FAIL').length;
+    const passedTests = this.testResults.filter(r => r.status === "PASS").length;
+    const failedTests = this.testResults.filter(r => r.status === "FAIL").length;
     
-    console.log('\n🧪 Validator Test Framework Results');
-    console.log('===================================');
+    console.log("\n🧪 Validator Test Framework Results");
+    console.log("===================================");
     console.log(`Total Tests: ${totalTests}`);
     console.log(`✅ Passed: ${passedTests}`);
     console.log(`❌ Failed: ${failedTests}`);
     console.log(`Success Rate: ${Math.round((passedTests / totalTests) * 100)}%`);
     
     if (failedTests > 0) {
-      console.log('\n❌ Failed Tests:');
+      console.log("\n❌ Failed Tests:");
       this.testResults
-        .filter(r => r.status === 'FAIL')
+        .filter(r => r.status === "FAIL")
         .forEach(result => {
           console.log(`   ${result.validator}: ${result.testName}`);
           console.log(`      Error: ${result.details.error}`);

@@ -8,20 +8,20 @@
  * for testing purposes only. These should never be used in production.
  */
 
-require('dotenv').config();
+require("dotenv").config();
 
 // Good configuration practices
 const config = {
   // Server configuration
   port: process.env.PORT || 3000,
-  host: process.env.HOST || 'localhost',
+  host: process.env.HOST || "localhost",
   
   // Environment
-  nodeEnv: process.env.NODE_ENV || 'development',
+  nodeEnv: process.env.NODE_ENV || "development",
   
   // Security settings
   cors: {
-    origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+    origin: process.env.CORS_ORIGIN || "http://localhost:3000",
     credentials: true
   },
   
@@ -29,15 +29,15 @@ const config = {
   rateLimit: {
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100, // limit each IP to 100 requests per windowMs
-    message: 'Too many requests from this IP, please try again later',
+    message: "Too many requests from this IP, please try again later",
     standardHeaders: true,
     legacyHeaders: false
   },
   
   // Logging
   logging: {
-    level: process.env.LOG_LEVEL || 'info',
-    format: process.env.LOG_FORMAT || 'combined'
+    level: process.env.LOG_LEVEL || "info",
+    format: process.env.LOG_FORMAT || "combined"
   }
 };
 
@@ -96,26 +96,26 @@ function getSecretFromEnv(key) {
   }
   
   // Good practice: Don't log secrets
-  console.log(`Loaded configuration for ${key.replace(/./g, '*')}`);
+  console.log(`Loaded configuration for ${key.replace(/./g, "*")}`);
   return secret;
 }
 
 // Secure configuration loading
 const secureConfig = {
   // Load secrets from environment variables
-  databaseUrl: getSecretFromEnv('DATABASE_URL'),
-  apiKey: getSecretFromEnv('API_KEY'),
-  jwtSecret: getSecretFromEnv('JWT_SECRET'),
+  databaseUrl: getSecretFromEnv("DATABASE_URL"),
+  apiKey: getSecretFromEnv("API_KEY"),
+  jwtSecret: getSecretFromEnv("JWT_SECRET"),
   
   // Security headers configuration
   security: {
     helmet: {
       contentSecurityPolicy: {
         directives: {
-          defaultSrc: ['\'self\''],
-          styleSrc: ['\'self\'', '\'unsafe-inline\''],
-          scriptSrc: ['\'self\''],
-          imgSrc: ['\'self\'', 'data:', 'https:']
+          defaultSrc: ["'self'"],
+          styleSrc: ["'self'", "'unsafe-inline'"],
+          scriptSrc: ["'self'"],
+          imgSrc: ["'self'", "data:", "https:"]
         }
       },
       hsts: {
@@ -126,7 +126,7 @@ const secureConfig = {
       noSniff: true,
       xssFilter: true,
       frameguard: {
-        action: 'deny'
+        action: "deny"
       }
     }
   },
@@ -134,9 +134,9 @@ const secureConfig = {
   // Enhanced input validation patterns to prevent buffer overflow
   validation: {
     maxInputLength: 1000, // Reduced from previous value
-    maxRequestBodySize: '1mb', // Reduced from 10mb
+    maxRequestBodySize: "1mb", // Reduced from 10mb
     maxUrlLength: 2048,
-    allowedFileTypes: ['.jpg', '.png', '.gif', '.pdf'],
+    allowedFileTypes: [".jpg", ".png", ".gif", ".pdf"],
     maxFileSize: 5 * 1024 * 1024, // 5MB
     maxParameters: 10,
     maxHeaders: 50
@@ -144,35 +144,35 @@ const secureConfig = {
   
   // Request size limits to prevent buffer overflow attacks
   limits: {
-    json: '1mb',
-    urlencoded: '1mb',
-    text: '1mb',
-    raw: '1mb'
+    json: "1mb",
+    urlencoded: "1mb",
+    text: "1mb",
+    raw: "1mb"
   }
 };
 
 // Configuration validation
 function validateConfig() {
-  const requiredEnvVars = ['NODE_ENV'];
+  const requiredEnvVars = ["NODE_ENV"];
   const missing = requiredEnvVars.filter(envVar => !process.env[envVar]);
   
   if (missing.length > 0) {
-    console.warn('Missing environment variables:', missing);
+    console.warn("Missing environment variables:", missing);
   }
   
   // Validate port range
   if (config.port < 1 || config.port > 65535) {
-    throw new Error('Invalid port number');
+    throw new Error("Invalid port number");
   }
   
   // Validate security limits
   if (secureConfig.validation.maxInputLength > 10000) {
-    throw new Error('Input length limit too high - security risk');
+    throw new Error("Input length limit too high - security risk");
   }
   
-  if (secureConfig.validation.maxRequestBodySize.includes('mb') && 
+  if (secureConfig.validation.maxRequestBodySize.includes("mb") && 
       parseInt(secureConfig.validation.maxRequestBodySize) > 10) {
-    throw new Error('Request body size limit too high - security risk');
+    throw new Error("Request body size limit too high - security risk");
   }
   
   return true;
@@ -181,9 +181,9 @@ function validateConfig() {
 // Initialize configuration
 try {
   validateConfig();
-  console.log('✅ Configuration loaded successfully');
+  console.log("✅ Configuration loaded successfully");
 } catch (error) {
-  console.error('❌ Configuration error:', error.message);
+  console.error("❌ Configuration error:", error.message);
   process.exit(1);
 }
 

@@ -6,10 +6,10 @@
  * Comprehensive unit tests for the Security Validator
  */
 
-const ValidatorTestFramework = require('./test-framework');
-const SecurityValidator = require('../../scripts/validators/security-validator');
-const fs = require('fs');
-const path = require('path');
+const ValidatorTestFramework = require("./test-framework");
+const SecurityValidator = require("../../scripts/validators/security-validator");
+const fs = require("fs");
+const path = require("path");
 
 class SecurityValidatorTests extends ValidatorTestFramework {
   constructor() {
@@ -18,8 +18,8 @@ class SecurityValidatorTests extends ValidatorTestFramework {
   }
 
   async runAllTests() {
-    console.log('🔒 Testing Security Validator');
-    console.log('=============================\n');
+    console.log("🔒 Testing Security Validator");
+    console.log("=============================\n");
 
     try {
       // Hardcoded Secrets Tests
@@ -50,19 +50,19 @@ class SecurityValidatorTests extends ValidatorTestFramework {
 
       this.displayResults();
     } catch (error) {
-      console.error('❌ Test execution failed:', error);
+      console.error("❌ Test execution failed:", error);
     } finally {
       this.cleanup();
     }
   }
 
   async testHardcodedSecrets() {
-    console.log('🔑 Testing Hardcoded Secrets Detection...');
+    console.log("🔑 Testing Hardcoded Secrets Detection...");
 
     // Test obvious hardcoded secrets
     await this.runValidatorTest(
       SecurityValidator,
-      'Obvious hardcoded secrets',
+      "Obvious hardcoded secrets",
       async (validator) => {
         const secretsCode = `
 const API_KEY = "sk-1234567890abcdef";
@@ -72,20 +72,20 @@ const DATABASE_URL = "postgresql://user:password123@localhost/db";
 const JWT_SECRET = "super-secret-jwt-key";
 `;
 
-        const file = this.createTempFile('secrets.js', secretsCode);
+        const file = this.createTempFile("secrets.js", secretsCode);
         const result = await validator.validateFile(file);
 
         const secretsValidation = result.validations.find(
-          (v) => v.name === 'Hardcoded Secrets'
+          (v) => v.name === "Hardcoded Secrets"
         );
         this.assert(
-          secretsValidation.status === 'FAIL',
-          'Should detect hardcoded secrets'
+          secretsValidation.status === "FAIL",
+          "Should detect hardcoded secrets"
         );
         this.assertGreaterThan(
           secretsValidation.details.violations.length,
           3,
-          'Should find multiple violations'
+          "Should find multiple violations"
         );
 
         return result;
@@ -95,7 +95,7 @@ const JWT_SECRET = "super-secret-jwt-key";
     // Test environment variable usage (good practice)
     await this.runValidatorTest(
       SecurityValidator,
-      'Environment variable usage',
+      "Environment variable usage",
       async (validator) => {
         const envCode = `
 const API_KEY = process.env.API_KEY;
@@ -104,15 +104,15 @@ const SECRET_KEY = process.env.JWT_SECRET;
 const DATABASE_URL = process.env.DATABASE_URL;
 `;
 
-        const file = this.createTempFile('env-vars.js', envCode);
+        const file = this.createTempFile("env-vars.js", envCode);
         const result = await validator.validateFile(file);
 
         const secretsValidation = result.validations.find(
-          (v) => v.name === 'Hardcoded Secrets'
+          (v) => v.name === "Hardcoded Secrets"
         );
         this.assert(
-          secretsValidation.status === 'PASS',
-          'Environment variables should pass'
+          secretsValidation.status === "PASS",
+          "Environment variables should pass"
         );
 
         return result;
@@ -122,7 +122,7 @@ const DATABASE_URL = process.env.DATABASE_URL;
     // Test subtle hardcoded secrets
     await this.runValidatorTest(
       SecurityValidator,
-      'Subtle hardcoded secrets',
+      "Subtle hardcoded secrets",
       async (validator) => {
         const subtleSecretsCode = `
 // These might be harder to detect but still dangerous
@@ -135,7 +135,7 @@ const auth = "Basic " + btoa("admin:secretpassword");
 `;
 
         const file = this.createTempFile(
-          'subtle-secrets.js',
+          "subtle-secrets.js",
           subtleSecretsCode
         );
         const result = await validator.validateFile(file);
@@ -148,36 +148,36 @@ const auth = "Basic " + btoa("admin:secretpassword");
   }
 
   async testSecretPatterns() {
-    console.log('🎯 Testing Secret Pattern Recognition...');
+    console.log("🎯 Testing Secret Pattern Recognition...");
 
     const testPatterns = [
       {
-        code: 'const API_KEY = "sk-1234567890";',
+        code: "const API_KEY = \"sk-1234567890\";",
         shouldFail: true,
-        type: 'API key',
+        type: "API key",
       },
       {
-        code: 'const password = "mypassword123";',
+        code: "const password = \"mypassword123\";",
         shouldFail: true,
-        type: 'password',
+        type: "password",
       },
       {
-        code: 'const token = "bearer-abc123";',
+        code: "const token = \"bearer-abc123\";",
         shouldFail: true,
-        type: 'token',
+        type: "token",
       },
       {
-        code: 'const privateKey = "-----BEGIN PRIVATE KEY-----";',
+        code: "const privateKey = \"-----BEGIN PRIVATE KEY-----\";",
         shouldFail: true,
-        type: 'private key',
+        type: "private key",
       },
       {
-        code: 'const API_KEY = process.env.API_KEY;',
+        code: "const API_KEY = process.env.API_KEY;",
         shouldFail: false,
-        type: 'env var',
+        type: "env var",
       },
-      { code: 'const password = "";', shouldFail: false, type: 'empty string' },
-      { code: 'const token = null;', shouldFail: false, type: 'null value' },
+      { code: "const password = \"\";", shouldFail: false, type: "empty string" },
+      { code: "const token = null;", shouldFail: false, type: "null value" },
     ];
 
     for (const testCase of testPatterns) {
@@ -186,23 +186,23 @@ const auth = "Basic " + btoa("admin:secretpassword");
         `Secret pattern: ${testCase.type}`,
         async (validator) => {
           const file = this.createTempFile(
-            `pattern-${testCase.type.replace(/\s+/g, '-')}.js`,
+            `pattern-${testCase.type.replace(/\s+/g, "-")}.js`,
             testCase.code
           );
           const result = await validator.validateFile(file);
 
           const secretsValidation = result.validations.find(
-            (v) => v.name === 'Hardcoded Secrets'
+            (v) => v.name === "Hardcoded Secrets"
           );
 
           if (testCase.shouldFail) {
             this.assert(
-              secretsValidation.status === 'FAIL',
+              secretsValidation.status === "FAIL",
               `${testCase.type} should be detected as violation`
             );
           } else {
             this.assert(
-              secretsValidation.status === 'PASS',
+              secretsValidation.status === "PASS",
               `${testCase.type} should not be flagged`
             );
           }
@@ -214,12 +214,12 @@ const auth = "Basic " + btoa("admin:secretpassword");
   }
 
   async testInsecurePatterns() {
-    console.log('⚠️ Testing Insecure Pattern Detection...');
+    console.log("⚠️ Testing Insecure Pattern Detection...");
 
     // Test dangerous functions
     await this.runValidatorTest(
       SecurityValidator,
-      'Dangerous function usage',
+      "Dangerous function usage",
       async (validator) => {
         const dangerousCode = `
 // These are dangerous patterns
@@ -229,20 +229,20 @@ element.innerHTML = userInput;
 const result = exec('rm -rf /');
 `;
 
-        const file = this.createTempFile('dangerous.js', dangerousCode);
+        const file = this.createTempFile("dangerous.js", dangerousCode);
         const result = await validator.validateFile(file);
 
         const patternsValidation = result.validations.find(
-          (v) => v.name === 'Insecure Patterns'
+          (v) => v.name === "Insecure Patterns"
         );
         this.assert(
-          patternsValidation.status === 'FAIL',
-          'Should detect insecure patterns'
+          patternsValidation.status === "FAIL",
+          "Should detect insecure patterns"
         );
         this.assertGreaterThan(
           patternsValidation.details.violations.length,
           2,
-          'Should find multiple violations'
+          "Should find multiple violations"
         );
 
         return result;
@@ -252,7 +252,7 @@ const result = exec('rm -rf /');
     // Test safe alternatives
     await this.runValidatorTest(
       SecurityValidator,
-      'Safe pattern alternatives',
+      "Safe pattern alternatives",
       async (validator) => {
         const safeCode = `
 // These are safer alternatives
@@ -262,15 +262,15 @@ element.appendChild(document.createTextNode(text));
 const result = spawn('ls', ['-la']);
 `;
 
-        const file = this.createTempFile('safe.js', safeCode);
+        const file = this.createTempFile("safe.js", safeCode);
         const result = await validator.validateFile(file);
 
         const patternsValidation = result.validations.find(
-          (v) => v.name === 'Insecure Patterns'
+          (v) => v.name === "Insecure Patterns"
         );
         this.assert(
-          patternsValidation.status === 'PASS',
-          'Safe patterns should pass'
+          patternsValidation.status === "PASS",
+          "Safe patterns should pass"
         );
 
         return result;
@@ -279,14 +279,14 @@ const result = spawn('ls', ['-la']);
   }
 
   async testDangerousFunctions() {
-    console.log('🚨 Testing Dangerous Function Detection...');
+    console.log("🚨 Testing Dangerous Function Detection...");
 
     const dangerousFunctions = [
-      { func: 'eval', code: 'eval("2 + 2")' },
-      { func: 'innerHTML', code: 'div.innerHTML = data' },
-      { func: 'document.write', code: 'document.write(content)' },
-      { func: 'exec', code: 'exec("ls -la")' },
-      { func: 'system', code: 'system("rm file")' },
+      { func: "eval", code: "eval(\"2 + 2\")" },
+      { func: "innerHTML", code: "div.innerHTML = data" },
+      { func: "document.write", code: "document.write(content)" },
+      { func: "exec", code: "exec(\"ls -la\")" },
+      { func: "system", code: "system(\"rm file\")" },
     ];
 
     for (const testCase of dangerousFunctions) {
@@ -301,10 +301,10 @@ const result = spawn('ls', ['-la']);
           const result = await validator.validateFile(file);
 
           const patternsValidation = result.validations.find(
-            (v) => v.name === 'Insecure Patterns'
+            (v) => v.name === "Insecure Patterns"
           );
           this.assert(
-            patternsValidation.status === 'FAIL',
+            patternsValidation.status === "FAIL",
             `${testCase.func} should be flagged as dangerous`
           );
 
@@ -315,12 +315,12 @@ const result = spawn('ls', ['-la']);
   }
 
   async testSQLInjection() {
-    console.log('💉 Testing SQL Injection Detection...');
+    console.log("💉 Testing SQL Injection Detection...");
 
     // Test SQL injection vulnerabilities
     await this.runValidatorTest(
       SecurityValidator,
-      'SQL injection vulnerabilities',
+      "SQL injection vulnerabilities",
       async (validator) => {
         const sqlInjectionCode = `
 // SQL injection vulnerabilities
@@ -329,15 +329,15 @@ const query2 = \`INSERT INTO posts VALUES ('\${title}', '\${content}')\`;
 const query3 = "DELETE FROM users WHERE name = '" + username + "'";
 `;
 
-        const file = this.createTempFile('sql-injection.js', sqlInjectionCode);
+        const file = this.createTempFile("sql-injection.js", sqlInjectionCode);
         const result = await validator.validateFile(file);
 
         const sqlValidation = result.validations.find(
-          (v) => v.name === 'SQL Injection Prevention'
+          (v) => v.name === "SQL Injection Prevention"
         );
         this.assert(
-          sqlValidation.status === 'FAIL',
-          'Should detect SQL injection risks'
+          sqlValidation.status === "FAIL",
+          "Should detect SQL injection risks"
         );
 
         return result;
@@ -347,7 +347,7 @@ const query3 = "DELETE FROM users WHERE name = '" + username + "'";
     // Test parameterized queries (safe)
     await this.runValidatorTest(
       SecurityValidator,
-      'Parameterized queries',
+      "Parameterized queries",
       async (validator) => {
         const safeQueryCode = `
 // Safe parameterized queries
@@ -356,15 +356,15 @@ const query2 = "INSERT INTO posts VALUES ($1, $2)";
 const query3 = "DELETE FROM users WHERE name = :username";
 `;
 
-        const file = this.createTempFile('safe-queries.js', safeQueryCode);
+        const file = this.createTempFile("safe-queries.js", safeQueryCode);
         const result = await validator.validateFile(file);
 
         const sqlValidation = result.validations.find(
-          (v) => v.name === 'SQL Injection Prevention'
+          (v) => v.name === "SQL Injection Prevention"
         );
         this.assert(
-          sqlValidation.status === 'PASS',
-          'Parameterized queries should pass'
+          sqlValidation.status === "PASS",
+          "Parameterized queries should pass"
         );
 
         return result;
@@ -373,12 +373,12 @@ const query3 = "DELETE FROM users WHERE name = :username";
   }
 
   async testXSSVulnerabilities() {
-    console.log('🕸️ Testing XSS Vulnerability Detection...');
+    console.log("🕸️ Testing XSS Vulnerability Detection...");
 
     // Test XSS vulnerabilities
     await this.runValidatorTest(
       SecurityValidator,
-      'XSS vulnerabilities',
+      "XSS vulnerabilities",
       async (validator) => {
         const xssCode = `
 // XSS vulnerabilities
@@ -389,15 +389,15 @@ app.get('/search', (req, res) => {
 });
 `;
 
-        const file = this.createTempFile('xss-vuln.js', xssCode);
+        const file = this.createTempFile("xss-vuln.js", xssCode);
         const result = await validator.validateFile(file);
 
         const xssValidation = result.validations.find(
-          (v) => v.name === 'XSS Prevention'
+          (v) => v.name === "XSS Prevention"
         );
         this.assert(
-          xssValidation.status === 'FAIL',
-          'Should detect XSS vulnerabilities'
+          xssValidation.status === "FAIL",
+          "Should detect XSS vulnerabilities"
         );
 
         return result;
@@ -407,7 +407,7 @@ app.get('/search', (req, res) => {
     // Test XSS prevention
     await this.runValidatorTest(
       SecurityValidator,
-      'XSS prevention',
+      "XSS prevention",
       async (validator) => {
         const safeCode = `
 // XSS prevention
@@ -418,7 +418,7 @@ app.get('/search', (req, res) => {
 });
 `;
 
-        const file = this.createTempFile('xss-safe.js', safeCode);
+        const file = this.createTempFile("xss-safe.js", safeCode);
         const result = await validator.validateFile(file);
 
         // Should pass or at least not fail due to XSS protection
@@ -429,12 +429,12 @@ app.get('/search', (req, res) => {
   }
 
   async testInputValidation() {
-    console.log('✅ Testing Input Validation...');
+    console.log("✅ Testing Input Validation...");
 
     // Test missing input validation
     await this.runValidatorTest(
       SecurityValidator,
-      'Missing input validation',
+      "Missing input validation",
       async (validator) => {
         const noValidationCode = `
 app.post('/user', (req, res) => {
@@ -444,15 +444,15 @@ app.post('/user', (req, res) => {
 });
 `;
 
-        const file = this.createTempFile('no-validation.js', noValidationCode);
+        const file = this.createTempFile("no-validation.js", noValidationCode);
         const result = await validator.validateFile(file);
 
         const validationCheck = result.validations.find(
-          (v) => v.name === 'Input Validation'
+          (v) => v.name === "Input Validation"
         );
         this.assert(
-          validationCheck.status === 'WARNING',
-          'Should warn about missing input validation'
+          validationCheck.status === "WARNING",
+          "Should warn about missing input validation"
         );
 
         return result;
@@ -462,7 +462,7 @@ app.post('/user', (req, res) => {
     // Test proper input validation
     await this.runValidatorTest(
       SecurityValidator,
-      'Proper input validation',
+      "Proper input validation",
       async (validator) => {
         const validationCode = `
 const validator = require('validator');
@@ -482,15 +482,15 @@ app.post('/user', (req, res) => {
 });
 `;
 
-        const file = this.createTempFile('with-validation.js', validationCode);
+        const file = this.createTempFile("with-validation.js", validationCode);
         const result = await validator.validateFile(file);
 
         const validationCheck = result.validations.find(
-          (v) => v.name === 'Input Validation'
+          (v) => v.name === "Input Validation"
         );
         this.assert(
-          validationCheck.status === 'PASS',
-          'Should pass with proper validation'
+          validationCheck.status === "PASS",
+          "Should pass with proper validation"
         );
 
         return result;
@@ -499,12 +499,12 @@ app.post('/user', (req, res) => {
   }
 
   async testAuthentication() {
-    console.log('🔐 Testing Authentication Detection...');
+    console.log("🔐 Testing Authentication Detection...");
 
     // Test missing authentication
     await this.runValidatorTest(
       SecurityValidator,
-      'Missing authentication',
+      "Missing authentication",
       async (validator) => {
         const noAuthCode = `
 app.get('/api/users', (req, res) => {
@@ -517,15 +517,15 @@ app.delete('/api/user/:id', (req, res) => {
 });
 `;
 
-        const file = this.createTempFile('no-auth.js', noAuthCode);
+        const file = this.createTempFile("no-auth.js", noAuthCode);
         const result = await validator.validateFile(file);
 
         const authValidation = result.validations.find(
-          (v) => v.name === 'Authentication'
+          (v) => v.name === "Authentication"
         );
         this.assert(
-          authValidation.status === 'WARNING',
-          'Should warn about missing authentication'
+          authValidation.status === "WARNING",
+          "Should warn about missing authentication"
         );
 
         return result;
@@ -535,7 +535,7 @@ app.delete('/api/user/:id', (req, res) => {
     // Test proper authentication
     await this.runValidatorTest(
       SecurityValidator,
-      'Proper authentication',
+      "Proper authentication",
       async (validator) => {
         const authCode = `
 const passport = require('passport');
@@ -560,15 +560,15 @@ app.delete('/api/user/:id', requireAuth, (req, res) => {
 });
 `;
 
-        const file = this.createTempFile('with-auth.js', authCode);
+        const file = this.createTempFile("with-auth.js", authCode);
         const result = await validator.validateFile(file);
 
         const authValidation = result.validations.find(
-          (v) => v.name === 'Authentication'
+          (v) => v.name === "Authentication"
         );
         this.assert(
-          authValidation.status === 'PASS',
-          'Should pass with proper authentication'
+          authValidation.status === "PASS",
+          "Should pass with proper authentication"
         );
 
         return result;
@@ -577,12 +577,12 @@ app.delete('/api/user/:id', requireAuth, (req, res) => {
   }
 
   async testHTTPS() {
-    console.log('🔒 Testing HTTPS/TLS Validation...');
+    console.log("🔒 Testing HTTPS/TLS Validation...");
 
     // Test insecure HTTP URLs
     await this.runValidatorTest(
       SecurityValidator,
-      'Insecure HTTP URLs',
+      "Insecure HTTP URLs",
       async (validator) => {
         const httpCode = `
 const apiUrl = 'http://api.example.com/data';
@@ -590,15 +590,15 @@ const webhookUrl = 'http://webhook.service.com/notify';
 fetch('http://external-service.com/api');
 `;
 
-        const file = this.createTempFile('http-urls.js', httpCode);
+        const file = this.createTempFile("http-urls.js", httpCode);
         const result = await validator.validateFile(file);
 
         const httpsValidation = result.validations.find(
-          (v) => v.name === 'HTTPS/TLS'
+          (v) => v.name === "HTTPS/TLS"
         );
         this.assert(
-          httpsValidation.status === 'WARNING',
-          'Should warn about HTTP URLs'
+          httpsValidation.status === "WARNING",
+          "Should warn about HTTP URLs"
         );
 
         return result;
@@ -608,7 +608,7 @@ fetch('http://external-service.com/api');
     // Test secure HTTPS URLs
     await this.runValidatorTest(
       SecurityValidator,
-      'Secure HTTPS URLs',
+      "Secure HTTPS URLs",
       async (validator) => {
         const httpsCode = `
 const apiUrl = 'https://api.example.com/data';
@@ -617,15 +617,15 @@ fetch('https://external-service.com/api');
 const localUrl = 'http://localhost:3000'; // This should be OK
 `;
 
-        const file = this.createTempFile('https-urls.js', httpsCode);
+        const file = this.createTempFile("https-urls.js", httpsCode);
         const result = await validator.validateFile(file);
 
         const httpsValidation = result.validations.find(
-          (v) => v.name === 'HTTPS/TLS'
+          (v) => v.name === "HTTPS/TLS"
         );
         this.assert(
-          httpsValidation.status === 'PASS',
-          'HTTPS URLs should pass'
+          httpsValidation.status === "PASS",
+          "HTTPS URLs should pass"
         );
 
         return result;
@@ -634,12 +634,12 @@ const localUrl = 'http://localhost:3000'; // This should be OK
   }
 
   async testConfigSecurity() {
-    console.log('⚙️ Testing Configuration Security...');
+    console.log("⚙️ Testing Configuration Security...");
 
     // Test insecure configuration
     await this.runValidatorTest(
       SecurityValidator,
-      'Insecure configuration',
+      "Insecure configuration",
       async (validator) => {
         const configContent = `{
   "database": {
@@ -651,15 +651,15 @@ const localUrl = 'http://localhost:3000'; // This should be OK
   }
 }`;
 
-        const file = this.createTempFile('config.json', configContent);
+        const file = this.createTempFile("config.json", configContent);
         const result = await validator.validateFile(file);
 
         const configValidation = result.validations.find(
-          (v) => v.name === 'Config Security'
+          (v) => v.name === "Config Security"
         );
         this.assert(
-          configValidation.status === 'WARNING',
-          'Should warn about sensitive data in config'
+          configValidation.status === "WARNING",
+          "Should warn about sensitive data in config"
         );
 
         return result;
@@ -669,7 +669,7 @@ const localUrl = 'http://localhost:3000'; // This should be OK
     // Test secure configuration
     await this.runValidatorTest(
       SecurityValidator,
-      'Secure configuration',
+      "Secure configuration",
       async (validator) => {
         const secureConfigContent = `{
   "database": {
@@ -684,17 +684,17 @@ const localUrl = 'http://localhost:3000'; // This should be OK
 }`;
 
         const file = this.createTempFile(
-          'secure-config.json',
+          "secure-config.json",
           secureConfigContent
         );
         const result = await validator.validateFile(file);
 
         const configValidation = result.validations.find(
-          (v) => v.name === 'Config Security'
+          (v) => v.name === "Config Security"
         );
         this.assert(
-          configValidation.status === 'PASS',
-          'Secure config should pass'
+          configValidation.status === "PASS",
+          "Secure config should pass"
         );
 
         return result;
@@ -703,33 +703,33 @@ const localUrl = 'http://localhost:3000'; // This should be OK
   }
 
   async testDependencySecurity() {
-    console.log('📦 Testing Dependency Security...');
+    console.log("📦 Testing Dependency Security...");
 
     // Test vulnerable dependencies
     await this.runValidatorTest(
       SecurityValidator,
-      'Vulnerable dependencies',
+      "Vulnerable dependencies",
       async (validator) => {
         const vulnerablePackage = JSON.stringify({
           dependencies: {
-            lodash: '^3.0.0',
-            moment: '^2.0.0',
-            request: '^2.88.0',
+            lodash: "^3.0.0",
+            moment: "^2.0.0",
+            request: "^2.88.0",
           },
           devDependencies: {
-            'node-sass': '^4.0.0',
+            "node-sass": "^4.0.0",
           },
         });
 
-        const file = this.createTempFile('package.json', vulnerablePackage);
+        const file = this.createTempFile("package.json", vulnerablePackage);
         const result = await validator.validateFile(file);
 
         const depValidation = result.validations.find(
-          (v) => v.name === 'Dependency Security'
+          (v) => v.name === "Dependency Security"
         );
         this.assert(
-          depValidation.status === 'WARNING',
-          'Should warn about vulnerable dependencies'
+          depValidation.status === "WARNING",
+          "Should warn about vulnerable dependencies"
         );
 
         return result;
@@ -739,25 +739,25 @@ const localUrl = 'http://localhost:3000'; // This should be OK
     // Test wildcard versions
     await this.runValidatorTest(
       SecurityValidator,
-      'Wildcard versions',
+      "Wildcard versions",
       async (validator) => {
         const wildcardPackage = JSON.stringify({
           dependencies: {
-            express: '*',
-            lodash: 'x.x.x',
-            react: '^18.0.0',
+            express: "*",
+            lodash: "x.x.x",
+            react: "^18.0.0",
           },
         });
 
-        const file = this.createTempFile('package.json', wildcardPackage);
+        const file = this.createTempFile("package.json", wildcardPackage);
         const result = await validator.validateFile(file);
 
         const depValidation = result.validations.find(
-          (v) => v.name === 'Dependency Security'
+          (v) => v.name === "Dependency Security"
         );
         this.assert(
-          depValidation.status === 'WARNING',
-          'Should warn about wildcard versions'
+          depValidation.status === "WARNING",
+          "Should warn about wildcard versions"
         );
 
         return result;
@@ -766,27 +766,27 @@ const localUrl = 'http://localhost:3000'; // This should be OK
   }
 
   async testEnvironmentSecurity() {
-    console.log('🌍 Testing Environment File Security...');
+    console.log("🌍 Testing Environment File Security...");
 
     // Test .env with actual values
     await this.runValidatorTest(
       SecurityValidator,
-      'Environment file with actual values',
+      "Environment file with actual values",
       async (validator) => {
         const envContent = `DATABASE_PASSWORD=actual-prod-password
 API_KEY=real-api-key-value
 JWT_SECRET=production-jwt-secret
 STRIPE_SECRET=sk_live_1234567890`;
 
-        const file = this.createTempFile('.env', envContent);
+        const file = this.createTempFile(".env", envContent);
         const result = await validator.validateFile(file);
 
         const envValidation = result.validations.find(
-          (v) => v.name === 'Environment Security'
+          (v) => v.name === "Environment Security"
         );
         this.assert(
-          envValidation.status === 'WARNING',
-          'Should warn about actual values in .env'
+          envValidation.status === "WARNING",
+          "Should warn about actual values in .env"
         );
 
         return result;
@@ -796,22 +796,22 @@ STRIPE_SECRET=sk_live_1234567890`;
     // Test .env.example with placeholders
     await this.runValidatorTest(
       SecurityValidator,
-      'Environment example file',
+      "Environment example file",
       async (validator) => {
         const envExampleContent = `DATABASE_PASSWORD=your_database_password
 API_KEY=your_api_key_here
 JWT_SECRET=your_jwt_secret
 STRIPE_SECRET=your_stripe_secret`;
 
-        const file = this.createTempFile('.env.example', envExampleContent);
+        const file = this.createTempFile(".env.example", envExampleContent);
         const result = await validator.validateFile(file);
 
         const envValidation = result.validations.find(
-          (v) => v.name === 'Environment Security'
+          (v) => v.name === "Environment Security"
         );
         this.assert(
-          envValidation.status === 'PASS',
-          'Example env file should pass'
+          envValidation.status === "PASS",
+          "Example env file should pass"
         );
 
         return result;
@@ -820,34 +820,34 @@ STRIPE_SECRET=your_stripe_secret`;
   }
 
   async testDirectoryValidation() {
-    console.log('📁 Testing Directory Security Validation...');
+    console.log("📁 Testing Directory Security Validation...");
 
     // Test insecure project
     const insecureProject = this.createInsecureProject();
 
     await this.runValidatorTest(
       SecurityValidator,
-      'Insecure project validation',
+      "Insecure project validation",
       async (validator) => {
         const result = await validator.validateDirectory(insecureProject);
 
         this.assert(
-          result.overallStatus === 'FAIL',
-          'Insecure project should fail'
+          result.overallStatus === "FAIL",
+          "Insecure project should fail"
         );
         this.assertGreaterThan(
           result.summary.failedFiles,
           0,
-          'Should have failed files'
+          "Should have failed files"
         );
 
         // Check for specific security issues
         const hasSecretIssues = result.files.some((file) =>
           file.validations.some(
-            (v) => v.name === 'Hardcoded Secrets' && v.status === 'FAIL'
+            (v) => v.name === "Hardcoded Secrets" && v.status === "FAIL"
           )
         );
-        this.assert(hasSecretIssues, 'Should detect hardcoded secrets');
+        this.assert(hasSecretIssues, "Should detect hardcoded secrets");
 
         return result;
       }
@@ -855,11 +855,11 @@ STRIPE_SECRET=your_stripe_secret`;
   }
 
   async testRealWorldScenarios() {
-    console.log('🏗️ Testing Real-World Security Scenarios...');
+    console.log("🏗️ Testing Real-World Security Scenarios...");
 
     // Test Express.js app with security issues
-    const expressApp = this.createMockProject('express-security-test', {
-      'app.js': `const express = require('express');
+    const expressApp = this.createMockProject("express-security-test", {
+      "app.js": `const express = require('express');
 const app = express();
 
 // Security issues
@@ -877,30 +877,30 @@ app.post('/eval', (req, res) => {
 });
 
 module.exports = app;`,
-      'package.json': JSON.stringify({
+      "package.json": JSON.stringify({
         dependencies: {
-          express: '^4.18.0',
-          lodash: '^3.0.0',
+          express: "^4.18.0",
+          lodash: "^3.0.0",
         },
       }),
     });
 
     await this.runValidatorTest(
       SecurityValidator,
-      'Express app security scan',
+      "Express app security scan",
       async (validator) => {
         const result = await validator.validateDirectory(expressApp);
 
         this.assert(
-          result.overallStatus === 'FAIL',
-          'Insecure Express app should fail'
+          result.overallStatus === "FAIL",
+          "Insecure Express app should fail"
         );
 
         // Should detect multiple types of vulnerabilities
         const vulnerabilityTypes = new Set();
         result.files.forEach((file) => {
           file.validations.forEach((validation) => {
-            if (validation.status === 'FAIL') {
+            if (validation.status === "FAIL") {
               vulnerabilityTypes.add(validation.name);
             }
           });
@@ -909,7 +909,7 @@ module.exports = app;`,
         this.assertGreaterThan(
           vulnerabilityTypes.size,
           2,
-          'Should detect multiple vulnerability types'
+          "Should detect multiple vulnerability types"
         );
 
         return result;
@@ -917,8 +917,8 @@ module.exports = app;`,
     );
 
     // Test secure Express.js app
-    const secureExpressApp = this.createMockProject('secure-express-test', {
-      'app.js': `const express = require('express');
+    const secureExpressApp = this.createMockProject("secure-express-test", {
+      "app.js": `const express = require('express');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const validator = require('validator');
@@ -937,25 +937,25 @@ app.get('/search', (req, res) => {
 });
 
 module.exports = app;`,
-      'package.json': JSON.stringify({
+      "package.json": JSON.stringify({
         dependencies: {
-          express: '^4.18.0',
-          helmet: '^6.0.0',
-          'express-rate-limit': '^6.0.0',
-          validator: '^13.0.0',
+          express: "^4.18.0",
+          helmet: "^6.0.0",
+          "express-rate-limit": "^6.0.0",
+          validator: "^13.0.0",
         },
       }),
     });
 
     await this.runValidatorTest(
       SecurityValidator,
-      'Secure Express app scan',
+      "Secure Express app scan",
       async (validator) => {
         const result = await validator.validateDirectory(secureExpressApp);
 
         this.assert(
-          result.overallStatus === 'PASS' || result.overallStatus === 'WARNING',
-          'Secure Express app should mostly pass'
+          result.overallStatus === "PASS" || result.overallStatus === "WARNING",
+          "Secure Express app should mostly pass"
         );
 
         return result;
@@ -965,7 +965,7 @@ module.exports = app;`,
 
   // Helper methods
   createTempFile(filename, content) {
-    const tempDir = path.join(this.tempTestDir, 'security-temp-files');
+    const tempDir = path.join(this.tempTestDir, "security-temp-files");
     if (!fs.existsSync(tempDir)) {
       fs.mkdirSync(tempDir, { recursive: true });
     }
@@ -980,7 +980,7 @@ module.exports = app;`,
 if (require.main === module) {
   const tester = new SecurityValidatorTests();
   tester.runAllTests().catch((error) => {
-    console.error('❌ Security Validator tests failed:', error);
+    console.error("❌ Security Validator tests failed:", error);
     process.exit(1);
   });
 }
