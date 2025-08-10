@@ -195,6 +195,76 @@ agent-os spec create new-feature "New Feature Spec"
 # Will create: specs/2025-08-10-new-feature/spec.md
 ```
 
+## Framework Release Process
+
+### **Full Release (Recommended)**
+```bash
+# From Agent-OS directory, create complete release package
+npm run release
+```
+
+This command:
+- ✅ Validates the entire framework
+- 🏗️ Builds the Hello World app
+- 📦 Creates production-ready release package
+- 📚 Updates all documentation
+- 🌍 Includes built Hello World app in release
+
+Advanced flags:
+```bash
+# Simulate without git writes
+node scripts/release.js --dry-run --no-git --no-push
+
+# Control gates
+node scripts/release.js --no-lint --no-tests --no-validators --no-chaos
+
+# Chaos modes
+node scripts/release.js --chaos=quick   # default
+node scripts/release.js --chaos=full
+node scripts/release.js --chaos=security
+```
+
+### **Quick Release (Development)**
+```bash
+# For faster releases during development
+npm run release:quick
+```
+
+This command:
+- ⚡ Skips comprehensive validation
+- 🏗️ Builds the Hello World app
+- 📦 Creates minimal release package
+- 🌍 Includes built Hello World app
+
+### **Release Output**
+Both commands create a `release/` directory containing:
+- Complete Agent-OS framework
+- Built Hello World app (ready to run)
+- Production-ready package.json
+- Release documentation and summaries
+- Installation instructions
+
+### **Using the Release Package**
+```bash
+# Navigate to release directory
+cd release
+
+# Install dependencies
+npm install
+
+# Start the framework
+npm start
+
+# Run validation
+npm run validate:all
+
+# Check version
+npm run doc:version
+
+# Create specifications
+npm run create:spec
+```
+
 ## Success Criteria
 
 Your validation is successful when:

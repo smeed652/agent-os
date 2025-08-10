@@ -1,0 +1,49 @@
+{
+  "name": "agent-os",
+  "version": "2.0.0",
+  "description": "Agent Operating System - A comprehensive development and validation framework",
+  "main": "src/index.js",
+  "bin": {
+    "agent-os": "./scripts/agent-os-cli.js",
+    "doc-version": "./scripts/document-versioner.js",
+    "create-spec": "./scripts/create-spec.js"
+  },
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "jest",
+    "validate": "npm run lint && npm run test:ci",
+    "validate:all": "node scripts/test-all-validators.js",
+    "doc:version": "node scripts/document-versioner.js version",
+    "create:spec": "node scripts/create-spec.js"
+  },
+  "keywords": [
+    "agent-os",
+    "development-framework",
+    "validation-suite",
+    "testing-framework",
+    "tdd",
+    "ci-cd",
+    "quality-assurance"
+  ],
+  "author": "Agent OS Development Team",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "glob": "^10.4.5",
+    "helmet": "^7.1.0"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agent-os/agent-os.git"
+  },
+  "bugs": {
+    "url": "https://github.com/agent-os/agent-os/issues"
+  },
+  "homepage": "https://github.com/agent-os/agent-os#readme"
+}

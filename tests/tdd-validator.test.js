@@ -274,7 +274,7 @@ describe('TDDValidator', () => {
       expect(validator.report.score).toBe(25);
     });
 
-               it('should set good workflow when 80%+ files follow TDD', async () => {
+               it('should set fair workflow when 60-80% files follow TDD', async () => {
              const sourceFiles = ['src/service1.js', 'src/service2.js', 'src/service3.js', 'src/service4.js', 'src/service5.js'];
              const testFiles = ['tests/service1.test.js', 'tests/service2.test.js', 'tests/service3.test.js', 'tests/service4.test.js'];
              
@@ -282,52 +282,78 @@ describe('TDDValidator', () => {
              validator.findTestFiles.mockReturnValue(testFiles);
              validator.findCorrespondingTestFile.mockImplementation((sourceFile) => {
                const sourceName = sourceFile.split('/').pop().replace('.js', '');
-               return testFiles.find(tf => tf.includes(sourceName));
+               // Only return test file for first 4 services (service5 has no test)
+               if (sourceName === 'service5') {
+                 return null;
+               }
+               const testFile = testFiles.find(tf => tf.includes(sourceName));
+               return testFile || null;
              });
 
-             // Mock file stats - 3 out of 5 tests created before source (60%)
+             // Mock file stats - 3 out of 4 tests created before source (75%)
              fs.statSync.mockImplementation((filePath) => {
                const fileName = path.basename(filePath);
                if (fileName.includes('service1') || fileName.includes('service2') || fileName.includes('service3')) {
-                 return { mtime: new Date('2024-01-01') }; // Test created first
+                 if (filePath.includes('test')) {
+                   return { mtime: new Date('2024-01-01') }; // Test created first
+                 } else {
+                   return { mtime: new Date('2024-01-02') }; // Source created second
+                 }
+               } else if (fileName.includes('service4')) {
+                 if (filePath.includes('test')) {
+                   return { mtime: new Date('2024-01-03') }; // Test created second
+                 } else {
+                   return { mtime: new Date('2024-01-02') }; // Source created first
+                 }
                } else {
-                 return { mtime: new Date('2024-01-02') }; // Source created first
+                 return { mtime: new Date('2024-01-03') }; // Default
                }
              });
 
              await validator.validateTDDWorkflow();
              
-             // Debug: Log the actual values
-             console.log('TDD Workflow:', validator.report.tddWorkflow);
-             console.log('TDD Score:', validator.report.score);
+
              
-             // 3 out of 5 = 60%, which should be FAIR (>= 60% but < 80%)
+             // 3 out of 4 = 75%, which should be FAIR (>= 60% but < 80%)
              expect(validator.report.tddWorkflow).toBe('FAIR');
              expect(validator.report.score).toBe(15);
            });
 
                it('should add recommendations for workflow improvements', async () => {
              const sourceFiles = ['src/service1.js', 'src/service2.js'];
-             const testFiles = ['tests/service1.test.js'];
+             const testFiles = ['tests/service1.test.js', 'tests/service2.test.js'];
              
              validator.findSourceFiles.mockReturnValue(sourceFiles);
              validator.findTestFiles.mockReturnValue(testFiles);
              validator.findCorrespondingTestFile.mockImplementation((sourceFile) => {
                const sourceName = sourceFile.split('/').pop().replace('.js', '');
-               return testFiles.find(tf => tf.includes(sourceName));
+               const testFile = testFiles.find(tf => tf.includes(sourceName));
+               return testFile || null;
              });
 
              // Mock file stats - only service1 has test created first
              fs.statSync.mockImplementation((filePath) => {
                const fileName = path.basename(filePath);
                if (fileName.includes('service1')) {
-                 return { mtime: new Date('2024-01-01') }; // Test created first
+                 if (filePath.includes('test')) {
+                   return { mtime: new Date('2024-01-01') }; // Test created first
+                 } else {
+                   return { mtime: new Date('2024-01-02') }; // Source created second
+                 }
+               } else if (fileName.includes('service2')) {
+                 if (filePath.includes('test')) {
+                   return { mtime: new Date('2024-01-03') }; // Test created second
+                 } else {
+                   return { mtime: new Date('2024-01-02') }; // Source created first
+                 }
                } else {
-                 return { mtime: new Date('2024-01-02') }; // Source created first
+                 return { mtime: new Date('2024-01-03') }; // Default
                }
              });
 
              await validator.validateTDDWorkflow();
+             
+
              
              expect(validator.report.recommendations).toContain('Improve TDD workflow - 1 files need tests written first');
            });
@@ -411,17 +437,21 @@ describe('TDDValidator', () => {
       expect(issues).toContain('Poor test names found: 3 tests have vague names');
     });
 
-    it('should detect tests without assertions', () => {
-      const content = `
-        it('should do something', () => {
-          const result = someFunction();
-        });
-      `;
+             it('should detect tests without assertions', () => {
+           const content = `
+             it('should do something', () => {
+               const result = someFunction();
+               // Missing expect(result).toBe(true);
+             });
+             it('should work correctly', () => {
+               expect(true).toBe(true);
+             });
+           `;
 
-      const issues = validator.analyzeTestFile(content);
-      
-      expect(issues).toContain('1 tests appear to have no assertions');
-    });
+           const issues = validator.analyzeTestFile(content);
+           
+           expect(issues).toContain('1 tests appear to have no assertions');
+         });
 
     it('should detect test interdependence', () => {
       const content = `
@@ -538,7 +568,15 @@ describe('TDDValidator', () => {
     it('should handle validation errors gracefully', async () => {
       validator.checkProjectStructure = jest.fn().mockRejectedValue(new Error('Validation failed'));
 
-      await expect(validator.validate()).rejects.toThrow('Validation failed');
+      // Ensure NODE_ENV is set to test
+      const originalEnv = process.env.NODE_ENV;
+      process.env.NODE_ENV = 'test';
+      
+      try {
+        await expect(validator.validate()).rejects.toThrow('Validation failed');
+      } finally {
+        process.env.NODE_ENV = originalEnv;
+      }
     });
   });
 });

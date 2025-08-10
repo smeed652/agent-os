@@ -1,0 +1,716 @@
+---
+alwaysApply: true
+---
+
+# Architecture Patterns
+
+Universal architecture patterns that promote scalable, maintainable, and reliable software design across all projects.
+
+## Core Architecture Principles
+
+### Separation of Concerns
+- **Single Responsibility**: Each component has one clear purpose
+- **Loose Coupling**: Minimize dependencies between components
+- **High Cohesion**: Related functionality grouped together
+- **Interface Segregation**: Focused, specific interfaces
+
+### Scalability Patterns
+- **Horizontal Scaling**: Design for multiple instances
+- **Vertical Scaling**: Optimize resource utilization
+- **Caching Strategies**: Reduce computational overhead
+- **Asynchronous Processing**: Non-blocking operations
+
+### Reliability Patterns
+- **Fault Tolerance**: Graceful degradation under failure
+- **Circuit Breakers**: Prevent cascade failures
+- **Retry Mechanisms**: Handle transient failures
+- **Health Monitoring**: Proactive issue detection
+
+## Layered Architecture
+
+### Three-Tier Architecture
+```
+┌─────────────────────┐
+│   Presentation      │  <- User Interface, Controllers
+│     Layer           │
+├─────────────────────┤
+│   Business Logic    │  <- Domain Logic, Services
+│     Layer           │
+├─────────────────────┤
+│   Data Access       │  <- Repositories, Database
+│     Layer           │
+└─────────────────────┘
+```
+
+### Implementation Example
+```typescript
+// Presentation Layer
+class UserController {
+  constructor(private userService: UserService) {}
+  
+  async getUser(req: Request, res: Response) {
+    try {
+      const user = await this.userService.getUserById(req.params.id);
+      res.json(user);
+    } catch (error) {
+      res.status(404).json({ error: 'User not found' });
+    }
+  }
+}
+
+// Business Logic Layer
+class UserService {
+  constructor(private userRepository: UserRepository) {}
+  
+  async getUserById(id: string): Promise<User> {
+    const user = await this.userRepository.findById(id);
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return this.enrichUserData(user);
+  }
+  
+  private enrichUserData(user: User): User {
+    // Business logic for data enrichment
+    return { ...user, displayName: `${user.firstName} ${user.lastName}` };
+  }
+}
+
+// Data Access Layer
+class UserRepository {
+  async findById(id: string): Promise<User | null> {
+    return await database.users.findUnique({ where: { id } });
+  }
+}
+```
+
+### Benefits
+- **Clear separation** of concerns
+- **Testable layers** independently
+- **Technology flexibility** in each layer
+- **Team specialization** possible
+
+## Microservices Architecture
+
+### Service Decomposition
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│   User      │    │   Order     │    │   Payment   │
+│   Service   │    │   Service   │    │   Service   │
+│             │    │             │    │             │
+│ ┌─────────┐ │    │ ┌─────────┐ │    │ ┌─────────┐ │
+│ │   DB    │ │    │ │   DB    │ │    │ │   DB    │ │
+│ └─────────┘ │    │ └─────────┘ │    │ └─────────┘ │
+└─────────────┘    └─────────────┘    └─────────────┘
+       │                   │                   │
+       └───────────────────┼───────────────────┘
+                           │
+                   ┌─────────────┐
+                   │   API       │
+                   │   Gateway   │
+                   └─────────────┘
+```
+
+### Service Design Patterns
+```typescript
+// Service Interface
+interface UserService {
+  createUser(userData: CreateUserRequest): Promise<User>;
+  getUserById(id: string): Promise<User>;
+  updateUser(id: string, updates: UpdateUserRequest): Promise<User>;
+  deleteUser(id: string): Promise<void>;
+}
+
+// Service Implementation
+class UserServiceImpl implements UserService {
+  constructor(
+    private repository: UserRepository,
+    private eventBus: EventBus,
+    private logger: Logger
+  ) {}
+  
+  async createUser(userData: CreateUserRequest): Promise<User> {
+    const user = await this.repository.create(userData);
+    
+    // Publish domain event
+    await this.eventBus.publish('user.created', {
+      userId: user.id,
+      email: user.email,
+      timestamp: new Date()
+    });
+    
+    this.logger.info('User created', { userId: user.id });
+    return user;
+  }
+}
+
+// Service Communication
+class OrderService {
+  constructor(private userServiceClient: UserServiceClient) {}
+  
+  async createOrder(orderData: CreateOrderRequest): Promise<Order> {
+    // Validate user exists
+    const user = await this.userServiceClient.getUserById(orderData.userId);
+    if (!user) {
+      throw new Error('Invalid user');
+    }
+    
+    // Create order logic
+    return await this.processOrder(orderData);
+  }
+}
+```
+
+### Communication Patterns
+- **Synchronous**: HTTP/REST, GraphQL
+- **Asynchronous**: Message queues, Event streaming
+- **Service mesh**: Istio, Linkerd for service-to-service communication
+- **API Gateway**: Single entry point, routing, authentication
+
+## Event-Driven Architecture
+
+### Event Patterns
+```typescript
+// Domain Events
+interface DomainEvent {
+  eventId: string;
+  eventType: string;
+  aggregateId: string;
+  timestamp: Date;
+  version: number;
+  data: any;
+}
+
+// Event Publisher
+class EventPublisher {
+  constructor(private eventStore: EventStore) {}
+  
+  async publish(event: DomainEvent): Promise<void> {
+    await this.eventStore.append(event);
+    await this.notifySubscribers(event);
+  }
+  
+  private async notifySubscribers(event: DomainEvent): Promise<void> {
+    const handlers = this.getHandlers(event.eventType);
+    await Promise.all(handlers.map(handler => handler.handle(event)));
+  }
+}
+
+// Event Handler
+class UserCreatedHandler {
+  constructor(private emailService: EmailService) {}
+  
+  async handle(event: DomainEvent): Promise<void> {
+    if (event.eventType === 'user.created') {
+      await this.emailService.sendWelcomeEmail(event.data.email);
+    }
+  }
+}
+
+// Event Sourcing
+class UserAggregate {
+  private events: DomainEvent[] = [];
+  
+  static fromHistory(events: DomainEvent[]): UserAggregate {
+    const aggregate = new UserAggregate();
+    events.forEach(event => aggregate.apply(event));
+    return aggregate;
+  }
+  
+  createUser(userData: CreateUserData): void {
+    const event: DomainEvent = {
+      eventId: generateId(),
+      eventType: 'user.created',
+      aggregateId: userData.id,
+      timestamp: new Date(),
+      version: this.version + 1,
+      data: userData
+    };
+    
+    this.apply(event);
+    this.events.push(event);
+  }
+  
+  private apply(event: DomainEvent): void {
+    // Apply event to aggregate state
+    switch (event.eventType) {
+      case 'user.created':
+        this.applyUserCreated(event.data);
+        break;
+    }
+  }
+}
+```
+
+### Benefits
+- **Loose coupling** between components
+- **Scalability** through asynchronous processing
+- **Auditability** through event history
+- **Flexibility** in adding new features
+
+## CQRS (Command Query Responsibility Segregation)
+
+### Pattern Implementation
+```typescript
+// Command Side
+interface Command {
+  commandId: string;
+  timestamp: Date;
+}
+
+class CreateUserCommand implements Command {
+  commandId: string;
+  timestamp: Date;
+  
+  constructor(
+    public userData: CreateUserData
+  ) {
+    this.commandId = generateId();
+    this.timestamp = new Date();
+  }
+}
+
+class UserCommandHandler {
+  constructor(
+    private repository: UserRepository,
+    private eventBus: EventBus
+  ) {}
+  
+  async handle(command: CreateUserCommand): Promise<void> {
+    const user = new User(command.userData);
+    await this.repository.save(user);
+    
+    await this.eventBus.publish(new UserCreatedEvent(user));
+  }
+}
+
+// Query Side
+interface Query {
+  queryId: string;
+  timestamp: Date;
+}
+
+class GetUserQuery implements Query {
+  queryId: string;
+  timestamp: Date;
+  
+  constructor(public userId: string) {
+    this.queryId = generateId();
+    this.timestamp = new Date();
+  }
+}
+
+class UserQueryHandler {
+  constructor(private readModel: UserReadModel) {}
+  
+  async handle(query: GetUserQuery): Promise<UserView> {
+    return await this.readModel.getUserById(query.userId);
+  }
+}
+
+// Read Model
+class UserReadModel {
+  constructor(private database: Database) {}
+  
+  async getUserById(id: string): Promise<UserView> {
+    return await this.database.userViews.findById(id);
+  }
+  
+  async updateUserView(event: UserCreatedEvent): Promise<void> {
+    const userView = {
+      id: event.userId,
+      displayName: event.userData.displayName,
+      email: event.userData.email,
+      lastUpdated: new Date()
+    };
+    
+    await this.database.userViews.upsert(userView);
+  }
+}
+```
+
+### Use Cases
+- **Different scaling needs** for reads vs writes
+- **Complex query requirements** vs simple commands
+- **Performance optimization** through specialized data models
+- **Team separation** between command and query development
+
+## Repository Pattern
+
+### Implementation
+```typescript
+// Repository Interface
+interface UserRepository {
+  findById(id: string): Promise<User | null>;
+  findByEmail(email: string): Promise<User | null>;
+  save(user: User): Promise<User>;
+  delete(id: string): Promise<void>;
+  findAll(criteria?: SearchCriteria): Promise<User[]>;
+}
+
+// Repository Implementation
+class PostgresUserRepository implements UserRepository {
+  constructor(private db: Database) {}
+  
+  async findById(id: string): Promise<User | null> {
+    const row = await this.db.query(
+      'SELECT * FROM users WHERE id = $1',
+      [id]
+    );
+    return row ? this.mapRowToUser(row) : null;
+  }
+  
+  async save(user: User): Promise<User> {
+    const query = user.id 
+      ? 'UPDATE users SET name = $2, email = $3 WHERE id = $1'
+      : 'INSERT INTO users (name, email) VALUES ($1, $2) RETURNING id';
+      
+    const result = await this.db.query(query, [
+      user.id || user.name,
+      user.name,
+      user.email
+    ]);
+    
+    return user.id ? user : { ...user, id: result.rows[0].id };
+  }
+  
+  private mapRowToUser(row: any): User {
+    return new User({
+      id: row.id,
+      name: row.name,
+      email: row.email,
+      createdAt: row.created_at
+    });
+  }
+}
+
+// In-Memory Repository (for testing)
+class InMemoryUserRepository implements UserRepository {
+  private users: Map<string, User> = new Map();
+  
+  async findById(id: string): Promise<User | null> {
+    return this.users.get(id) || null;
+  }
+  
+  async save(user: User): Promise<User> {
+    if (!user.id) {
+      user.id = generateId();
+    }
+    this.users.set(user.id, user);
+    return user;
+  }
+}
+```
+
+### Benefits
+- **Data access abstraction**: Hide database implementation details
+- **Testability**: Easy to mock for unit tests
+- **Flexibility**: Switch data storage without changing business logic
+- **Consistency**: Standardized data access patterns
+
+## Dependency Injection
+
+### Implementation Patterns
+```typescript
+// Service Dependencies
+interface EmailService {
+  sendEmail(to: string, subject: string, body: string): Promise<void>;
+}
+
+interface Logger {
+  info(message: string, meta?: any): void;
+  error(message: string, error?: Error): void;
+}
+
+// Service Implementation
+class UserService {
+  constructor(
+    private userRepository: UserRepository,
+    private emailService: EmailService,
+    private logger: Logger
+  ) {}
+  
+  async createUser(userData: CreateUserData): Promise<User> {
+    this.logger.info('Creating user', { email: userData.email });
+    
+    const user = await this.userRepository.save(new User(userData));
+    
+    await this.emailService.sendEmail(
+      user.email,
+      'Welcome!',
+      'Welcome to our platform!'
+    );
+    
+    return user;
+  }
+}
+
+// DI Container
+class Container {
+  private services = new Map();
+  
+  register<T>(token: string, factory: () => T): void {
+    this.services.set(token, factory);
+  }
+  
+  resolve<T>(token: string): T {
+    const factory = this.services.get(token);
+    if (!factory) {
+      throw new Error(`Service ${token} not registered`);
+    }
+    return factory();
+  }
+}
+
+// Service Registration
+const container = new Container();
+
+container.register('UserRepository', () => 
+  new PostgresUserRepository(database)
+);
+
+container.register('EmailService', () => 
+  new SMTPEmailService(emailConfig)
+);
+
+container.register('Logger', () => 
+  new WinstonLogger()
+);
+
+container.register('UserService', () => 
+  new UserService(
+    container.resolve('UserRepository'),
+    container.resolve('EmailService'),
+    container.resolve('Logger')
+  )
+);
+```
+
+### Benefits
+- **Loose coupling**: Services don't create their dependencies
+- **Testability**: Easy to inject mocks and stubs
+- **Flexibility**: Configure different implementations
+- **Single responsibility**: Services focus on business logic
+
+## Error Handling Patterns
+
+### Result Pattern
+```typescript
+// Result Type
+type Result<T, E = Error> = 
+  | { success: true; data: T }
+  | { success: false; error: E };
+
+// Service Implementation
+class UserService {
+  async createUser(userData: CreateUserData): Promise<Result<User>> {
+    try {
+      // Validation
+      const validationResult = this.validateUserData(userData);
+      if (!validationResult.success) {
+        return validationResult;
+      }
+      
+      // Business logic
+      const user = await this.userRepository.save(new User(userData));
+      
+      return { success: true, data: user };
+    } catch (error) {
+      this.logger.error('Failed to create user', error);
+      return { 
+        success: false, 
+        error: new Error('User creation failed') 
+      };
+    }
+  }
+  
+  private validateUserData(userData: CreateUserData): Result<void> {
+    if (!userData.email || !isValidEmail(userData.email)) {
+      return { 
+        success: false, 
+        error: new ValidationError('Invalid email address') 
+      };
+    }
+    
+    return { success: true, data: undefined };
+  }
+}
+
+// Usage
+const result = await userService.createUser(userData);
+if (result.success) {
+  console.log('User created:', result.data);
+} else {
+  console.error('Creation failed:', result.error.message);
+}
+```
+
+### Circuit Breaker Pattern
+```typescript
+class CircuitBreaker {
+  private failureCount = 0;
+  private lastFailureTime?: Date;
+  private state: 'CLOSED' | 'OPEN' | 'HALF_OPEN' = 'CLOSED';
+  
+  constructor(
+    private failureThreshold: number = 5,
+    private recoveryTimeout: number = 60000
+  ) {}
+  
+  async execute<T>(operation: () => Promise<T>): Promise<T> {
+    if (this.state === 'OPEN') {
+      if (this.shouldAttemptReset()) {
+        this.state = 'HALF_OPEN';
+      } else {
+        throw new Error('Circuit breaker is OPEN');
+      }
+    }
+    
+    try {
+      const result = await operation();
+      this.onSuccess();
+      return result;
+    } catch (error) {
+      this.onFailure();
+      throw error;
+    }
+  }
+  
+  private onSuccess(): void {
+    this.failureCount = 0;
+    this.state = 'CLOSED';
+  }
+  
+  private onFailure(): void {
+    this.failureCount++;
+    this.lastFailureTime = new Date();
+    
+    if (this.failureCount >= this.failureThreshold) {
+      this.state = 'OPEN';
+    }
+  }
+  
+  private shouldAttemptReset(): boolean {
+    return this.lastFailureTime && 
+           Date.now() - this.lastFailureTime.getTime() > this.recoveryTimeout;
+  }
+}
+```
+
+## Caching Patterns
+
+### Cache-Aside Pattern
+```typescript
+class UserService {
+  constructor(
+    private userRepository: UserRepository,
+    private cache: Cache
+  ) {}
+  
+  async getUserById(id: string): Promise<User | null> {
+    // Try cache first
+    const cacheKey = `user:${id}`;
+    const cachedUser = await this.cache.get(cacheKey);
+    
+    if (cachedUser) {
+      return JSON.parse(cachedUser);
+    }
+    
+    // Load from database
+    const user = await this.userRepository.findById(id);
+    
+    if (user) {
+      // Store in cache
+      await this.cache.set(
+        cacheKey, 
+        JSON.stringify(user), 
+        { ttl: 3600 } // 1 hour
+      );
+    }
+    
+    return user;
+  }
+  
+  async updateUser(id: string, updates: Partial<User>): Promise<User> {
+    const user = await this.userRepository.update(id, updates);
+    
+    // Invalidate cache
+    await this.cache.delete(`user:${id}`);
+    
+    return user;
+  }
+}
+```
+
+### Write-Through Pattern
+```typescript
+class CachingUserRepository implements UserRepository {
+  constructor(
+    private repository: UserRepository,
+    private cache: Cache
+  ) {}
+  
+  async save(user: User): Promise<User> {
+    // Save to database first
+    const savedUser = await this.repository.save(user);
+    
+    // Update cache
+    const cacheKey = `user:${savedUser.id}`;
+    await this.cache.set(
+      cacheKey, 
+      JSON.stringify(savedUser),
+      { ttl: 3600 }
+    );
+    
+    return savedUser;
+  }
+}
+```
+
+## Best Practices
+
+### Architecture Decision Records (ADRs)
+```markdown
+# ADR-001: Use Microservices Architecture
+
+## Status
+Accepted
+
+## Context
+Our monolithic application is becoming difficult to maintain and deploy.
+
+## Decision
+Adopt microservices architecture with domain-driven design.
+
+## Consequences
+- Improved scalability and maintainability
+- Increased operational complexity
+- Need for service mesh and monitoring
+- Team reorganization around services
+```
+
+### Design Principles
+- **SOLID principles**: Single responsibility, Open/closed, Liskov substitution, Interface segregation, Dependency inversion
+- **DRY (Don't Repeat Yourself)**: Avoid code duplication
+- **KISS (Keep It Simple, Stupid)**: Prefer simple solutions
+- **YAGNI (You Aren't Gonna Need It)**: Don't over-engineer
+
+### Common Anti-patterns
+- ❌ **God objects**: Classes that do too much
+- ❌ **Tight coupling**: Components that depend heavily on each other
+- ❌ **Circular dependencies**: Components that depend on each other cyclically
+- ❌ **Leaky abstractions**: Abstractions that expose implementation details
+
+## Success Metrics
+
+### Architecture Quality
+- **Maintainability**: Easy to modify and extend
+- **Testability**: Components can be tested in isolation
+- **Scalability**: System can handle increased load
+- **Reliability**: System degrades gracefully under stress
+
+### Development Velocity
+- **Feature delivery speed**: Time from idea to production
+- **Bug fix time**: Time to identify and resolve issues
+- **Developer onboarding**: Time for new developers to become productive
+- **Code reusability**: Extent to which components can be reused

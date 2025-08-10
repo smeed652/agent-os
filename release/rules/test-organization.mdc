@@ -1,0 +1,336 @@
+---
+alwaysApply: true
+---
+
+# Test Organization
+
+Universal standards for organizing test files, managing test coverage, and maintaining test suite performance across all projects.
+
+## Test File Organization
+
+### Co-location Strategy (Preferred)
+```
+src/
+├── components/
+│   ├── UserCard/
+│   │   ├── UserCard.tsx
+│   │   ├── UserCard.test.tsx          # Unit tests
+│   │   ├── UserCard.integration.test.tsx  # Integration tests
+│   │   └── UserCard.stories.tsx       # Storybook stories
+├── utils/
+│   ├── dateUtils.ts
+│   └── dateUtils.test.ts              # Co-located tests
+├── hooks/
+│   ├── useAuth.ts
+│   └── useAuth.test.ts                # Co-located tests
+```
+
+### Mirror Structure (Alternative)
+```
+src/
+├── components/UserCard.tsx
+├── utils/dateUtils.ts
+└── hooks/useAuth.ts
+
+__tests__/
+├── components/UserCard.test.tsx
+├── utils/dateUtils.test.ts
+└── hooks/useAuth.test.ts
+```
+
+### Test Type Organization
+- **Unit tests**: `.test.tsx` or `.spec.tsx`
+- **Integration tests**: `.integration.test.tsx`
+- **E2E tests**: `cypress/e2e/` directory
+- **Performance tests**: `performance/` directory
+
+## Test Coverage Standards
+
+### Coverage Targets
+- **Critical business logic**: 90%+ coverage
+- **UI components**: 80%+ coverage
+- **Utility functions**: 95%+ coverage
+- **Integration flows**: 70%+ path coverage
+- **Overall project**: 80%+ coverage
+
+### Coverage Configuration
+```json
+{
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 80,
+        "functions": 80,
+        "lines": 80,
+        "statements": 80
+      },
+      "src/utils/": {
+        "branches": 95,
+        "functions": 95,
+        "lines": 95,
+        "statements": 95
+      }
+    },
+    "collectCoverageFrom": [
+      "src/**/*.{ts,tsx}",
+      "!src/**/*.d.ts",
+      "!src/**/*.stories.tsx",
+      "!src/index.tsx"
+    ]
+  }
+}
+```
+
+### What to Test
+- **Public interfaces**: All exported functions and components
+- **Business logic**: Critical application workflows
+- **Error conditions**: Edge cases and error handling
+- **User interactions**: Click handlers, form submissions
+- **Data transformations**: Input/output processing
+
+### What Not to Test
+- **Third-party libraries**: Trust external dependencies
+- **Implementation details**: Internal component state
+- **Trivial code**: Simple getters, setters, constants
+- **Generated code**: Auto-generated files
+
+## Test Suite Performance
+
+### Performance Targets
+- **Unit tests**: < 10 seconds total execution
+- **Integration tests**: < 30 seconds total execution
+- **E2E tests**: < 5 minutes total execution
+- **Individual test**: < 100ms execution time
+
+### Optimization Strategies
+```typescript
+// Use test.concurrent for independent tests
+test.concurrent('should process user data', async () => {
+  // Test implementation
+});
+
+// Group related tests with describe.concurrent
+describe.concurrent('UserService', () => {
+  test('should create user', async () => {});
+  test('should update user', async () => {});
+  test('should delete user', async () => {});
+});
+
+// Use beforeAll for expensive setup
+describe('Database tests', () => {
+  beforeAll(async () => {
+    await setupTestDatabase();
+  });
+  
+  afterAll(async () => {
+    await cleanupTestDatabase();
+  });
+});
+```
+
+### Test Isolation
+- **Independent tests**: Each test should run in isolation
+- **Clean state**: Reset mocks and state between tests
+- **No shared mutations**: Avoid modifying shared objects
+- **Deterministic data**: Use consistent test data
+
+## Test Documentation
+
+### Test Naming
+```typescript
+// Good: Descriptive test names
+describe('UserService', () => {
+  describe('when user exists', () => {
+    it('should return user data with correct format', () => {});
+    it('should include user permissions in response', () => {});
+  });
+  
+  describe('when user does not exist', () => {
+    it('should throw UserNotFoundError with user ID', () => {});
+  });
+});
+
+// Poor: Vague test names
+describe('UserService', () => {
+  it('should work', () => {});
+  it('test user creation', () => {});
+});
+```
+
+### Test Comments
+```typescript
+it('should calculate discount correctly for premium users', () => {
+  // Arrange: Set up premium user with qualifying purchase
+  const user = createPremiumUser();
+  const purchase = { amount: 100, items: 5 };
+  
+  // Act: Apply discount calculation
+  const result = calculateDiscount(user, purchase);
+  
+  // Assert: Verify 15% premium discount applied
+  expect(result.discount).toBe(15);
+  expect(result.finalAmount).toBe(85);
+});
+```
+
+## Test Maintenance
+
+### Regular Maintenance Tasks
+- **Review test coverage**: Monthly coverage analysis
+- **Remove obsolete tests**: Delete tests for removed features
+- **Update test data**: Keep test fixtures current
+- **Refactor duplicated setup**: Extract common test utilities
+- **Performance monitoring**: Track test execution times
+
+### Test Quality Checklist
+- [ ] Tests have descriptive names
+- [ ] Tests are independent and isolated
+- [ ] Tests follow AAA (Arrange, Act, Assert) pattern
+- [ ] Tests cover both happy path and error cases
+- [ ] Tests use appropriate mocking strategies
+- [ ] Tests run quickly and reliably
+- [ ] Tests are easy to understand and maintain
+
+## Mocking Strategies
+
+### External Dependencies
+```typescript
+// Mock API calls
+jest.mock('../services/apiClient', () => ({
+  get: jest.fn(),
+  post: jest.fn(),
+  put: jest.fn(),
+  delete: jest.fn()
+}));
+
+// Mock React Router
+jest.mock('react-router-dom', () => ({
+  ...jest.requireActual('react-router-dom'),
+  useNavigate: () => jest.fn()
+}));
+
+// Mock environment variables
+process.env.NODE_ENV = 'test';
+process.env.API_URL = 'http://localhost:3001';
+```
+
+### Component Mocking
+```typescript
+// Mock complex child components
+jest.mock('../ComplexChart', () => {
+  return function MockComplexChart(props: any) {
+    return <div data-testid="mock-chart" {...props} />;
+  };
+});
+
+// Mock hooks
+jest.mock('../hooks/useAuth', () => ({
+  useAuth: () => ({
+    user: { id: '1', name: 'Test User' },
+    isAuthenticated: true,
+    login: jest.fn(),
+    logout: jest.fn()
+  })
+}));
+```
+
+## Test Data Management
+
+### Test Factories
+```typescript
+// factories/userFactory.ts
+export const createUser = (overrides: Partial<User> = {}): User => ({
+  id: faker.datatype.uuid(),
+  name: faker.name.fullName(),
+  email: faker.internet.email(),
+  role: 'user',
+  createdAt: faker.date.recent(),
+  ...overrides
+});
+
+export const createUsers = (count: number = 3): User[] => {
+  return Array.from({ length: count }, () => createUser());
+};
+```
+
+### Fixtures
+```typescript
+// fixtures/testData.ts
+export const testUsers = {
+  admin: {
+    id: '1',
+    name: 'Admin User',
+    email: 'admin@example.com',
+    role: 'admin'
+  },
+  regularUser: {
+    id: '2',
+    name: 'Regular User',
+    email: 'user@example.com',
+    role: 'user'
+  }
+};
+```
+
+## CI/CD Integration
+
+### Test Pipeline
+```yaml
+# .github/workflows/test.yml
+name: Test Pipeline
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run unit tests
+        run: npm run test:unit -- --coverage
+      
+      - name: Run integration tests
+        run: npm run test:integration
+      
+      - name: Upload coverage
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage/lcov.info
+      
+      - name: Run E2E tests
+        run: npm run test:e2e:ci
+```
+
+### Quality Gates
+- **Coverage threshold**: Fail build if coverage drops below threshold
+- **Test results**: Fail build if any tests fail
+- **Performance**: Fail build if tests take too long
+- **Flaky test detection**: Alert on intermittent failures
+
+## Success Metrics
+
+### Coverage Metrics
+- **Line coverage**: Percentage of code lines executed
+- **Branch coverage**: Percentage of code branches tested
+- **Function coverage**: Percentage of functions called
+- **Statement coverage**: Percentage of statements executed
+
+### Quality Metrics
+- **Test reliability**: Percentage of consistent test results
+- **Test performance**: Average test execution time
+- **Defect detection**: Percentage of bugs caught by tests
+- **Maintenance overhead**: Time spent maintaining tests
+
+### Team Metrics
+- **Test-first adoption**: Percentage of features developed with TDD
+- **Code review coverage**: Tests included in code reviews
+- **Documentation quality**: Test code documentation completeness
+- **Knowledge sharing**: Team understanding of testing practices

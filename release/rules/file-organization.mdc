@@ -1,0 +1,337 @@
+---
+alwaysApply: true
+---
+
+# File Organization
+
+Universal file organization standards that ensure consistent project structure, maintainable file sizes, and clear naming conventions across all projects.
+
+## File Size Guidelines
+
+### Code Files
+- **TypeScript/JavaScript (.ts, .tsx, .js, .jsx)**: Under 300 lines
+- **Rationale**: Easier to understand, test, and maintain while allowing for reasonable complexity
+- **Action when exceeded**: Refactor into smaller, focused modules
+- **Measurement**: Exclude imports, exports, and comments from line count
+- **Exceptions**: Generated files, complex algorithms with comprehensive documentation, test files, configuration files with extensive comments
+
+### Test Files
+- **Test files (.test.ts, .test.tsx, .spec.ts)**: Aim for under 500 lines
+- **Rationale**: Test files can be longer due to setup, mocks, and multiple test scenarios
+- **Action when exceeded**: Group related tests, extract common utilities and factories
+- **Best practice**: One test file per source file when possible
+- **Organization**: Use `describe` blocks to group related test cases
+
+### Documentation Files
+- **Documentation (.md, .txt)**: No strict limit
+- **Rationale**: Comprehensive documentation is more important than brevity
+- **Recommendation**: Use modular approach with includes for very long documents
+- **Organization**: Break into logical sections with clear headings
+- **Maintenance**: Regular review to ensure accuracy and relevance
+
+### Configuration Files
+- **Config files (.json, .yaml, .config.js)**: Keep concise and well-commented
+- **Documentation**: Include comments explaining non-obvious configurations
+- **Modularity**: Split large configurations into logical sections or separate files
+- **Validation**: Ensure configurations are valid and tested
+
+## Directory Structure Standards
+
+### Root Level Organization
+```
+project-root/
+├── src/                     # Source code
+├── docs/                    # Documentation
+├── tests/ or __tests__/     # Test files (if not co-located)
+├── scripts/                 # Build and utility scripts
+├── public/                  # Static assets (web projects)
+├── config/                  # Configuration files
+└── tools/                   # Development tools and utilities
+```
+
+### Source Code Organization
+```
+src/
+├── components/              # Reusable UI components
+│   ├── ui/                 # Basic UI elements (Button, Input, etc.)
+│   ├── layout/             # Layout components (Header, Sidebar, etc.)
+│   └── feature/            # Feature-specific components
+├── pages/ or routes/        # Page/route components
+├── hooks/                   # Custom React hooks
+├── services/               # API clients and external services
+├── utils/                  # Pure utility functions
+├── types/                  # TypeScript type definitions
+├── constants/              # Application constants
+├── context/                # React context providers
+├── lib/                    # Third-party library configurations
+└── assets/                 # Images, fonts, and other static assets
+```
+
+### Feature-Based Organization (Alternative)
+```
+src/
+├── features/
+│   ├── authentication/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   ├── types/
+│   │   └── index.ts
+│   ├── user-management/
+│   │   ├── components/
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   └── index.ts
+│   └── dashboard/
+├── shared/
+│   ├── components/
+│   ├── hooks/
+│   ├── utils/
+│   └── types/
+└── app/
+    ├── store/
+    ├── router/
+    └── providers/
+```
+
+## Naming Conventions
+
+### File Naming Patterns
+
+#### Component Files
+- **Format**: `PascalCase.tsx`
+- **Pattern**: `[FeatureOrPurpose][ComponentType].tsx`
+- **Examples**:
+  - `UserProfilePage.tsx` - Page component
+  - `SettingsPanel.tsx` - Panel component
+  - `LoginForm.tsx` - Form component
+  - `UserListItem.tsx` - List item component
+  - `ProductCard.tsx` - Card component
+  - `NavigationHeader.tsx` - Header component
+
+#### Hook Files
+- **Format**: `useCamelCase.ts`
+- **Pattern**: `use[Purpose][OptionalContext].ts`
+- **Examples**:
+  - `useAuth.ts` - Authentication hook
+  - `useApiData.ts` - Data fetching hook
+  - `useLocalStorage.ts` - Local storage hook
+  - `useFormValidation.ts` - Form validation hook
+  - `useWindowSize.ts` - Window size hook
+
+#### Utility Files
+- **Format**: `camelCase.ts`
+- **Pattern**: `[purpose][Utils|Helper|Client].ts`
+- **Examples**:
+  - `apiClient.ts` - API client configuration
+  - `dateUtils.ts` - Date utility functions
+  - `validationHelpers.ts` - Validation helper functions
+  - `formatters.ts` - Data formatting functions
+  - `constants.ts` - Application constants
+
+#### Type Definition Files
+- **Format**: `camelCase.ts` or `PascalCase.ts`
+- **Pattern**: `[domain][Types|Interfaces].ts`
+- **Examples**:
+  - `userTypes.ts` - User-related type definitions
+  - `apiTypes.ts` - API response type definitions
+  - `commonTypes.ts` - Shared type definitions
+  - `User.ts` - Single entity type definition
+
+### Directory Naming
+
+#### General Rules
+- **Format**: `kebab-case` or `camelCase` (be consistent within project)
+- **Preference**: Use `kebab-case` for multi-word directory names
+- **Examples**: `user-management/`, `api-client/`, `error-handling/`
+- **Avoid**: Generic names like `utils`, `helpers`, `common`, `misc`
+
+#### Feature Directories
+- **Format**: `kebab-case` representing the business domain
+- **Examples**: `user-authentication/`, `order-processing/`, `inventory-management/`
+- **Organization**: Group related functionality together
+- **Scope**: Each directory should represent a cohesive business capability
+
+#### Component Directories
+- **Co-location**: Place related files together
+- **Structure**:
+  ```
+  components/
+  ├── UserCard/
+  │   ├── UserCard.tsx
+  │   ├── UserCard.test.tsx
+  │   ├── UserCard.stories.tsx
+  │   ├── UserCard.module.css
+  │   └── index.ts
+  ```
+
+## File Co-location Strategies
+
+### Test Co-location
+- **Preferred**: Place test files next to source files
+- **Pattern**: `Component.test.tsx` next to `Component.tsx`
+- **Benefits**: Easier to find and maintain tests
+- **Alternative**: Mirror structure in separate `__tests__/` directory
+
+### Style Co-location
+- **CSS Modules**: `Component.module.css` next to `Component.tsx`
+- **Styled Components**: Define in same file or `Component.styles.ts`
+- **SCSS**: `Component.scss` next to `Component.tsx`
+
+### Story Co-location (Storybook)
+- **Pattern**: `Component.stories.tsx` next to `Component.tsx`
+- **Benefits**: Keep component documentation close to implementation
+- **Organization**: Use story categories for complex component hierarchies
+
+## Import/Export Organization
+
+### Index Files (Barrel Exports)
+```typescript
+// components/index.ts
+export { default as UserCard } from './UserCard/UserCard';
+export { default as UserList } from './UserList/UserList';
+export { default as UserForm } from './UserForm/UserForm';
+
+// types/index.ts
+export type { User, UserRole, UserPreferences } from './userTypes';
+export type { ApiResponse, ApiError } from './apiTypes';
+```
+
+### Import Ordering
+```typescript
+// 1. External library imports
+import React, { useState, useEffect } from 'react';
+import { Router } from 'next/router';
+import axios from 'axios';
+
+// 2. Internal imports (absolute paths)
+import { UserCard } from '@/components';
+import { useAuth } from '@/hooks';
+import { apiClient } from '@/services';
+
+// 3. Relative imports
+import './Component.styles.css';
+import { validateInput } from '../utils/validation';
+
+// 4. Type-only imports (separate section)
+import type { User } from '@/types';
+import type { ComponentProps } from 'react';
+```
+
+### Path Alias Configuration
+```typescript
+// tsconfig.json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"],
+      "@/components/*": ["src/components/*"],
+      "@/hooks/*": ["src/hooks/*"],
+      "@/services/*": ["src/services/*"],
+      "@/utils/*": ["src/utils/*"],
+      "@/types/*": ["src/types/*"]
+    }
+  }
+}
+```
+
+## Code Organization Principles
+
+### Single Responsibility
+- **Files**: Each file should have one clear purpose
+- **Functions**: Each function should do one thing well
+- **Components**: Each component should represent one UI concept
+- **Modules**: Each module should encapsulate one feature or capability
+
+### Dependency Direction
+- **High-level modules** should not depend on low-level modules
+- **Abstractions** should not depend on details
+- **Business logic** should not depend on UI components
+- **Core functionality** should not depend on external libraries
+
+### Coupling and Cohesion
+- **Low coupling**: Minimize dependencies between modules
+- **High cohesion**: Group related functionality together
+- **Interface segregation**: Create focused, specific interfaces
+- **Dependency inversion**: Depend on abstractions, not concretions
+
+## File Lifecycle Management
+
+### Creation Guidelines
+- **Start with clear purpose** - Know why the file exists
+- **Choose appropriate location** - Follow established directory structure
+- **Use consistent naming** - Follow project naming conventions
+- **Include necessary documentation** - Add JSDoc comments for public interfaces
+
+### Growth Management
+- **Monitor file size** - Regular review of files approaching 300 lines
+- **Refactor when needed** - Extract functionality before files become unwieldy
+- **Maintain focus** - Keep files focused on their original purpose
+- **Update documentation** - Keep comments and documentation current
+
+### Deletion and Cleanup
+- **Remove unused files** - Regular cleanup of obsolete code
+- **Update references** - Ensure all imports are updated when files are moved
+- **Archive when appropriate** - Move historical files to archive directories
+- **Document changes** - Note significant file structure changes
+
+## Quality Assurance
+
+### File Organization Checklist
+- [ ] File serves single, clear purpose
+- [ ] File size within guidelines (300 lines for code, 500 for tests, flexible for docs)
+- [ ] Naming follows established conventions
+- [ ] Location appropriate for content type
+- [ ] Dependencies are minimal and clear
+- [ ] Documentation is adequate for complexity
+- [ ] Tests are co-located or appropriately organized
+- [ ] Exports are clean and well-organized
+
+### Directory Structure Validation
+- [ ] Directory structure is logical and consistent
+- [ ] Related files are grouped together
+- [ ] Directory names are descriptive and consistent
+- [ ] No orphaned or misplaced files
+- [ ] Import paths are clean and maintainable
+- [ ] No circular dependencies between modules
+
+## Common Anti-patterns
+
+### File Organization Problems
+- ❌ **God files** - Files that do too many things
+- ❌ **Utility dumping grounds** - Generic `utils` directories with unrelated functions
+- ❌ **Deep nesting** - Overly complex directory hierarchies
+- ❌ **Inconsistent naming** - Mixed naming conventions within same project
+
+### Import/Export Issues
+- ❌ **Circular dependencies** - Files that depend on each other
+- ❌ **Long import paths** - Excessive `../../../` in import statements
+- ❌ **Barrel export overuse** - Exporting everything through index files
+- ❌ **Mixed import styles** - Inconsistent use of default vs named imports
+
+### Maintenance Problems
+- ❌ **Orphaned files** - Files no longer referenced anywhere
+- ❌ **Outdated structure** - Directory structure that doesn't match current architecture
+- ❌ **Missing documentation** - Complex files without adequate explanation
+- ❌ **Inconsistent co-location** - Some tests co-located, others separate
+
+## Success Metrics
+
+### Organization Quality
+- **File discovery time** - How quickly developers can find relevant files
+- **Refactoring safety** - Confidence in making structural changes
+- **New developer onboarding** - Time to understand project structure
+- **Maintenance overhead** - Effort required to keep structure clean
+
+### Code Quality
+- **Coupling metrics** - Low interdependence between modules
+- **Cohesion metrics** - High relatedness within modules
+- **Complexity metrics** - Manageable file and function complexity
+- **Test coverage** - Comprehensive testing enabled by good structure
+
+### Developer Experience
+- **IDE navigation efficiency** - Easy to navigate in development tools
+- **Build performance** - Structure supports efficient building and bundling
+- **Import clarity** - Clear, short import statements
+- **Debugging efficiency** - Easy to trace issues through well-organized code

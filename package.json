@@ -43,6 +43,8 @@
     "create:spec:full": "node scripts/comprehensive-spec-creator.js",
     "test:spec:system": "node scripts/test-comprehensive-spec-system.js",
     "dashboard:update": "node scripts/specs-dashboard-updater.js",
+    "release": "node scripts/release.js",
+    "release:quick": "node scripts/quick-release.js",
     "install:global": "npm install -g .",
     "uninstall:global": "npm uninstall -g agent-os"
   },
@@ -76,6 +78,7 @@
   },
   "jest": {
     "testEnvironment": "node",
+    "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"],
     "collectCoverageFrom": [
       "src/**/*.js",
       "!src/index.js",

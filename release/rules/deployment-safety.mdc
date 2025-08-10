@@ -1,0 +1,453 @@
+---
+alwaysApply: true
+---
+
+# Deployment Safety
+
+Universal deployment safety standards that ensure reliable, secure, and recoverable deployments across all environments.
+
+## Safety Principles
+
+### Defense in Depth
+- **Multiple validation layers** before production
+- **Automated quality gates** at each stage
+- **Human approval** for critical deployments
+- **Comprehensive monitoring** post-deployment
+
+### Fail-Safe Defaults
+- **Automatic rollback** on health check failures
+- **Circuit breakers** for dependent services
+- **Graceful degradation** when systems fail
+- **Conservative deployment strategies**
+
+## Pre-Deployment Gates
+
+### Automated Quality Checks
+```yaml
+quality_gates:
+  code_quality:
+    - linting: must pass
+    - type_checking: must pass
+    - security_scan: no critical vulnerabilities
+    - dependency_audit: no high-risk dependencies
+    
+  testing:
+    - unit_tests: 100% pass rate, 80% coverage minimum
+    - integration_tests: 100% pass rate
+    - e2e_tests: critical paths must pass
+    - performance_tests: within acceptable thresholds
+    
+  build_validation:
+    - build_success: must compile without errors
+    - artifact_size: within size limits
+    - bundle_analysis: no unexpected dependencies
+```
+
+### Staging Environment Validation
+```yaml
+staging_gates:
+  deployment:
+    - deploy_to_staging: must succeed
+    - health_checks: all services healthy
+    - smoke_tests: critical functionality verified
+    - load_tests: performance within limits
+    
+  manual_verification:
+    - feature_testing: new features work as expected
+    - regression_testing: existing features unaffected
+    - user_acceptance: stakeholder approval
+```
+
+## Deployment Strategies
+
+### Blue-Green Deployment
+```yaml
+blue_green:
+  process:
+    1. Deploy to green environment (inactive)
+    2. Run health checks on green
+    3. Switch traffic to green
+    4. Monitor for issues
+    5. Keep blue as rollback option
+    
+  benefits:
+    - Zero downtime deployments
+    - Instant rollback capability
+    - Full environment testing
+    
+  considerations:
+    - Requires double infrastructure
+    - Database migrations complexity
+    - Session management
+```
+
+### Canary Deployment
+```yaml
+canary:
+  process:
+    1. Deploy to small subset (5% traffic)
+    2. Monitor key metrics
+    3. Gradually increase traffic (25%, 50%, 100%)
+    4. Rollback if metrics degrade
+    
+  benefits:
+    - Reduced blast radius
+    - Real user feedback
+    - Gradual risk exposure
+    
+  monitoring:
+    - Error rates
+    - Response times
+    - User satisfaction metrics
+```
+
+### Rolling Deployment
+```yaml
+rolling:
+  process:
+    1. Deploy to one instance at a time
+    2. Health check each instance
+    3. Continue to next instance
+    4. Rollback if any instance fails
+    
+  benefits:
+    - No additional infrastructure
+    - Gradual deployment
+    - Always available service
+    
+  considerations:
+    - Temporary version inconsistency
+    - Longer deployment time
+    - Complex state management
+```
+
+## Health Monitoring
+
+### Application Health Checks
+```typescript
+// health-check.ts
+export const healthCheck = async (): Promise<HealthStatus> => {
+  const checks = [
+    { name: 'database', check: checkDatabase },
+    { name: 'api', check: checkApiEndpoints },
+    { name: 'cache', check: checkCache },
+    { name: 'external_services', check: checkExternalServices }
+  ];
+
+  const results = await Promise.all(
+    checks.map(async ({ name, check }) => {
+      try {
+        const result = await Promise.race([
+          check(),
+          new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Timeout')), 5000)
+          )
+        ]);
+        return { name, status: 'healthy', ...result };
+      } catch (error) {
+        return { 
+          name, 
+          status: 'unhealthy', 
+          error: error.message 
+        };
+      }
+    })
+  );
+
+  const overallStatus = results.every(r => r.status === 'healthy') 
+    ? 'healthy' 
+    : 'unhealthy';
+
+  return { status: overallStatus, checks: results };
+};
+```
+
+### Infrastructure Monitoring
+```yaml
+infrastructure_checks:
+  system_resources:
+    - cpu_usage: < 80%
+    - memory_usage: < 85%
+    - disk_space: > 20% free
+    - network_connectivity: responsive
+    
+  application_metrics:
+    - response_time: < 500ms p95
+    - error_rate: < 1%
+    - throughput: within expected range
+    - availability: > 99.9%
+```
+
+## Rollback Procedures
+
+### Automatic Rollback Triggers
+```yaml
+rollback_triggers:
+  health_check_failures:
+    - consecutive_failures: 3
+    - failure_rate: > 50% over 2 minutes
+    - timeout_rate: > 25%
+    
+  performance_degradation:
+    - response_time: > 2x baseline
+    - error_rate: > 5x baseline
+    - availability: < 95%
+    
+  business_metrics:
+    - conversion_rate: > 10% drop
+    - user_engagement: > 20% drop
+    - revenue_impact: any negative trend
+```
+
+### Rollback Implementation
+```bash
+#!/bin/bash
+# rollback.sh
+
+set -e
+
+PREVIOUS_VERSION=$1
+ENVIRONMENT=${2:-production}
+
+if [ -z "$PREVIOUS_VERSION" ]; then
+  echo "❌ Previous version required"
+  echo "Usage: ./rollback.sh <version> [environment]"
+  exit 1
+fi
+
+echo "🔄 Starting rollback to $PREVIOUS_VERSION in $ENVIRONMENT..."
+
+# 1. Validate previous version exists
+if ! docker image inspect "myapp:$PREVIOUS_VERSION" > /dev/null 2>&1; then
+  echo "❌ Version $PREVIOUS_VERSION not found"
+  exit 1
+fi
+
+# 2. Create rollback backup
+kubectl create backup current-deployment-$(date +%s)
+
+# 3. Execute rollback
+kubectl set image deployment/myapp app=myapp:$PREVIOUS_VERSION
+
+# 4. Wait for rollout completion
+kubectl rollout status deployment/myapp --timeout=300s
+
+# 5. Verify health
+if ./health-check.sh; then
+  echo "✅ Rollback successful"
+  echo "📊 Current version: $PREVIOUS_VERSION"
+else
+  echo "❌ Rollback failed health checks"
+  exit 1
+fi
+
+# 6. Notify team
+./notify-deployment.sh "rollback" "$PREVIOUS_VERSION" "$ENVIRONMENT"
+```
+
+## Database Migration Safety
+
+### Migration Strategies
+```sql
+-- Safe migration pattern
+-- 1. Add new column (nullable)
+ALTER TABLE users ADD COLUMN new_field VARCHAR(255);
+
+-- 2. Deploy application code that handles both old and new schema
+-- 3. Backfill data
+UPDATE users SET new_field = 'default_value' WHERE new_field IS NULL;
+
+-- 4. Make column non-nullable in next deployment
+ALTER TABLE users ALTER COLUMN new_field SET NOT NULL;
+```
+
+### Migration Rollback
+```sql
+-- Always prepare rollback scripts
+-- rollback_migration_001.sql
+ALTER TABLE users DROP COLUMN new_field;
+
+-- Test rollback in staging
+-- Document rollback procedures
+-- Verify data integrity after rollback
+```
+
+## Security Considerations
+
+### Deployment Security
+```yaml
+security_measures:
+  access_control:
+    - principle_of_least_privilege
+    - role_based_access_control
+    - multi_factor_authentication
+    
+  artifact_security:
+    - signed_containers
+    - vulnerability_scanning
+    - secure_registry_access
+    
+  runtime_security:
+    - network_policies
+    - security_contexts
+    - secrets_management
+```
+
+### Audit Logging
+```typescript
+// deployment-audit.ts
+export const logDeployment = async (event: DeploymentEvent) => {
+  const auditLog = {
+    timestamp: new Date().toISOString(),
+    event_type: event.type,
+    environment: event.environment,
+    version: event.version,
+    user: event.user,
+    approval_chain: event.approvals,
+    duration: event.duration,
+    status: event.status,
+    rollback_reason: event.rollbackReason
+  };
+
+  await auditLogger.log(auditLog);
+  
+  // Alert on suspicious activities
+  if (isAnomalousDeployment(auditLog)) {
+    await alertSecurityTeam(auditLog);
+  }
+};
+```
+
+## Disaster Recovery
+
+### Backup Procedures
+```yaml
+backup_strategy:
+  application_data:
+    - database_snapshots: daily, retained 30 days
+    - file_storage: continuous replication
+    - configuration: version controlled
+    
+  infrastructure:
+    - infrastructure_as_code: git repository
+    - deployment_scripts: version controlled
+    - environment_configs: encrypted storage
+```
+
+### Recovery Procedures
+```bash
+#!/bin/bash
+# disaster-recovery.sh
+
+RECOVERY_POINT=$1
+ENVIRONMENT=$2
+
+echo "🚨 Starting disaster recovery for $ENVIRONMENT"
+echo "📅 Recovery point: $RECOVERY_POINT"
+
+# 1. Validate recovery point
+if ! validate_recovery_point "$RECOVERY_POINT"; then
+  echo "❌ Invalid recovery point"
+  exit 1
+fi
+
+# 2. Scale down current deployment
+kubectl scale deployment myapp --replicas=0
+
+# 3. Restore database
+restore_database "$RECOVERY_POINT"
+
+# 4. Deploy known good version
+deploy_version "$RECOVERY_POINT"
+
+# 5. Verify system health
+if health_check; then
+  echo "✅ Disaster recovery successful"
+else
+  echo "❌ Recovery failed, manual intervention required"
+  exit 1
+fi
+```
+
+## Communication Protocols
+
+### Deployment Notifications
+```typescript
+// notification.ts
+export const notifyDeployment = async (deployment: Deployment) => {
+  const channels = [
+    { type: 'slack', webhook: process.env.SLACK_WEBHOOK },
+    { type: 'email', recipients: ['team@example.com'] },
+    { type: 'dashboard', endpoint: '/api/deployments' }
+  ];
+
+  const message = {
+    environment: deployment.environment,
+    version: deployment.version,
+    status: deployment.status,
+    duration: deployment.duration,
+    deployer: deployment.user,
+    timestamp: deployment.timestamp,
+    rollback_available: deployment.rollbackAvailable
+  };
+
+  await Promise.all(
+    channels.map(channel => sendNotification(channel, message))
+  );
+};
+```
+
+### Incident Response
+```yaml
+incident_response:
+  severity_levels:
+    critical: "Complete service outage"
+    high: "Major functionality impacted"
+    medium: "Minor functionality impacted"
+    low: "Cosmetic issues"
+    
+  response_times:
+    critical: 15 minutes
+    high: 1 hour
+    medium: 4 hours
+    low: 24 hours
+    
+  escalation:
+    - on_call_engineer: immediate
+    - team_lead: 30 minutes
+    - management: 1 hour (critical/high)
+```
+
+## Best Practices
+
+### Deployment Planning
+- **Off-peak deployments**: Schedule during low-traffic periods
+- **Staged rollouts**: Gradual exposure to minimize risk
+- **Feature flags**: Decouple deployment from feature activation
+- **Communication**: Clear notifications to all stakeholders
+
+### Risk Mitigation
+- **Comprehensive testing**: Multiple test layers before production
+- **Monitoring setup**: Metrics and alerts in place before deployment
+- **Rollback readiness**: Tested rollback procedures
+- **Team availability**: Key personnel available during deployment
+
+### Continuous Improvement
+- **Post-deployment reviews**: Learn from each deployment
+- **Metrics analysis**: Track deployment success rates and times
+- **Process refinement**: Regularly update procedures
+- **Training**: Keep team skills current
+
+## Success Metrics
+
+### Deployment Reliability
+- **Success rate**: > 95% successful deployments
+- **Rollback rate**: < 5% of deployments require rollback
+- **Recovery time**: < 15 minutes for automatic rollbacks
+- **Downtime**: < 0.1% unplanned downtime
+
+### Performance Metrics
+- **Deployment frequency**: Measure team velocity
+- **Lead time**: Time from commit to production
+- **Mean time to recovery**: Speed of issue resolution
+- **Change failure rate**: Percentage of deployments causing issues

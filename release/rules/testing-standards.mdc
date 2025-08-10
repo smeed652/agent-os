@@ -1,0 +1,710 @@
+---
+alwaysApply: true
+---
+
+# Testing Standards
+
+Universal testing standards that ensure comprehensive, maintainable, and reliable test coverage across all projects.
+
+## Testing Philosophy
+
+### Test Pyramid Approach
+- **Unit Tests (70%)**: Fast, isolated tests for individual functions and components
+- **Integration Tests (20%)**: Tests for component interactions and workflows
+- **End-to-End Tests (10%)**: Full user journey tests through the application
+
+### Quality Over Quantity
+- **Focus on critical paths**: Test the most important user flows thoroughly
+- **Test behavior, not implementation**: Tests should survive refactoring
+- **Maintainable tests**: Tests should be easy to read, update, and debug
+- **Fast feedback**: Tests should run quickly to enable rapid development
+
+### Testing Principles
+- **Arrange, Act, Assert (AAA)**: Clear test structure for readability
+- **Given, When, Then (GWT)**: Alternative structure for behavior-driven tests
+- **Isolation**: Tests should not depend on each other
+- **Deterministic**: Tests should produce consistent results
+
+## Unit Testing Standards
+
+### Test File Organization
+```
+src/
+├── components/
+│   ├── UserCard/
+│   │   ├── UserCard.tsx
+│   │   ├── UserCard.test.tsx      # Co-located unit tests
+│   │   └── UserCard.stories.tsx
+├── utils/
+│   ├── dateUtils.ts
+│   ├── dateUtils.test.ts          # Co-located unit tests
+├── hooks/
+│   ├── useAuth.ts
+│   ├── useAuth.test.ts            # Co-located unit tests
+```
+
+### Unit Test Structure
+```typescript
+// Component.test.tsx
+import { render, screen, fireEvent } from '@testing-library/react';
+import { Component } from './Component';
+
+describe('Component', () => {
+  // Test data setup
+  const defaultProps = {
+    title: 'Test Title',
+    onAction: jest.fn()
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe('rendering', () => {
+    it('should render with provided title', () => {
+      // Arrange
+      render(<Component {...defaultProps} />);
+      
+      // Act & Assert
+      expect(screen.getByText('Test Title')).toBeInTheDocument();
+    });
+
+    it('should render disabled state correctly', () => {
+      // Arrange
+      render(<Component {...defaultProps} disabled={true} />);
+      
+      // Act & Assert
+      expect(screen.getByRole('button')).toBeDisabled();
+    });
+  });
+
+  describe('interactions', () => {
+    it('should call onAction when button is clicked', () => {
+      // Arrange
+      render(<Component {...defaultProps} />);
+      
+      // Act
+      fireEvent.click(screen.getByRole('button'));
+      
+      // Assert
+      expect(defaultProps.onAction).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('edge cases', () => {
+    it('should handle missing optional props gracefully', () => {
+      // Arrange & Act
+      render(<Component title="Test" />);
+      
+      // Assert
+      expect(screen.getByText('Test')).toBeInTheDocument();
+    });
+  });
+});
+```
+
+### Utility Function Testing
+```typescript
+// utils/dateUtils.test.ts
+import { formatDate, isValidDate, parseDate } from './dateUtils';
+
+describe('dateUtils', () => {
+  describe('formatDate', () => {
+    it('should format valid date correctly', () => {
+      // Arrange
+      const date = new Date('2023-12-25');
+      
+      // Act
+      const result = formatDate(date);
+      
+      // Assert
+      expect(result).toBe('12/25/2023');
+    });
+
+    it('should handle invalid date gracefully', () => {
+      // Arrange
+      const invalidDate = new Date('invalid');
+      
+      // Act
+      const result = formatDate(invalidDate);
+      
+      // Assert
+      expect(result).toBe('Invalid Date');
+    });
+  });
+
+  describe('isValidDate', () => {
+    it.each([
+      ['valid date string', '2023-12-25', true],
+      ['invalid date string', 'not-a-date', false],
+      ['null value', null, false],
+      ['undefined value', undefined, false]
+    ])('should return correct result for %s', (_, input, expected) => {
+      expect(isValidDate(input)).toBe(expected);
+    });
+  });
+});
+```
+
+### Custom Hook Testing
+```typescript
+// hooks/useAuth.test.ts
+import { renderHook, act } from '@testing-library/react';
+import { useAuth } from './useAuth';
+
+// Mock external dependencies
+jest.mock('../services/authService');
+
+describe('useAuth', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should initialize with null user', () => {
+    // Arrange & Act
+    const { result } = renderHook(() => useAuth());
+    
+    // Assert
+    expect(result.current.user).toBeNull();
+    expect(result.current.isLoading).toBe(false);
+  });
+
+  it('should handle login successfully', async () => {
+    // Arrange
+    const { result } = renderHook(() => useAuth());
+    const mockUser = { id: '1', name: 'John Doe' };
+    
+    // Act
+    await act(async () => {
+      await result.current.login('user@example.com', 'password');
+    });
+    
+    // Assert
+    expect(result.current.user).toEqual(mockUser);
+    expect(result.current.isLoading).toBe(false);
+  });
+
+  it('should handle login failure', async () => {
+    // Arrange
+    const { result } = renderHook(() => useAuth());
+    
+    // Mock service to throw error
+    authService.login.mockRejectedValue(new Error('Invalid credentials'));
+    
+    // Act
+    await act(async () => {
+      await result.current.login('invalid@example.com', 'wrongpassword');
+    });
+    
+    // Assert
+    expect(result.current.user).toBeNull();
+    expect(result.current.error).toBe('Invalid credentials');
+  });
+});
+```
+
+## Integration Testing Standards
+
+### Integration Test Structure
+```typescript
+// components/__tests__/UserManagement.integration.test.tsx
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import { UserManagement } from '../UserManagement';
+import { AuthProvider } from '../../context/AuthContext';
+
+// Test providers wrapper
+const TestProviders = ({ children }: { children: React.ReactNode }) => (
+  <BrowserRouter>
+    <AuthProvider>
+      {children}
+    </AuthProvider>
+  </BrowserRouter>
+);
+
+describe('UserManagement Integration', () => {
+  beforeEach(() => {
+    // Reset mocks and test data
+    jest.clearAllMocks();
+    mockApiClient.reset();
+  });
+
+  describe('user creation workflow', () => {
+    it('should create user successfully', async () => {
+      // Arrange
+      render(
+        <TestProviders>
+          <UserManagement />
+        </TestProviders>
+      );
+
+      // Act - Navigate to create user
+      fireEvent.click(screen.getByText('Add User'));
+      
+      // Fill form
+      fireEvent.change(screen.getByLabelText('Name'), {
+        target: { value: 'John Doe' }
+      });
+      fireEvent.change(screen.getByLabelText('Email'), {
+        target: { value: 'john@example.com' }
+      });
+      
+      // Submit form
+      fireEvent.click(screen.getByText('Create User'));
+
+      // Assert - Check success state
+      await waitFor(() => {
+        expect(screen.getByText('User created successfully')).toBeInTheDocument();
+      });
+      
+      // Verify API call
+      expect(mockApiClient.post).toHaveBeenCalledWith('/users', {
+        name: 'John Doe',
+        email: 'john@example.com'
+      });
+    });
+
+    it('should handle validation errors', async () => {
+      // Arrange
+      render(
+        <TestProviders>
+          <UserManagement />
+        </TestProviders>
+      );
+
+      // Act - Try to create user with invalid data
+      fireEvent.click(screen.getByText('Add User'));
+      fireEvent.click(screen.getByText('Create User'));
+
+      // Assert - Check validation errors
+      await waitFor(() => {
+        expect(screen.getByText('Name is required')).toBeInTheDocument();
+        expect(screen.getByText('Email is required')).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('user list management', () => {
+    it('should load and display users', async () => {
+      // Arrange
+      const mockUsers = [
+        { id: '1', name: 'John Doe', email: 'john@example.com' },
+        { id: '2', name: 'Jane Smith', email: 'jane@example.com' }
+      ];
+      mockApiClient.get.mockResolvedValue({ data: mockUsers });
+
+      // Act
+      render(
+        <TestProviders>
+          <UserManagement />
+        </TestProviders>
+      );
+
+      // Assert - Check users are displayed
+      await waitFor(() => {
+        expect(screen.getByText('John Doe')).toBeInTheDocument();
+        expect(screen.getByText('Jane Smith')).toBeInTheDocument();
+      });
+    });
+  });
+});
+```
+
+### API Integration Testing
+```typescript
+// services/__tests__/userService.integration.test.ts
+import { userService } from '../userService';
+import { setupTestServer } from '../../test-utils/testServer';
+
+// Setup mock server
+const server = setupTestServer();
+
+describe('userService Integration', () => {
+  beforeAll(() => server.listen());
+  afterEach(() => server.resetHandlers());
+  afterAll(() => server.close());
+
+  describe('getUsers', () => {
+    it('should fetch users successfully', async () => {
+      // Arrange - Mock server response
+      server.use(
+        rest.get('/api/users', (req, res, ctx) => {
+          return res(ctx.json([
+            { id: '1', name: 'John Doe' }
+          ]));
+        })
+      );
+
+      // Act
+      const result = await userService.getUsers();
+
+      // Assert
+      expect(result).toEqual([
+        { id: '1', name: 'John Doe' }
+      ]);
+    });
+
+    it('should handle network errors', async () => {
+      // Arrange - Mock server error
+      server.use(
+        rest.get('/api/users', (req, res, ctx) => {
+          return res.networkError('Network error');
+        })
+      );
+
+      // Act & Assert
+      await expect(userService.getUsers()).rejects.toThrow('Network error');
+    });
+  });
+});
+```
+
+## End-to-End Testing Standards
+
+### E2E Test Organization
+```
+cypress/
+├── e2e/
+│   ├── auth/
+│   │   ├── login.cy.ts
+│   │   └── registration.cy.ts
+│   ├── user-management/
+│   │   ├── user-creation.cy.ts
+│   │   └── user-editing.cy.ts
+│   └── dashboard/
+│       └── dashboard-navigation.cy.ts
+├── support/
+│   ├── commands.ts
+│   └── e2e.ts
+└── fixtures/
+    ├── users.json
+    └── testData.json
+```
+
+### E2E Test Structure
+```typescript
+// cypress/e2e/user-management/user-creation.cy.ts
+describe('User Creation', () => {
+  beforeEach(() => {
+    // Setup test state
+    cy.login('admin@example.com', 'password');
+    cy.visit('/users');
+  });
+
+  it('should create a new user successfully', () => {
+    // Arrange - Navigate to create form
+    cy.get('[data-testid="add-user-button"]').click();
+    
+    // Act - Fill and submit form
+    cy.get('[data-testid="user-name-input"]').type('John Doe');
+    cy.get('[data-testid="user-email-input"]').type('john@example.com');
+    cy.get('[data-testid="user-role-select"]').select('User');
+    cy.get('[data-testid="create-user-button"]').click();
+    
+    // Assert - Verify success
+    cy.get('[data-testid="success-message"]')
+      .should('contain', 'User created successfully');
+    
+    // Verify user appears in list
+    cy.get('[data-testid="user-list"]')
+      .should('contain', 'John Doe')
+      .should('contain', 'john@example.com');
+  });
+
+  it('should validate required fields', () => {
+    // Arrange
+    cy.get('[data-testid="add-user-button"]').click();
+    
+    // Act - Try to submit empty form
+    cy.get('[data-testid="create-user-button"]').click();
+    
+    // Assert - Check validation errors
+    cy.get('[data-testid="name-error"]')
+      .should('contain', 'Name is required');
+    cy.get('[data-testid="email-error"]')
+      .should('contain', 'Email is required');
+  });
+
+  it('should handle duplicate email error', () => {
+    // Arrange - Create user with existing email
+    cy.get('[data-testid="add-user-button"]').click();
+    
+    // Act
+    cy.get('[data-testid="user-name-input"]').type('Duplicate User');
+    cy.get('[data-testid="user-email-input"]').type('existing@example.com');
+    cy.get('[data-testid="create-user-button"]').click();
+    
+    // Assert
+    cy.get('[data-testid="error-message"]')
+      .should('contain', 'Email already exists');
+  });
+});
+```
+
+### Custom Cypress Commands
+```typescript
+// cypress/support/commands.ts
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      login(email: string, password: string): Chainable<void>;
+      createUser(userData: UserData): Chainable<void>;
+      deleteUser(userId: string): Chainable<void>;
+    }
+  }
+}
+
+Cypress.Commands.add('login', (email: string, password: string) => {
+  cy.session([email, password], () => {
+    cy.visit('/login');
+    cy.get('[data-testid="email-input"]').type(email);
+    cy.get('[data-testid="password-input"]').type(password);
+    cy.get('[data-testid="login-button"]').click();
+    cy.url().should('include', '/dashboard');
+  });
+});
+
+Cypress.Commands.add('createUser', (userData: UserData) => {
+  cy.request('POST', '/api/users', userData);
+});
+
+Cypress.Commands.add('deleteUser', (userId: string) => {
+  cy.request('DELETE', `/api/users/${userId}`);
+});
+```
+
+## Test Data Management
+
+### Test Factories
+```typescript
+// test-utils/factories/userFactory.ts
+import { User } from '../../types/User';
+
+export const createMockUser = (overrides: Partial<User> = {}): User => ({
+  id: '1',
+  name: 'John Doe',
+  email: 'john@example.com',
+  role: 'user',
+  createdAt: new Date('2023-01-01'),
+  ...overrides
+});
+
+export const createMockUsers = (count: number = 3): User[] => {
+  return Array.from({ length: count }, (_, index) => 
+    createMockUser({
+      id: String(index + 1),
+      name: `User ${index + 1}`,
+      email: `user${index + 1}@example.com`
+    })
+  );
+};
+```
+
+### Test Fixtures
+```json
+// cypress/fixtures/users.json
+{
+  "validUser": {
+    "name": "John Doe",
+    "email": "john@example.com",
+    "role": "user"
+  },
+  "adminUser": {
+    "name": "Admin User",
+    "email": "admin@example.com",
+    "role": "admin"
+  },
+  "invalidUser": {
+    "name": "",
+    "email": "invalid-email",
+    "role": ""
+  }
+}
+```
+
+### Mock Service Workers
+```typescript
+// test-utils/mocks/handlers.ts
+import { rest } from 'msw';
+
+export const handlers = [
+  rest.get('/api/users', (req, res, ctx) => {
+    return res(
+      ctx.status(200),
+      ctx.json([
+        { id: '1', name: 'John Doe', email: 'john@example.com' },
+        { id: '2', name: 'Jane Smith', email: 'jane@example.com' }
+      ])
+    );
+  }),
+
+  rest.post('/api/users', (req, res, ctx) => {
+    return res(
+      ctx.status(201),
+      ctx.json({ id: '3', ...req.body })
+    );
+  }),
+
+  rest.delete('/api/users/:id', (req, res, ctx) => {
+    return res(ctx.status(204));
+  })
+];
+```
+
+## Test Quality Standards
+
+### Test Coverage Requirements
+- **Unit Tests**: Minimum 80% code coverage for critical business logic
+- **Integration Tests**: Cover all major user workflows
+- **E2E Tests**: Cover critical user journeys and happy paths
+- **Edge Cases**: Test error conditions and boundary cases
+
+### Test Naming Conventions
+```typescript
+// Good test names - describe behavior and context
+describe('UserService', () => {
+  describe('when user exists', () => {
+    it('should return user data successfully', () => {});
+  });
+  
+  describe('when user does not exist', () => {
+    it('should throw UserNotFoundError', () => {});
+  });
+});
+
+// Poor test names - vague and unhelpful
+describe('UserService', () => {
+  it('should work', () => {});
+  it('test user', () => {});
+});
+```
+
+### Test Maintenance
+- **Keep tests simple**: Each test should verify one specific behavior
+- **Avoid test interdependence**: Tests should run in any order
+- **Update tests with code changes**: Keep tests synchronized with implementation
+- **Remove obsolete tests**: Delete tests for removed features
+- **Refactor test duplication**: Extract common setup and utilities
+
+## Performance Testing
+
+### Load Testing Standards
+```typescript
+// performance/loadTest.js
+import http from 'k6/http';
+import { check, sleep } from 'k6';
+
+export let options = {
+  stages: [
+    { duration: '2m', target: 100 }, // Ramp up
+    { duration: '5m', target: 100 }, // Stay at 100 users
+    { duration: '2m', target: 200 }, // Ramp up to 200 users
+    { duration: '5m', target: 200 }, // Stay at 200 users
+    { duration: '2m', target: 0 },   // Ramp down
+  ],
+};
+
+export default function () {
+  let response = http.get('https://api.example.com/users');
+  
+  check(response, {
+    'status is 200': (r) => r.status === 200,
+    'response time < 500ms': (r) => r.timings.duration < 500,
+  });
+  
+  sleep(1);
+}
+```
+
+### Performance Benchmarks
+- **API Response Time**: < 200ms for GET requests, < 500ms for POST/PUT
+- **Page Load Time**: < 2 seconds for initial load, < 1 second for subsequent navigation
+- **Bundle Size**: Monitor and alert on significant increases
+- **Memory Usage**: No memory leaks in long-running tests
+
+## Test Automation
+
+### CI/CD Integration
+```yaml
+# .github/workflows/test.yml
+name: Test Suite
+
+on: [push, pull_request]
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - run: npm ci
+      - run: npm run test:unit -- --coverage
+      - uses: codecov/codecov-action@v1
+
+  integration-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - run: npm ci
+      - run: npm run test:integration
+
+  e2e-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - run: npm ci
+      - run: npm run build
+      - run: npm run test:e2e
+```
+
+### Test Scripts
+```json
+{
+  "scripts": {
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "jest --testPathPattern=\\.test\\.(ts|tsx)$",
+    "test:integration": "jest --testPathPattern=\\.integration\\.test\\.(ts|tsx)$",
+    "test:e2e": "cypress run",
+    "test:e2e:open": "cypress open",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:performance": "k6 run performance/loadTest.js"
+  }
+}
+```
+
+## Best Practices Summary
+
+### Writing Effective Tests
+- **Test behavior, not implementation**: Focus on what the code should do, not how
+- **Use descriptive test names**: Test names should explain the scenario and expected outcome
+- **Keep tests simple and focused**: One assertion per test when possible
+- **Use appropriate test types**: Unit tests for logic, integration tests for workflows, E2E for user journeys
+
+### Test Maintenance
+- **Refactor tests with code**: Keep tests up-to-date with implementation changes
+- **Remove flaky tests**: Fix or remove tests that fail intermittently
+- **Monitor test performance**: Keep test suites fast and reliable
+- **Review test coverage**: Ensure adequate coverage without over-testing
+
+### Team Collaboration
+- **Write tests first**: Consider test-driven development for complex features
+- **Review test code**: Include tests in code review process
+- **Share test utilities**: Create reusable test helpers and factories
+- **Document testing patterns**: Maintain consistent testing approaches across the team
+
+## Success Metrics
+
+### Quality Metrics
+- **Test Coverage**: Maintain high coverage for critical business logic
+- **Test Reliability**: Low rate of flaky or intermittently failing tests
+- **Defect Detection**: High percentage of bugs caught by automated tests
+- **Regression Prevention**: Effective prevention of previously fixed bugs
+
+### Performance Metrics
+- **Test Execution Time**: Fast feedback from test suites
+- **Build Success Rate**: High percentage of successful automated builds
+- **Developer Productivity**: Tests enable confident refactoring and changes
+- **Release Quality**: Low number of production defects

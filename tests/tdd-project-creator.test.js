@@ -14,14 +14,15 @@ describe('TDDProjectCreator', () => {
 
   beforeEach(() => {
     mockProjectName = 'test-tdd-project';
-    mockProjectPath = path.join(process.cwd(), mockProjectName);
-    creator = new TDDProjectCreator(mockProjectName);
     
     // Reset mocks
     jest.clearAllMocks();
     
-    // Mock process.cwd()
+    // Mock process.cwd() BEFORE creating the creator instance
     jest.spyOn(process, 'cwd').mockReturnValue('/mock/workspace');
+    
+    mockProjectPath = path.join(process.cwd(), mockProjectName);
+    creator = new TDDProjectCreator(mockProjectName);
   });
 
   afterEach(() => {

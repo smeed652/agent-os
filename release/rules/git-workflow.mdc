@@ -1,0 +1,506 @@
+---
+alwaysApply: true
+---
+
+# Git Workflow Standards
+
+Universal Git workflow standards that ensure consistent version control practices, safe collaboration, and reliable release management across all projects.
+
+## Core Workflow Principles
+
+### Feature Branch Workflow
+- **Main branch protection** - Direct commits to main branch are forbidden
+- **Feature branches** - All work happens in dedicated feature branches
+- **Pull request reviews** - Code changes require review before merging
+- **Clean history** - Maintain readable commit history through proper branching
+
+### Branch Naming Conventions
+- **Feature branches**: `feature/[ticket-id]-[brief-description]`
+- **Bug fixes**: `fix/[ticket-id]-[brief-description]`
+- **Hotfixes**: `hotfix/[version]-[brief-description]`
+- **Release branches**: `release/[version]`
+- **Examples**: `feature/USER-123-add-user-authentication`, `fix/BUG-456-login-validation`
+
+### Commit Message Standards
+- **Format**: Follow conventional commit specification
+- **Structure**: `type(scope): description`
+- **Types**: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
+- **Breaking changes**: Use `!` or `BREAKING CHANGE:` footer
+
+## Branch Management
+
+### Main Branch Protection
+```yaml
+# Required branch protection rules
+main:
+  required_status_checks:
+    strict: true
+    contexts:
+      - "ci/tests"
+      - "ci/lint"
+      - "ci/build"
+  enforce_admins: true
+  required_pull_request_reviews:
+    required_approving_review_count: 1
+    dismiss_stale_reviews: true
+    require_code_owner_reviews: true
+  restrictions: null
+```
+
+### Feature Branch Lifecycle
+```bash
+# 1. Create and checkout feature branch
+git checkout main
+git pull origin main
+git checkout -b feature/USER-123-add-authentication
+
+# 2. Work on feature with regular commits
+git add .
+git commit -m "feat(auth): add login form component"
+git commit -m "feat(auth): implement authentication service"
+
+# 3. Keep branch updated with main
+git fetch origin
+git rebase origin/main
+
+# 4. Push feature branch
+git push origin feature/USER-123-add-authentication
+
+# 5. Create pull request (via GitHub/GitLab UI)
+# 6. Address review feedback
+# 7. Merge via pull request (squash and merge preferred)
+```
+
+### Release Branch Management
+```bash
+# Create release branch from main
+git checkout main
+git pull origin main
+git checkout -b release/1.2.0
+
+# Prepare release (version bumps, changelog, etc.)
+npm version 1.2.0
+git add .
+git commit -m "chore(release): prepare version 1.2.0"
+
+# Push release branch
+git push origin release/1.2.0
+
+# Create release PR to main
+# After approval, merge to main and create tag
+git checkout main
+git merge --no-ff release/1.2.0
+git tag -a v1.2.0 -m "Release version 1.2.0"
+git push origin main --tags
+```
+
+## Commit Standards
+
+### Conventional Commit Format
+```
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+### Commit Types
+- **feat**: New feature for the user
+- **fix**: Bug fix for the user
+- **docs**: Documentation changes
+- **style**: Code style changes (formatting, missing semicolons, etc.)
+- **refactor**: Code refactoring without changing functionality
+- **test**: Adding or updating tests
+- **chore**: Maintenance tasks, dependency updates, build changes
+
+### Commit Examples
+```bash
+# Feature commits
+git commit -m "feat(auth): add OAuth integration with Google"
+git commit -m "feat(dashboard): implement user analytics widget"
+
+# Bug fix commits
+git commit -m "fix(login): resolve validation error handling"
+git commit -m "fix(api): handle null response in user service"
+
+# Documentation commits
+git commit -m "docs(readme): update installation instructions"
+git commit -m "docs(api): add authentication endpoint documentation"
+
+# Breaking changes
+git commit -m "feat(api)!: change user authentication method"
+# Or with footer
+git commit -m "feat(api): update user authentication
+
+BREAKING CHANGE: authentication now requires OAuth tokens instead of API keys"
+```
+
+### Commit Message Quality
+- **Imperative mood** - "Add feature" not "Added feature"
+- **Present tense** - "Fix bug" not "Fixed bug"
+- **Lowercase** - Start description with lowercase letter
+- **No period** - Don't end description with period
+- **Limit length** - Subject line under 50 characters, body under 72 characters per line
+
+## Safe Commit Practices
+
+### Pre-commit Validation
+```bash
+# Automated pre-commit checks
+pre-commit:
+  - run: npm run lint
+    timeout: 5m
+  - run: npm run type-check
+    timeout: 2m
+  - run: npm test
+    timeout: 10m
+  - run: npm run test:e2e
+    timeout: 15m
+    allow_failure: true  # Don't block commit on E2E failures
+```
+
+### Safe Commit Scripts
+```bash
+#!/bin/bash
+# safe-commit.sh - Ensures commits always work
+
+set -e
+
+COMMIT_MSG="$1"
+FORCE_MODE="$2"
+
+# Validate commit message format
+if ! echo "$COMMIT_MSG" | grep -qE "^(feat|fix|docs|style|refactor|test|chore)(\(.+\))?: .+"; then
+  echo "❌ Invalid commit message format"
+  echo "Use: type(scope): description"
+  echo "Example: feat(auth): add login functionality"
+  exit 1
+fi
+
+# Try normal commit first
+echo "🔍 Running pre-commit checks..."
+if git commit -m "$COMMIT_MSG"; then
+  echo "✅ Commit successful!"
+  git log -1 --oneline
+else
+  if [ "$FORCE_MODE" = "--force" ]; then
+    echo "⚠️  Pre-commit checks failed, forcing commit..."
+    git commit --no-verify -m "$COMMIT_MSG"
+    echo "✅ Force commit successful!"
+    echo "🚨 Please fix the issues that caused pre-commit to fail"
+  else
+    echo "❌ Commit failed due to pre-commit checks"
+    echo "💡 Use --force to bypass checks: ./safe-commit.sh \"$COMMIT_MSG\" --force"
+    exit 1
+  fi
+fi
+```
+
+### Commit Recovery Strategies
+```bash
+# Undo last commit (keep changes)
+git reset --soft HEAD~1
+
+# Undo last commit (discard changes)
+git reset --hard HEAD~1
+
+# Amend last commit message
+git commit --amend -m "new commit message"
+
+# Squash multiple commits
+git rebase -i HEAD~3  # Interactive rebase for last 3 commits
+
+# Cherry-pick specific commit
+git cherry-pick <commit-hash>
+```
+
+## Collaboration Workflows
+
+### Pull Request Process
+1. **Create feature branch** from latest main
+2. **Implement changes** with proper commit messages
+3. **Push branch** to remote repository
+4. **Create pull request** with descriptive title and body
+5. **Request review** from appropriate team members
+6. **Address feedback** through additional commits
+7. **Merge when approved** using appropriate merge strategy
+
+### Pull Request Templates
+```markdown
+## Description
+Brief description of changes made.
+
+## Type of Change
+- [ ] Bug fix (non-breaking change that fixes an issue)
+- [ ] New feature (non-breaking change that adds functionality)
+- [ ] Breaking change (fix or feature that would cause existing functionality to change)
+- [ ] Documentation update
+
+## Testing
+- [ ] Unit tests pass
+- [ ] Integration tests pass
+- [ ] E2E tests pass (if applicable)
+- [ ] Manual testing completed
+
+## Checklist
+- [ ] Code follows project style guidelines
+- [ ] Self-review completed
+- [ ] Documentation updated (if needed)
+- [ ] No breaking changes (or breaking changes documented)
+```
+
+### Code Review Guidelines
+- **Review promptly** - Respond to review requests within 24 hours
+- **Be constructive** - Focus on code quality and maintainability
+- **Ask questions** - Seek clarification when code intent is unclear
+- **Suggest improvements** - Offer specific suggestions for better approaches
+- **Approve when ready** - Don't hold up good code for minor preferences
+
+## Release Management
+
+### Semantic Versioning
+- **MAJOR** (1.0.0): Breaking changes
+- **MINOR** (0.1.0): New features, backward compatible
+- **PATCH** (0.0.1): Bug fixes, backward compatible
+- **Pre-release** (1.0.0-alpha.1): Development versions
+
+### Release Workflow
+```bash
+# 1. Create release branch
+git checkout -b release/1.2.0
+
+# 2. Update version and changelog
+npm version 1.2.0
+npm run changelog:generate
+
+# 3. Commit release preparation
+git add .
+git commit -m "chore(release): prepare version 1.2.0"
+
+# 4. Create release PR
+gh pr create --title "Release v1.2.0" --body "$(cat CHANGELOG.md)"
+
+# 5. After approval, merge and tag
+git checkout main
+git merge --no-ff release/1.2.0
+git tag -a v1.2.0 -m "Release version 1.2.0"
+git push origin main --tags
+
+# 6. Deploy release
+npm run deploy:production
+```
+
+### Hotfix Workflow
+```bash
+# 1. Create hotfix branch from main
+git checkout main
+git checkout -b hotfix/1.2.1-critical-security-fix
+
+# 2. Implement fix
+git commit -m "fix(security): resolve authentication bypass vulnerability"
+
+# 3. Update version
+npm version patch
+
+# 4. Create emergency PR
+gh pr create --title "Hotfix v1.2.1" --body "Critical security fix"
+
+# 5. Fast-track review and merge
+# 6. Tag and deploy immediately
+git tag -a v1.2.1 -m "Hotfix version 1.2.1"
+git push origin main --tags
+npm run deploy:production
+```
+
+## Git Configuration
+
+### Global Git Configuration
+```bash
+# User information
+git config --global user.name "Your Name"
+git config --global user.email "your.email@company.com"
+
+# Default branch
+git config --global init.defaultBranch main
+
+# Editor
+git config --global core.editor "code --wait"
+
+# Merge tool
+git config --global merge.tool vscode
+
+# Aliases
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.ci commit
+git config --global alias.st status
+git config --global alias.unstage 'reset HEAD --'
+git config --global alias.last 'log -1 HEAD'
+git config --global alias.visual '!gitk'
+```
+
+### Project-Specific Git Configuration
+```bash
+# .gitconfig in project root
+[core]
+    autocrlf = input
+    safecrlf = true
+    
+[branch]
+    autosetupmerge = always
+    autosetuprebase = always
+    
+[pull]
+    rebase = true
+    
+[push]
+    default = simple
+    followTags = true
+```
+
+## Git Hooks
+
+### Pre-commit Hook
+```bash
+#!/bin/sh
+# .git/hooks/pre-commit
+
+echo "🔍 Running pre-commit checks..."
+
+# Run linter
+npm run lint
+if [ $? -ne 0 ]; then
+  echo "❌ Linting failed"
+  exit 1
+fi
+
+# Run type checking
+npm run type-check
+if [ $? -ne 0 ]; then
+  echo "❌ Type checking failed"
+  exit 1
+fi
+
+# Run tests
+npm test
+if [ $? -ne 0 ]; then
+  echo "❌ Tests failed"
+  exit 1
+fi
+
+echo "✅ Pre-commit checks passed"
+```
+
+### Commit Message Hook
+```bash
+#!/bin/sh
+# .git/hooks/commit-msg
+
+commit_regex='^(feat|fix|docs|style|refactor|test|chore)(\(.+\))?: .{1,50}'
+
+if ! grep -qE "$commit_regex" "$1"; then
+    echo "❌ Invalid commit message format!"
+    echo ""
+    echo "Format: type(scope): description"
+    echo ""
+    echo "Types:"
+    echo "  feat:     New feature"
+    echo "  fix:      Bug fix"
+    echo "  docs:     Documentation"
+    echo "  style:    Code style"
+    echo "  refactor: Code refactoring"
+    echo "  test:     Tests"
+    echo "  chore:    Maintenance"
+    echo ""
+    echo "Examples:"
+    echo "  feat(auth): add OAuth integration"
+    echo "  fix(api): resolve null pointer exception"
+    echo "  docs(readme): update installation guide"
+    exit 1
+fi
+```
+
+## Troubleshooting
+
+### Common Git Issues
+```bash
+# Merge conflicts
+git status                    # See conflicted files
+# Edit files to resolve conflicts
+git add .
+git commit -m "resolve merge conflicts"
+
+# Accidentally committed to wrong branch
+git log --oneline -5         # Find commit hash
+git checkout correct-branch
+git cherry-pick <commit-hash>
+git checkout wrong-branch
+git reset --hard HEAD~1      # Remove from wrong branch
+
+# Undo changes
+git checkout -- <file>       # Discard unstaged changes
+git reset HEAD <file>        # Unstage changes
+git reset --soft HEAD~1      # Undo commit, keep changes
+git reset --hard HEAD~1      # Undo commit, discard changes
+
+# Clean up branches
+git branch -d <branch-name>   # Delete merged branch
+git branch -D <branch-name>   # Force delete branch
+git remote prune origin       # Clean up remote tracking branches
+```
+
+### Recovery Procedures
+```bash
+# Recover deleted branch
+git reflog                    # Find branch commit
+git checkout -b recovered-branch <commit-hash>
+
+# Recover lost commits
+git reflog                    # Find lost commit
+git cherry-pick <commit-hash>
+
+# Fix broken repository
+git fsck                      # Check repository integrity
+git gc                        # Cleanup repository
+```
+
+## Best Practices
+
+### Daily Workflow
+- **Pull before starting work** - Always start with latest main
+- **Commit frequently** - Small, focused commits are easier to review
+- **Push regularly** - Don't keep work local too long
+- **Review your own changes** - Check diff before committing
+
+### Collaboration
+- **Communicate changes** - Use descriptive commit messages and PR descriptions
+- **Review thoughtfully** - Take time to understand changes before approving
+- **Keep branches current** - Regularly rebase feature branches
+- **Clean up after merging** - Delete merged branches
+
+### Quality Assurance
+- **Test before committing** - Ensure changes don't break existing functionality
+- **Follow conventions** - Consistent naming and commit message formats
+- **Document decisions** - Use commit messages to explain why changes were made
+- **Maintain clean history** - Use appropriate merge strategies
+
+## Success Metrics
+
+### Code Quality
+- **Build success rate** - Percentage of commits that build successfully
+- **Test coverage** - Maintained or improved test coverage
+- **Review quality** - Thorough reviews catching issues before merge
+- **Rollback frequency** - Low number of rollbacks needed
+
+### Collaboration Efficiency
+- **Review turnaround time** - Fast feedback on pull requests
+- **Merge conflict frequency** - Low number of difficult conflicts
+- **Branch lifecycle** - Short-lived feature branches
+- **Documentation quality** - Clear commit messages and PR descriptions
+
+### Release Reliability
+- **Release frequency** - Regular, predictable releases
+- **Hotfix necessity** - Low number of emergency fixes needed
+- **Deployment success** - High success rate of deployments
+- **Rollback recovery** - Quick recovery when rollbacks are needed
