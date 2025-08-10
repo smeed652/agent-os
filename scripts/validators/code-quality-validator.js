@@ -111,26 +111,26 @@ class CodeQualityValidator {
       if (exceptions.length > 0) {
         return this.createValidation('File Size', 'WARNING', 
           `File has ${lines} lines (exceeds ${rule.limit} limit) but has valid exceptions: ${exceptions.join(', ')}`, {
-          lines: lines,
-          limit: rule.limit,
-          exceptions: exceptions,
-          recommendation: 'Monitor file growth and consider refactoring if it continues to grow'
-        });
+            lines: lines,
+            limit: rule.limit,
+            exceptions: exceptions,
+            recommendation: 'Monitor file growth and consider refactoring if it continues to grow'
+          });
       }
       
       return this.createValidation('File Size', 'FAIL',
         `File has ${lines} lines, exceeds limit of ${rule.limit}`, {
-        lines: lines,
-        limit: rule.limit,
-        recommendation: 'Refactor into smaller, focused modules'
-      });
+          lines: lines,
+          limit: rule.limit,
+          recommendation: 'Refactor into smaller, focused modules'
+        });
     }
 
     return this.createValidation('File Size', 'PASS', 
       `File size within limits (${lines}/${rule.limit} lines)`, {
-      lines: lines,
-      limit: rule.limit
-    });
+        lines: lines,
+        limit: rule.limit
+      });
   }
 
   detectExceptions(content, filePath) {
@@ -192,15 +192,15 @@ class CodeQualityValidator {
     if (complexFunctions.length > 0) {
       return this.createValidation('Function Complexity', 'FAIL',
         `${complexFunctions.length} functions exceed complexity limit (>10)`, {
-        complexFunctions: complexFunctions,
-        recommendation: 'Break down complex functions into smaller, focused functions'
-      });
+          complexFunctions: complexFunctions,
+          recommendation: 'Break down complex functions into smaller, focused functions'
+        });
     }
 
     return this.createValidation('Function Complexity', 'PASS',
-      `All functions within complexity limits (≤10)`, {
-      functionCount: functions.length
-    });
+      'All functions within complexity limits (≤10)', {
+        functionCount: functions.length
+      });
   }
 
   validateCodeDuplication(content, filePath) {
@@ -209,9 +209,9 @@ class CodeQualityValidator {
     if (duplicatedBlocks.length > 0) {
       return this.createValidation('Code Duplication', 'WARNING',
         `Found ${duplicatedBlocks.length} potential code duplication blocks`, {
-        duplicatedBlocks: duplicatedBlocks,
-        recommendation: 'Extract common code into reusable functions or modules'
-      });
+          duplicatedBlocks: duplicatedBlocks,
+          recommendation: 'Extract common code into reusable functions or modules'
+        });
     }
 
     return this.createValidation('Code Duplication', 'PASS',
@@ -224,9 +224,9 @@ class CodeQualityValidator {
     if (!hasErrorHandling.adequate) {
       return this.createValidation('Error Handling', 'WARNING',
         'Insufficient error handling detected', {
-        issues: hasErrorHandling.issues,
-        recommendation: 'Add proper try-catch blocks and error handling for external operations'
-      });
+          issues: hasErrorHandling.issues,
+          recommendation: 'Add proper try-catch blocks and error handling for external operations'
+        });
     }
 
     return this.createValidation('Error Handling', 'PASS',
@@ -239,9 +239,9 @@ class CodeQualityValidator {
     if (namingIssues.length > 0) {
       return this.createValidation('Naming Conventions', 'WARNING',
         `Found ${namingIssues.length} naming convention issues`, {
-        issues: namingIssues,
-        recommendation: 'Use descriptive, consistent naming following project conventions'
-      });
+          issues: namingIssues,
+          recommendation: 'Use descriptive, consistent naming following project conventions'
+        });
     }
 
     return this.createValidation('Naming Conventions', 'PASS',
@@ -254,10 +254,10 @@ class CodeQualityValidator {
     if (commentAnalysis.quality < 0.6) {
       return this.createValidation('Comment Quality', 'WARNING',
         'Comment quality could be improved', {
-        score: commentAnalysis.quality,
-        issues: commentAnalysis.issues,
-        recommendation: 'Add meaningful comments explaining "why" rather than "what"'
-      });
+          score: commentAnalysis.quality,
+          issues: commentAnalysis.issues,
+          recommendation: 'Add meaningful comments explaining "why" rather than "what"'
+        });
     }
 
     return this.createValidation('Comment Quality', 'PASS',
@@ -270,9 +270,9 @@ class CodeQualityValidator {
     if (tsIssues.length > 0) {
       return this.createValidation('TypeScript Compliance', 'FAIL',
         `Found ${tsIssues.length} TypeScript compliance issues`, {
-        issues: tsIssues,
-        recommendation: 'Fix TypeScript type errors and add proper type annotations'
-      });
+          issues: tsIssues,
+          recommendation: 'Fix TypeScript type errors and add proper type annotations'
+        });
     }
 
     return this.createValidation('TypeScript Compliance', 'PASS',
@@ -623,14 +623,14 @@ class CodeQualityValidator {
 
     results.forEach(result => {
       const statusIcon = result.status === 'PASS' ? '✅' : 
-                        result.status === 'WARNING' ? '⚠️' : '❌';
+        result.status === 'WARNING' ? '⚠️' : '❌';
       
       console.log(`${statusIcon} ${path.basename(result.file)} (${result.status})`);
       
       if (result.validations.length > 0) {
         result.validations.forEach(validation => {
           const icon = validation.status === 'PASS' ? '  ✓' : 
-                      validation.status === 'WARNING' ? '  ⚠' : '  ✗';
+            validation.status === 'WARNING' ? '  ⚠' : '  ✗';
           console.log(`${icon} ${validation.name}: ${validation.message}`);
         });
       }

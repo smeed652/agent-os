@@ -172,41 +172,41 @@ if (require.main === module) {
   const command = args[0];
   
   switch (command) {
-    case 'create':
-      if (args.length < 3) {
-        console.error('❌ Usage: create <filepath> <title> [type]');
-        process.exit(1);
-      }
-      const filePath = args[1];
-      const title = args[2];
-      const type = args[3] || 'spec';
-      versioner.createNewDocument(filePath, title, type);
-      break;
-      
-    case 'update':
-      if (args.length < 2) {
-        console.error('❌ Usage: update <filepath>');
-        process.exit(1);
-      }
-      versioner.updateExistingDocument(args[1]);
-      break;
-      
-    case 'batch':
-      if (args.length < 2) {
-        console.error('❌ Usage: batch <directory> [pattern]');
-        process.exit(1);
-      }
-      const pattern = args[2] || '**/*.md';
-      versioner.batchUpdateDocuments(args[1], pattern);
-      break;
-      
-    case 'version':
-      console.log(`Agent-OS Version: ${versioner.agentOsVersion}`);
-      break;
-      
-    default:
-      console.error(`❌ Unknown command: ${command}`);
+  case 'create':
+    if (args.length < 3) {
+      console.error('❌ Usage: create <filepath> <title> [type]');
       process.exit(1);
+    }
+    const filePath = args[1];
+    const title = args[2];
+    const type = args[3] || 'spec';
+    versioner.createNewDocument(filePath, title, type);
+    break;
+      
+  case 'update':
+    if (args.length < 2) {
+      console.error('❌ Usage: update <filepath>');
+      process.exit(1);
+    }
+    versioner.updateExistingDocument(args[1]);
+    break;
+      
+  case 'batch':
+    if (args.length < 2) {
+      console.error('❌ Usage: batch <directory> [pattern]');
+      process.exit(1);
+    }
+    const pattern = args[2] || '**/*.md';
+    versioner.batchUpdateDocuments(args[1], pattern);
+    break;
+      
+  case 'version':
+    console.log(`Agent-OS Version: ${versioner.agentOsVersion}`);
+    break;
+      
+  default:
+    console.error(`❌ Unknown command: ${command}`);
+    process.exit(1);
   }
 }
 

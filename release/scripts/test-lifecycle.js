@@ -41,7 +41,7 @@ function analyzeProject() {
   const specsDir = '.agent-os/specs';
   const exists = fs.existsSync(specsDir);
   
-  let result = `Project Analysis:\n`;
+  let result = 'Project Analysis:\n';
   result += `- Specs Directory: ${exists ? 'EXISTS' : 'MISSING'}\n`;
   
   if (exists) {

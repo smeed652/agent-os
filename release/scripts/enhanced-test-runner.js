@@ -138,7 +138,7 @@ class EnhancedAgentOSTestRunner {
       console.log(`   💥 Error: ${result.error}`);
     }
     if (result.failedTests && result.failedTests.length > 0) {
-      console.log(`   📋 Failed Tests:`);
+      console.log('   📋 Failed Tests:');
       result.failedTests.forEach(failedTest => {
         console.log(`      • ${failedTest}`);
       });

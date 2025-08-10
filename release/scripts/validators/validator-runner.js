@@ -97,7 +97,7 @@ class ValidatorRunner {
             results[key] = result;
             
             const statusIcon = result.status === 'PASS' ? '✅' : 
-                              result.status === 'WARNING' ? '⚠️' : '❌';
+              result.status === 'WARNING' ? '⚠️' : '❌';
             console.log(`${statusIcon} ${config.name}: ${result.status}`);
             
             summary.total++;
@@ -141,32 +141,32 @@ class ValidatorRunner {
 
     // Different validators have different method signatures
     switch (validatorKey) {
-      case 'code-quality':
-        if (options.target) {
-          return await validator.validateFile(path.resolve(projectPath, options.target));
-        } else {
-          return await validator.validateDirectory(projectPath);
-        }
-      
-      case 'spec-adherence':
-        const specPath = options.specPath || this.findSpecPath(projectPath);
-        const implementationPath = options.implementationPath || projectPath;
-        return await validator.validateSpecAdherence(specPath, implementationPath);
-      
-      case 'security':
+    case 'code-quality':
+      if (options.target) {
+        return await validator.validateFile(path.resolve(projectPath, options.target));
+      } else {
         return await validator.validateDirectory(projectPath);
+      }
       
-      case 'branch-strategy':
-        return await validator.validateProject(projectPath);
+    case 'spec-adherence':
+      const specPath = options.specPath || this.findSpecPath(projectPath);
+      const implementationPath = options.implementationPath || projectPath;
+      return await validator.validateSpecAdherence(specPath, implementationPath);
       
-      case 'testing':
-        return await validator.validateProject(projectPath);
+    case 'security':
+      return await validator.validateDirectory(projectPath);
       
-      case 'documentation':
-        return await validator.validateProject(projectPath);
+    case 'branch-strategy':
+      return await validator.validateProject(projectPath);
       
-      default:
-        throw new Error(`No runner implementation for validator: ${validatorKey}`);
+    case 'testing':
+      return await validator.validateProject(projectPath);
+      
+    case 'documentation':
+      return await validator.validateProject(projectPath);
+      
+    default:
+      throw new Error(`No runner implementation for validator: ${validatorKey}`);
     }
   }
 
@@ -189,7 +189,7 @@ class ValidatorRunner {
         results[validatorKey] = result;
         
         const statusIcon = result.status === 'PASS' ? '✅' : 
-                          result.status === 'WARNING' ? '⚠️' : '❌';
+          result.status === 'WARNING' ? '⚠️' : '❌';
         console.log(`${statusIcon} ${this.validators[validatorKey].name}: ${result.status}`);
         
         summary.total++;
@@ -245,7 +245,7 @@ class ValidatorRunner {
     console.log('='.repeat(60));
 
     const statusIcon = results.overallStatus === 'PASS' ? '✅' : 
-                      results.overallStatus === 'WARNING' ? '⚠️' : '❌';
+      results.overallStatus === 'WARNING' ? '⚠️' : '❌';
     
     console.log(`\n${statusIcon} Overall Status: ${results.overallStatus}`);
     console.log(`📁 Project: ${path.basename(results.projectPath)}`);
@@ -277,7 +277,7 @@ class ValidatorRunner {
           const result = results.results[key];
           if (result) {
             const icon = result.status === 'PASS' ? '     ✅' : 
-                        result.status === 'WARNING' ? '     ⚠️' : '     ❌';
+              result.status === 'WARNING' ? '     ⚠️' : '     ❌';
             console.log(`${icon} ${config.name}: ${result.status}`);
             
             // Show key metrics if available
@@ -384,44 +384,44 @@ if (require.main === module) {
       let results;
 
       switch (command) {
-        case 'list':
-          runner.listValidators();
-          return;
+      case 'list':
+        runner.listValidators();
+        return;
 
-        case 'all':
-          results = await runner.runAll(args[1] || '.');
-          break;
+      case 'all':
+        results = await runner.runAll(args[1] || '.');
+        break;
 
-        case 'tier1':
-          const tier1Validators = Object.keys(runner.validators)
-            .filter(key => runner.validators[key].tier === 1);
-          results = await runner.runSpecific(tier1Validators, args[1] || '.');
-          break;
+      case 'tier1':
+        const tier1Validators = Object.keys(runner.validators)
+          .filter(key => runner.validators[key].tier === 1);
+        results = await runner.runSpecific(tier1Validators, args[1] || '.');
+        break;
 
-        case 'tier2':
-          const tier2Validators = Object.keys(runner.validators)
-            .filter(key => runner.validators[key].tier === 2);
-          results = await runner.runSpecific(tier2Validators, args[1] || '.');
-          break;
+      case 'tier2':
+        const tier2Validators = Object.keys(runner.validators)
+          .filter(key => runner.validators[key].tier === 2);
+        results = await runner.runSpecific(tier2Validators, args[1] || '.');
+        break;
 
-        case 'specific':
-          if (!args[1]) {
-            console.error('Usage: validator-runner specific <validator1,validator2,...> [project-path]');
-            process.exit(1);
-          }
-          const validators = args[1].split(',');
-          results = await runner.runSpecific(validators, args[2] || '.');
-          break;
-
-        default:
-          console.log('Usage: validator-runner <command> [options]');
-          console.log('Commands:');
-          console.log('  list                    - List all available validators');
-          console.log('  all [path]             - Run all validators');
-          console.log('  tier1 [path]           - Run Tier 1 validators only');
-          console.log('  tier2 [path]           - Run Tier 2 validators only');
-          console.log('  specific <list> [path] - Run specific validators (comma-separated)');
+      case 'specific':
+        if (!args[1]) {
+          console.error('Usage: validator-runner specific <validator1,validator2,...> [project-path]');
           process.exit(1);
+        }
+        const validators = args[1].split(',');
+        results = await runner.runSpecific(validators, args[2] || '.');
+        break;
+
+      default:
+        console.log('Usage: validator-runner <command> [options]');
+        console.log('Commands:');
+        console.log('  list                    - List all available validators');
+        console.log('  all [path]             - Run all validators');
+        console.log('  tier1 [path]           - Run Tier 1 validators only');
+        console.log('  tier2 [path]           - Run Tier 2 validators only');
+        console.log('  specific <list> [path] - Run specific validators (comma-separated)');
+        process.exit(1);
       }
 
       if (results) {

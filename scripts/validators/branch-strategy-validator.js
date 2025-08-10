@@ -546,7 +546,7 @@ class BranchStrategyValidator {
     console.log('====================================\n');
 
     const statusIcon = result.status === 'PASS' ? '✅' : 
-                      result.status === 'WARNING' ? '⚠️' : '❌';
+      result.status === 'WARNING' ? '⚠️' : '❌';
     
     console.log(`${statusIcon} Overall Branch Strategy: ${result.status}\n`);
     console.log(`📁 Project: ${path.basename(result.projectPath)}`);
@@ -555,7 +555,7 @@ class BranchStrategyValidator {
 
     result.validations.forEach(validation => {
       const icon = validation.status === 'PASS' ? '  ✓' : 
-                  validation.status === 'WARNING' ? '  ⚠' : '  ✗';
+        validation.status === 'WARNING' ? '  ⚠' : '  ✗';
       console.log(`${icon} ${validation.name}: ${validation.message}`);
       
       if (validation.details.violations && validation.details.violations.length > 0) {

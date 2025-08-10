@@ -255,7 +255,7 @@ Spec is in planning phase. Ready for implementation when resources are available
       if (!fs.existsSync(specsDashboardPath)) {
         const dashboardContent = this.generateSpecsDashboard();
         fs.writeFileSync(specsDashboardPath, dashboardContent);
-        console.log(`📄 Created: specs-dashboard.md`);
+        console.log('📄 Created: specs-dashboard.md');
       }
 
       // Create lifecycle guide if it doesn't exist
@@ -263,7 +263,7 @@ Spec is in planning phase. Ready for implementation when resources are available
       if (!fs.existsSync(lifecycleGuidePath)) {
         const guideContent = this.generateLifecycleGuide();
         fs.writeFileSync(lifecycleGuidePath, guideContent);
-        console.log(`📄 Created: spec-lifecycle-guide.md`);
+        console.log('📄 Created: spec-lifecycle-guide.md');
       }
     } catch (error) {
       console.warn(`⚠️  Warning: Could not create lifecycle files: ${error.message}`);

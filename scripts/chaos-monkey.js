@@ -128,7 +128,7 @@ class ChaosMonkey {
         this.testResults.push({
           scenario: 'Network Latency',
           status: 'completed',
-      timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString()
         });
         resolve();
       }, Math.random() * 1000 + 500); // 500-1500ms delay
@@ -258,30 +258,30 @@ class ChaosMonkey {
     const randomType = chaosTypes[Math.floor(Math.random() * chaosTypes.length)];
     
     switch (randomType) {
-      case 'memory':
-        this.injectMemoryPressure();
-        break;
-      case 'cpu':
-        this.injectCpuSpike();
-        break;
-      case 'network':
-        this.injectNetworkLatency();
-        break;
-      case 'error':
-        this.injectRandomErrors();
-        break;
-      case 'resource':
-        this.injectResourceExhaustion();
-        break;
-      case 'load':
-        this.injectConcurrentLoad();
-        break;
-      case 'extreme-load':
-        this.injectExtremeLoad();
-        break;
-      case 'memory-leak':
-        this.injectMemoryLeak();
-        break;
+    case 'memory':
+      this.injectMemoryPressure();
+      break;
+    case 'cpu':
+      this.injectCpuSpike();
+      break;
+    case 'network':
+      this.injectNetworkLatency();
+      break;
+    case 'error':
+      this.injectRandomErrors();
+      break;
+    case 'resource':
+      this.injectResourceExhaustion();
+      break;
+    case 'load':
+      this.injectConcurrentLoad();
+      break;
+    case 'extreme-load':
+      this.injectExtremeLoad();
+      break;
+    case 'memory-leak':
+      this.injectMemoryLeak();
+      break;
     }
   }
 

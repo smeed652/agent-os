@@ -272,9 +272,9 @@ async function quickRelease() {
     log('\n📊 Quick Release Summary:', 'bright');
     log('========================');
     log(`📦 Framework Version: ${currentVersion}`);
-    log(`🌍 Hello World App: Built and included`);
+    log('🌍 Hello World App: Built and included');
     log(`📁 Essential Files: ${essentialFiles.length} components`);
-    log(`⚡ Release Type: Quick (minimal validation)`);
+    log('⚡ Release Type: Quick (minimal validation)');
     
     log('\n🚀 Ready for distribution!', 'bright');
     log(`The quick release package is available in the '${RELEASE_DIR}/' directory.`, 'cyan');

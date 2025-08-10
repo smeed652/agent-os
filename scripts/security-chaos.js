@@ -51,13 +51,13 @@ class SecurityChaosMonkey {
   // Test SQL injection vulnerabilities
   async testSqlInjection() {
     const sqlPayloads = [
-      "' OR '1'='1",
-      "'; DROP TABLE users; --",
-      "' UNION SELECT * FROM users --",
-      "admin'--",
-      "1' OR '1' = '1' --",
-      "' OR 1=1#",
-      "'; EXEC xp_cmdshell('dir'); --"
+      '\' OR \'1\'=\'1',
+      '\'; DROP TABLE users; --',
+      '\' UNION SELECT * FROM users --',
+      'admin\'--',
+      '1\' OR \'1\' = \'1\' --',
+      '\' OR 1=1#',
+      '\'; EXEC xp_cmdshell(\'dir\'); --'
     ];
 
     const results = [];
@@ -91,13 +91,13 @@ class SecurityChaosMonkey {
   // Test XSS attacks
   async testXssAttacks() {
     const xssPayloads = [
-      "<script>alert('XSS')</script>",
-      "<img src=x onerror=alert('XSS')>",
-      "javascript:alert('XSS')",
-      "<svg onload=alert('XSS')>",
-      "'\"><script>alert('XSS')</script>",
-      "<iframe src=javascript:alert('XSS')></iframe>",
-      "<body onload=alert('XSS')>"
+      '<script>alert(\'XSS\')</script>',
+      '<img src=x onerror=alert(\'XSS\')>',
+      'javascript:alert(\'XSS\')',
+      '<svg onload=alert(\'XSS\')>',
+      '\'"><script>alert(\'XSS\')</script>',
+      '<iframe src=javascript:alert(\'XSS\')></iframe>',
+      '<body onload=alert(\'XSS\')>'
     ];
 
     const results = [];
@@ -131,12 +131,12 @@ class SecurityChaosMonkey {
   // Test path traversal
   async testPathTraversal() {
     const pathPayloads = [
-      "../../../etc/passwd",
-      "..\\..\\..\\windows\\system32\\drivers\\etc\\hosts",
-      "....//....//....//etc/passwd",
-      "%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd",
-      "..%252f..%252f..%252fetc%252fpasswd",
-      "..%c0%af..%c0%af..%c0%afetc%c0%afpasswd"
+      '../../../etc/passwd',
+      '..\\..\\..\\windows\\system32\\drivers\\etc\\hosts',
+      '....//....//....//etc/passwd',
+      '%2e%2e%2f%2e%2e%2f%2e%2e%2fetc%2fpasswd',
+      '..%252f..%252f..%252fetc%252fpasswd',
+      '..%c0%af..%c0%af..%c0%afetc%c0%afpasswd'
     ];
 
     const results = [];
@@ -170,13 +170,13 @@ class SecurityChaosMonkey {
   // Test command injection
   async testCommandInjection() {
     const commandPayloads = [
-      "; ls -la",
-      "| cat /etc/passwd",
-      "&& whoami",
-      "`id`",
-      "$(whoami)",
-      "; ping -c 1 127.0.0.1",
-      "| nc -l 4444"
+      '; ls -la',
+      '| cat /etc/passwd',
+      '&& whoami',
+      '`id`',
+      '$(whoami)',
+      '; ping -c 1 127.0.0.1',
+      '| nc -l 4444'
     ];
 
     const results = [];
@@ -210,12 +210,12 @@ class SecurityChaosMonkey {
   // Test buffer overflow attempts
   async testBufferOverflow() {
     const bufferPayloads = [
-      "A".repeat(1000),
-      "A".repeat(10000),
-      "A".repeat(100000),
+      'A'.repeat(1000),
+      'A'.repeat(10000),
+      'A'.repeat(100000),
       Buffer.alloc(1000).toString(),
       Buffer.alloc(10000).toString(),
-      "x".repeat(1000) + "y".repeat(1000) + "z".repeat(1000)
+      'x'.repeat(1000) + 'y'.repeat(1000) + 'z'.repeat(1000)
     ];
 
     const results = [];

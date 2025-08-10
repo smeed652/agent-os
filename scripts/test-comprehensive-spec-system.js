@@ -66,7 +66,7 @@ class ComprehensiveSpecSystemTest {
     const result = await this.creator.createCompleteSpec(this.testSpecName, this.testTitle);
     
     if (result.success) {
-      console.log(`✅ Spec created successfully!`);
+      console.log('✅ Spec created successfully!');
       console.log(`📁 Directory: ${result.specDir}`);
       console.log(`📄 Files created: ${result.files.join(', ')}`);
       
@@ -109,7 +109,7 @@ class ComprehensiveSpecSystemTest {
     console.log('\n   Getting task statistics...');
     const stats = this.taskUpdater.getTaskStats(specPath);
     if (stats) {
-      console.log(`   📊 Task Statistics:`);
+      console.log('   📊 Task Statistics:');
       console.log(`      Total: ${stats.total}`);
       console.log(`      Completed: ${stats.completed} (${stats.completionPercentage}%)`);
       console.log(`      In Progress: ${stats.inProgress}`);
@@ -195,7 +195,7 @@ class ComprehensiveSpecSystemTest {
     // Show final task statistics
     const stats = this.taskUpdater.getTaskStats(specPath);
     if (stats) {
-      console.log(`\n📊 Final Task Statistics:`);
+      console.log('\n📊 Final Task Statistics:');
       console.log(`   Total: ${stats.total}`);
       console.log(`   Completed: ${stats.completed} (${stats.completionPercentage}%)`);
       console.log(`   In Progress: ${stats.inProgress}`);
@@ -219,7 +219,7 @@ class ComprehensiveSpecSystemTest {
       const content = fs.readFileSync(dashboardPath, 'utf8');
       const summaryMatch = content.match(/## 📊 Summary\s*\n((?:- .*\n?)*)/);
       if (summaryMatch) {
-        console.log(`\n📊 Dashboard Summary:`);
+        console.log('\n📊 Dashboard Summary:');
         console.log(summaryMatch[1]);
       }
     }

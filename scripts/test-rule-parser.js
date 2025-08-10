@@ -142,11 +142,11 @@ class RuleParser {
       
       if (!parseResult.success) {
         if (!scenario.shouldPass) {
-          console.log(`  ✅ Correctly failed to parse invalid rule`);
+          console.log('  ✅ Correctly failed to parse invalid rule');
           console.log(`     Error: ${parseResult.error}\\n`);
           passed++;
         } else {
-          console.log(`  ❌ Failed to parse valid rule`);
+          console.log('  ❌ Failed to parse valid rule');
           console.log(`     Error: ${parseResult.error}\\n`);
           failed++;
         }
@@ -157,14 +157,14 @@ class RuleParser {
       
       if (scenario.shouldPass) {
         if (validationResult.isValid) {
-          console.log(`  ✅ Valid rule parsed and validated successfully`);
+          console.log('  ✅ Valid rule parsed and validated successfully');
           console.log(`     Title: ${parseResult.rule.title}`);
           console.log(`     Sections: ${parseResult.rule.sections.length}`);
           console.log(`     Code blocks: ${parseResult.rule.codeBlocks.length}`);
           console.log(`     Always apply: ${parseResult.rule.alwaysApply}\\n`);
           passed++;
         } else {
-          console.log(`  ❌ Valid rule failed validation`);
+          console.log('  ❌ Valid rule failed validation');
           validationResult.errors.forEach(error => {
             console.log(`     Error: ${error}`);
           });
@@ -173,14 +173,14 @@ class RuleParser {
         }
       } else {
         if (!validationResult.isValid) {
-          console.log(`  ✅ Correctly identified invalid rule`);
+          console.log('  ✅ Correctly identified invalid rule');
           validationResult.errors.forEach(error => {
             console.log(`     Error: ${error}`);
           });
           console.log('');
           passed++;
         } else {
-          console.log(`  ❌ Invalid rule passed validation (should have failed)\\n`);
+          console.log('  ❌ Invalid rule passed validation (should have failed)\\n');
           failed++;
         }
       }

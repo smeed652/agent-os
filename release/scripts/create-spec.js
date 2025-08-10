@@ -43,15 +43,15 @@ async function createSpec() {
   const success = versioner.createNewDocument(specFile, title, 'spec');
   
   if (success) {
-    console.log(`\n🎉 Spec created successfully!`);
+    console.log('\n🎉 Spec created successfully!');
     console.log(`📄 File: ${specFile}`);
     console.log(`🔗 Agent-OS Version: ${versioner.agentOsVersion}`);
-    console.log(`\nNext steps:`);
-    console.log(`1. Edit the spec file to add your project details`);
-    console.log(`2. Update the status as you progress`);
+    console.log('\nNext steps:');
+    console.log('1. Edit the spec file to add your project details');
+    console.log('2. Update the status as you progress');
     console.log(`3. Use 'npm run doc:update ${specFile}' to update version info`);
   } else {
-    console.error(`❌ Failed to create spec`);
+    console.error('❌ Failed to create spec');
     process.exit(1);
   }
 }

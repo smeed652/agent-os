@@ -2,10 +2,10 @@
 
 /**
  * Hello World Express Application
- * 
+ *
  * This is a simple Hello World application built with Express.js
  * that demonstrates proper error handling, logging, and API design.
- * 
+ *
  * Features:
  * - Basic Hello World endpoint
  * - Status endpoint for health checks
@@ -14,9 +14,9 @@
  * - Request logging
  */
 
-const express = require('express');
-const config = require('./config');
-const utils = require('./utils');
+const express = require("express");
+const config = require("./config");
+const utils = require("./utils");
 
 // Create Express application
 const app = express();
@@ -40,7 +40,7 @@ app.use((req, res, next) => {
  * @route GET /
  * @returns {string} HTML Hello World page
  */
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
   const html = `
     <!DOCTYPE html>
     <html lang="en">
@@ -111,8 +111,8 @@ app.get('/', (req, res) => {
     </body>
     </html>
   `;
-  
-  res.setHeader('Content-Type', 'text/html');
+
+  res.setHeader("Content-Type", "text/html");
   res.send(html);
 });
 
@@ -121,16 +121,16 @@ app.get('/', (req, res) => {
  * @route GET /api/status
  * @returns {Object} Application status information
  */
-app.get('/api/status', (req, res) => {
+app.get("/api/status", (req, res) => {
   const status = {
-    status: 'ok',
-    message: 'Hello World API is running',
+    status: "ok",
+    message: "Hello World API is running",
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
     version: config.version,
-    environment: config.environment
+    environment: config.environment,
   };
-  
+
   res.json(status);
 });
 
@@ -140,141 +140,156 @@ app.get('/api/status', (req, res) => {
  * @param {string} id - User identifier
  * @returns {Object} Personalized greeting message
  */
-app.get('/api/user/:id', (req, res) => {
+app.get("/api/user/:id", (req, res) => {
   const userId = req.params.id;
-  
+
   // Enhanced validation
-  if (!userId || userId.trim() === '') {
+  if (!userId || userId.trim() === "") {
     return res.status(400).json({
-      error: 'User ID is required',
-      message: 'Please provide a valid user ID'
+      error: "User ID is required",
+      message: "Please provide a valid user ID",
     });
   }
-  
+
   // Check for dangerous patterns before sanitization
   const dangerousPatterns = [
-    /<script/i, 
-    /(javascript|vbscript|data):/i,  // Script protocols
-    /on\w+=/i, 
-    /\.\./,  // Path traversal
-    /[\u0000-\u001f\u007f-\u009f]/,  // Control characters
-    /{{.*}}/,  // Template injection patterns
-    /\$\{.*\}/,  // Template literal injection
-    /["'][;].*alert/i,  // Script injection attempts
-    /['"];\s*(drop|insert|delete|update|select)\s/i,  // SQL injection
-    /['"](\s*or\s+['"]?1['"]?\s*=\s*['"]?1|--|\*\/|#)/i,  // SQL injection patterns with #
-    /['"]>\s*<script/i,  // XSS with quote escaping
-    /&[lg]t;.*script/i,  // HTML entity based XSS
-    /^<\s*$|^>\s*$|^&\s*$|^['"]\s*$/,  // Raw dangerous characters
-    /(drop|insert|delete|update|select)[\s]+/i,  // SQL keywords
-    /['"][\s]*--/,  // SQL comment injection
-    /\/\*|\*\//,  // SQL comment blocks
-    /constructor\.constructor/i,  // Prototype pollution
-    /\d+\*\d+/  // Math operations for template injection
+    /<script/i,
+    /(javascript|vbscript|data):/i, // Script protocols
+    /on\w+=/i,
+    /\.\./, // Path traversal
+    // Control characters - using character codes to avoid regex issues
+    (str) => {
+      return str.split("").some((char) => {
+        const code = char.charCodeAt(0);
+        return (code >= 0 && code <= 31) || (code >= 127 && code <= 159);
+      });
+    },
+    /{{.*}}/, // Template injection patterns
+    /\$\{.*\}/, // Template literal injection
+    /["'][;].*alert/i, // Script injection attempts
+    /['"];\s*(drop|insert|delete|update|select)\s/i, // SQL injection
+    /['"](\s*or\s+['"]?1['"]?\s*=\s*['"]?1|--|\*\/|#)/i, // SQL injection patterns with #
+    /['"]>\s*<script/i, // XSS with quote escaping
+    /&[lg]t;.*script/i, // HTML entity based XSS
+    /^<\s*$|^>\s*$|^&\s*$|^['"]\s*$/, // Raw dangerous characters
+    /(drop|insert|delete|update|select)[\s]+/i, // SQL keywords
+    /['"][\s]*--/, // SQL comment injection
+    /\/\*|\*\//, // SQL comment blocks
+    /constructor\.constructor/i, // Prototype pollution
+    /\d+\*\d+/, // Math operations for template injection
   ];
-  
-  const hasDangerousPattern = dangerousPatterns.some(pattern => pattern.test(userId));
+
+  const hasDangerousPattern = dangerousPatterns.some((pattern) => {
+    if (typeof pattern === "function") {
+      return pattern(userId);
+    }
+    return pattern.test(userId);
+  });
   if (hasDangerousPattern) {
     return res.status(400).json({
-      error: 'Invalid User ID',
-      message: 'User ID contains invalid characters'
+      error: "Invalid User ID",
+      message: "User ID contains invalid characters",
     });
   }
-  
+
   // Sanitize and validate user ID
   const sanitizedUserId = utils.sanitizeInput(userId);
   const validationResult = utils.validateUserId(sanitizedUserId);
-  
+
   if (!validationResult.isValid) {
     return res.status(400).json({
-      error: 'Invalid User ID',
-      message: validationResult.errors?.[0] || 'User ID contains invalid characters',
-      sanitizedValue: validationResult.sanitizedValue
+      error: "Invalid User ID",
+      message:
+        validationResult.errors?.[0] || "User ID contains invalid characters",
+      sanitizedValue: validationResult.sanitizedValue,
     });
   }
-  
+
   // Truncate if too long
-  const finalUserId = sanitizedUserId.length > 100 ? sanitizedUserId.substring(0, 100) : sanitizedUserId;
-  
+  const finalUserId =
+    sanitizedUserId.length > 100
+      ? sanitizedUserId.substring(0, 100)
+      : sanitizedUserId;
+
   const greeting = utils.generateUserGreeting(finalUserId);
-  
+
   res.json({
     message: greeting,
     userId: finalUserId,
     timestamp: new Date().toISOString(),
-    statusCode: 200
+    statusCode: 200,
   });
 });
 
 // Catch malformed user endpoint (missing ID parameter)
-app.get('/api/user', (req, res) => {
+app.get("/api/user", (req, res) => {
   res.status(400).json({
-    error: 'User ID is required',
-    message: 'Please provide a user ID parameter'
+    error: "User ID is required",
+    message: "Please provide a user ID parameter",
   });
 });
 
 // 404 handler for non-existent routes
 app.use((req, res) => {
   const notFoundResponse = {
-    error: 'Not Found',
-    message: `Route ${req.originalUrl} does not exist`
+    error: "Not Found",
+    message: `Route ${req.originalUrl} does not exist`,
   };
-  
+
   // Only add timestamp in non-test environments
-  if (process.env.NODE_ENV !== 'test') {
+  if (process.env.NODE_ENV !== "test") {
     notFoundResponse.timestamp = new Date().toISOString();
   }
-  
+
   res.status(404).json(notFoundResponse);
 });
 
 // Global error handler
 app.use((err, req, res, _next) => {
-  console.error('Error:', err);
-  
+  console.error("Error:", err);
+
   const errorResponse = {
-    error: 'Internal Server Error',
-    message: err.message || 'Something went wrong'
+    error: "Internal Server Error",
+    message: err.message || "Something went wrong",
   };
-  
+
   // Only add timestamp in non-test environments
-  if (process.env.NODE_ENV !== 'test') {
+  if (process.env.NODE_ENV !== "test") {
     errorResponse.timestamp = new Date().toISOString();
   }
-  
+
   res.status(err.status || 500).json(errorResponse);
 });
 
 // Start server only if not in test mode
-if (process.env.NODE_ENV !== 'test') {
+if (process.env.NODE_ENV !== "test") {
   const server = app.listen(PORT, () => {
-    console.log('🚀 Hello World server started successfully!');
+    console.log("🚀 Hello World server started successfully!");
     console.log(`   📍 Server running on port ${PORT}`);
     console.log(`   🌍 Environment: ${config.environment}`);
     console.log(`   📅 Started at: ${new Date().toISOString()}`);
-    console.log('');
-    console.log('   Available endpoints:');
-    console.log('   - GET /                 - Hello World page');
-    console.log('   - GET /api/status       - Application status');
-    console.log('   - GET /api/user/:id     - User greeting');
-    console.log('');
-    console.log('   Press Ctrl+C to stop the server');
+    console.log("");
+    console.log("   Available endpoints:");
+    console.log("   - GET /                 - Hello World page");
+    console.log("   - GET /api/status       - Application status");
+    console.log("   - GET /api/user/:id     - User greeting");
+    console.log("");
+    console.log("   Press Ctrl+C to stop the server");
   });
 
   // Graceful shutdown
-  process.on('SIGINT', () => {
-    console.log('\n🛑 Shutting down server gracefully...');
+  process.on("SIGINT", () => {
+    console.log("\n🛑 Shutting down server gracefully...");
     server.close(() => {
-      console.log('✅ Server closed successfully');
+      console.log("✅ Server closed successfully");
       process.exit(0);
     });
   });
 
-  process.on('SIGTERM', () => {
-    console.log('\n🛑 Received SIGTERM, shutting down...');
+  process.on("SIGTERM", () => {
+    console.log("\n🛑 Received SIGTERM, shutting down...");
     server.close(() => {
-      console.log('✅ Server closed successfully');
+      console.log("✅ Server closed successfully");
       process.exit(0);
     });
   });

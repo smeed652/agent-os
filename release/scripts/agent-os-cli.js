@@ -113,16 +113,16 @@ TIPS:
     const success = this.versioner.createNewDocument(specFile, title, 'spec');
     
     if (success) {
-      console.log(`\n🎉 Spec created successfully!`);
+      console.log('\n🎉 Spec created successfully!');
       console.log(`📄 File: ${specFile}`);
       console.log(`🔗 Agent-OS Version: ${this.agentOsVersion}`);
-      console.log(`\nNext steps:`);
-      console.log(`1. Edit the spec file to add your project details`);
-      console.log(`2. Update the status as you progress`);
+      console.log('\nNext steps:');
+      console.log('1. Edit the spec file to add your project details');
+      console.log('2. Update the status as you progress');
       console.log(`3. Use 'agent-os spec update ${specFile}' to update version info`);
-      console.log(`\n💡 Tip: Use 'agent-os spec create-full' to create all supporting files automatically`);
+      console.log('\n💡 Tip: Use \'agent-os spec create-full\' to create all supporting files automatically');
     } else {
-      console.error(`❌ Failed to create spec`);
+      console.error('❌ Failed to create spec');
       process.exit(1);
     }
   }
@@ -142,17 +142,17 @@ TIPS:
       const result = await this.specCreator.createCompleteSpec(specName, title);
       
       if (result.success) {
-        console.log(`\n🎉 Complete spec ecosystem created successfully!`);
+        console.log('\n🎉 Complete spec ecosystem created successfully!');
         console.log(`📁 Directory: ${result.specDir}`);
-        console.log(`📄 Files created:`);
+        console.log('📄 Files created:');
         result.files.forEach(file => {
           console.log(`   • ${file}`);
         });
         console.log(`🔗 Agent-OS Version: ${this.agentOsVersion}`);
-        console.log(`\nNext steps:`);
-        console.log(`1. Review the generated spec files`);
-        console.log(`2. Customize requirements and tasks as needed`);
-        console.log(`3. Begin implementation using the task breakdown`);
+        console.log('\nNext steps:');
+        console.log('1. Review the generated spec files');
+        console.log('2. Customize requirements and tasks as needed');
+        console.log('3. Begin implementation using the task breakdown');
       } else {
         console.error(`❌ Failed to create complete spec: ${result.error}`);
         process.exit(1);
@@ -174,9 +174,9 @@ TIPS:
     const success = this.versioner.updateExistingDocument(filePath);
     
     if (success) {
-      console.log(`✅ Spec updated successfully!`);
+      console.log('✅ Spec updated successfully!');
     } else {
-      console.log(`ℹ️  Spec already has current version info`);
+      console.log('ℹ️  Spec already has current version info');
     }
   }
 
@@ -203,7 +203,7 @@ TIPS:
         // Show task statistics
         const stats = this.taskUpdater.getTaskStats(specPath);
         if (stats) {
-          console.log(`\n📊 Task Statistics:`);
+          console.log('\n📊 Task Statistics:');
           console.log(`   Total: ${stats.total}`);
           console.log(`   Completed: ${stats.completed} (${stats.completionPercentage}%)`);
           console.log(`   In Progress: ${stats.inProgress}`);
@@ -341,73 +341,73 @@ TIPS:
 
     try {
       switch (command) {
-        case 'spec':
-          switch (subCommand) {
-            case 'create':
-              await this.createSpec(commandArgs);
-              break;
-            case 'create-full':
-              await this.createFullSpec(commandArgs);
-              break;
-            case 'update':
-              await this.updateSpec(commandArgs);
-              break;
-            default:
-              console.error(`❌ Unknown spec command: ${subCommand}`);
-              console.log('Use: agent-os spec create|create-full|update');
-              process.exit(1);
-          }
+      case 'spec':
+        switch (subCommand) {
+        case 'create':
+          await this.createSpec(commandArgs);
           break;
-
-        case 'task':
-          switch (subCommand) {
-            case 'update':
-              await this.updateTask(commandArgs);
-              break;
-            case 'stats':
-              await this.showTaskStats(commandArgs);
-              break;
-            default:
-              console.error(`❌ Unknown task command: ${subCommand}`);
-              console.log('Use: agent-os task update|stats');
-              process.exit(1);
-          }
+        case 'create-full':
+          await this.createFullSpec(commandArgs);
           break;
-
-        case 'dashboard':
-          switch (subCommand) {
-            case 'update':
-              await this.updateDashboard(commandArgs);
-              break;
-            case 'move':
-              await this.moveSpec(commandArgs);
-              break;
-            default:
-              console.error(`❌ Unknown dashboard command: ${subCommand}`);
-              console.log('Use: agent-os dashboard update|move');
-              process.exit(1);
-          }
+        case 'update':
+          await this.updateSpec(commandArgs);
           break;
-
-        case 'doc':
-          switch (subCommand) {
-            case 'version':
-              this.showVersion();
-              break;
-            case 'batch':
-              await this.batchUpdate(commandArgs);
-              break;
-            default:
-              console.error(`❌ Unknown doc command: ${subCommand}`);
-              console.log('Use: agent-os doc version|batch');
-              process.exit(1);
-          }
-          break;
-
         default:
-          console.error(`❌ Unknown command: ${command}`);
-          this.showHelp();
+          console.error(`❌ Unknown spec command: ${subCommand}`);
+          console.log('Use: agent-os spec create|create-full|update');
           process.exit(1);
+        }
+        break;
+
+      case 'task':
+        switch (subCommand) {
+        case 'update':
+          await this.updateTask(commandArgs);
+          break;
+        case 'stats':
+          await this.showTaskStats(commandArgs);
+          break;
+        default:
+          console.error(`❌ Unknown task command: ${subCommand}`);
+          console.log('Use: agent-os task update|stats');
+          process.exit(1);
+        }
+        break;
+
+      case 'dashboard':
+        switch (subCommand) {
+        case 'update':
+          await this.updateDashboard(commandArgs);
+          break;
+        case 'move':
+          await this.moveSpec(commandArgs);
+          break;
+        default:
+          console.error(`❌ Unknown dashboard command: ${subCommand}`);
+          console.log('Use: agent-os dashboard update|move');
+          process.exit(1);
+        }
+        break;
+
+      case 'doc':
+        switch (subCommand) {
+        case 'version':
+          this.showVersion();
+          break;
+        case 'batch':
+          await this.batchUpdate(commandArgs);
+          break;
+        default:
+          console.error(`❌ Unknown doc command: ${subCommand}`);
+          console.log('Use: agent-os doc version|batch');
+          process.exit(1);
+        }
+        break;
+
+      default:
+        console.error(`❌ Unknown command: ${command}`);
+        this.showHelp();
+        process.exit(1);
       }
     } catch (error) {
       console.error(`❌ Error: ${error.message}`);

@@ -71,7 +71,7 @@ class TestingCompletenessValidator {
       : 100;
 
     const status = coverageData.coverageRatio >= 80 ? 'PASS' : 
-                  coverageData.coverageRatio >= 60 ? 'WARNING' : 'FAIL';
+      coverageData.coverageRatio >= 60 ? 'WARNING' : 'FAIL';
     
     const message = `Test coverage: ${coverageData.coverageRatio.toFixed(1)}% (${coverageData.coveredFiles}/${codeFiles.length} files)`;
 
@@ -501,7 +501,7 @@ class TestingCompletenessValidator {
     console.log('==========================================\n');
 
     const statusIcon = result.status === 'PASS' ? '✅' : 
-                      result.status === 'WARNING' ? '⚠️' : '❌';
+      result.status === 'WARNING' ? '⚠️' : '❌';
     
     console.log(`${statusIcon} Overall Testing Status: ${result.status}\n`);
     console.log(`📁 Project: ${path.basename(result.projectPath)}`);
@@ -511,7 +511,7 @@ class TestingCompletenessValidator {
 
     result.validations.forEach(validation => {
       const icon = validation.status === 'PASS' ? '  ✓' : 
-                  validation.status === 'WARNING' ? '  ⚠' : '  ✗';
+        validation.status === 'WARNING' ? '  ⚠' : '  ✗';
       console.log(`${icon} ${validation.name}: ${validation.message}`);
       
       if (validation.details.uncoveredFiles && validation.details.uncoveredFiles.length > 0) {

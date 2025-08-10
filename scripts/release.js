@@ -33,6 +33,7 @@ const CHAOS_MODE = (() => {
 const NO_LINT = CLI_ARGS.includes('--no-lint');
 const NO_TESTS = CLI_ARGS.includes('--no-tests');
 const NO_VALIDATORS = CLI_ARGS.includes('--no-validators');
+const USE_BUILT_APP = CLI_ARGS.includes('--use-built-app');
 
 // Colors for console output
 const colors = {
@@ -256,14 +257,14 @@ async function release() {
         process.exit(1);
       }
     }
-    // Early lint for Hello World app to fail fast before heavier steps
+    // Early setup for Hello World app to fail fast before heavier steps
+    if (!runCommand('npm ci', 'Installing hello-world-app dependencies', HELLO_WORLD_DIR)) {
+      logError('Hello World app dependency installation failed; aborting release');
+      process.exit(1);
+    }
     if (NO_LINT) {
-      logInfo('Skipping hello-world-app dependency install and lint (--no-lint)');
+      logInfo('Skipping hello-world-app lint (--no-lint)');
     } else {
-      if (!runCommand('npm ci', 'Installing hello-world-app dependencies', HELLO_WORLD_DIR)) {
-        logError('Hello World app dependency installation failed; aborting release');
-        process.exit(1);
-      }
       if (!runCommand('npm run lint', 'Running hello-world-app lint', HELLO_WORLD_DIR)) {
         logError('Hello World app linting failed; aborting release');
         process.exit(1);
@@ -300,23 +301,25 @@ async function release() {
       logInfo('Skipping chaos tests (--no-chaos)');
     }
 
-    // Step 3: Build Hello World app
-    logStep('🏗️', 'Building Hello World app');
-    
-    // Change to Hello World directory and build
-    if (!runCommand('npm run build', 'Building Hello World app', HELLO_WORLD_DIR)) {
-      logError('Hello World app build failed! Release cannot continue');
-      process.exit(1);
-    }
-    
-    // Verify build output
+    // Step 3: Build Hello World app (or use existing build)
+    logStep('🏗️', USE_BUILT_APP ? 'Using existing Hello World app build' : 'Building Hello World app');
     const buildDir = path.join(HELLO_WORLD_DIR, 'dist');
+    if (!USE_BUILT_APP) {
+      // Change to Hello World directory and build
+      const buildEnv = `${NO_LINT ? 'SKIP_LINT=1 ' : ''}${NO_TESTS ? 'SKIP_TESTS=1 ' : ''}`.trim();
+      const buildCmd = buildEnv.length > 0 ? `${buildEnv} npm run build` : 'npm run build';
+      if (!runCommand(buildCmd, 'Building Hello World app', HELLO_WORLD_DIR)) {
+        logError('Hello World app build failed! Release cannot continue');
+        process.exit(1);
+      }
+    }
+    // Verify build output
     if (!fs.existsSync(buildDir)) {
       logError('Hello World app build output not found');
       process.exit(1);
     }
     
-    logSuccess('Hello World app built successfully');
+    logSuccess('Hello World app build available');
 
     // Step 4: Create release directory
     logStep('📁', 'Creating release directory');
@@ -583,10 +586,10 @@ This release includes the complete Agent-OS framework with a built Hello World a
     log('\n📊 Release Summary:', 'bright');
     log('==================');
     log(`📦 Framework Version: ${currentVersion}`);
-    log(`🌍 Hello World App: Built and included`);
+    log('🌍 Hello World App: Built and included');
     log(`📁 Framework Files: ${frameworkFiles.length} components`);
-    log(`📚 Documentation: Updated with release info`);
-    log(`🔧 Scripts: Production-ready versions`);
+    log('📚 Documentation: Updated with release info');
+    log('🔧 Scripts: Production-ready versions');
     
     log('\n🚀 Ready for distribution!', 'bright');
     log(`The release package is available in the '${RELEASE_DIR}/' directory.`, 'cyan');

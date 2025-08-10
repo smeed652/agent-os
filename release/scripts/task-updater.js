@@ -165,22 +165,22 @@ class TaskUpdater {
     let statusText = '';
     
     switch (status.toLowerCase()) {
-      case 'complete':
-      case 'completed':
-      case 'done':
-        checkbox = '[x]';
-        break;
-      case 'blocked':
-        checkbox = '[ ]';
-        statusText = ' ⚠️ Blocked';
-        break;
-      case 'in-progress':
-      case 'progress':
-        checkbox = '[ ]';
-        statusText = ' 🔄 In Progress';
-        break;
-      default:
-        checkbox = '[ ]';
+    case 'complete':
+    case 'completed':
+    case 'done':
+      checkbox = '[x]';
+      break;
+    case 'blocked':
+      checkbox = '[ ]';
+      statusText = ' ⚠️ Blocked';
+      break;
+    case 'in-progress':
+    case 'progress':
+      checkbox = '[ ]';
+      statusText = ' 🔄 In Progress';
+      break;
+    default:
+      checkbox = '[ ]';
     }
     
     // Add notes if provided
@@ -312,7 +312,7 @@ if (require.main === module) {
     // Show task statistics
     const stats = updater.getTaskStats(specPath);
     if (stats) {
-      console.log(`\n📊 Task Statistics:`);
+      console.log('\n📊 Task Statistics:');
       console.log(`   Total: ${stats.total}`);
       console.log(`   Completed: ${stats.completed} (${stats.completionPercentage}%)`);
       console.log(`   In Progress: ${stats.inProgress}`);

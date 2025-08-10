@@ -414,7 +414,7 @@ class ValidatorTester {
       check: 'Tasks follow TDD approach',
       result: hasWriteTests && hasVerifyTests ? 'PASS' : 'FAIL',
       details: hasWriteTests && hasVerifyTests ?
-        "Each major task starts with 'Write tests' and ends with 'Verify tests pass'" :
+        'Each major task starts with \'Write tests\' and ends with \'Verify tests pass\'' :
         'Tasks do not follow TDD approach'
     });
     

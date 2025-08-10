@@ -1,6 +1,6 @@
 /**
  * Utility Functions for Hello World Application
- * 
+ *
  * This file contains various utility functions with intentional quality variations
  * to test different aspects of the Agent OS validator suite:
  * - Good practices and bad practices
@@ -31,12 +31,12 @@ function validateUserId(userId) {
   if (!userId || typeof userId !== 'string') {
     return false;
   }
-  
+
   // Check length constraints (3-50 characters)
   if (userId.length < 3 || userId.length > 50) {
     return false;
   }
-  
+
   // Check format: alphanumeric with dashes and underscores only
   const validFormat = /^[a-zA-Z0-9_-]+$/;
   return validFormat.test(userId);
@@ -51,15 +51,15 @@ function calculateUptime(startTime) {
   if (!startTime || typeof startTime !== 'number') {
     return 0;
   }
-  
+
   const currentTime = Date.now();
   const uptimeMs = currentTime - startTime;
-  
+
   // Return 0 if start time is in the future (invalid)
   if (uptimeMs < 0) {
     return 0;
   }
-  
+
   return Math.floor(uptimeMs / 1000);
 }
 
@@ -72,28 +72,35 @@ function sanitizeInput(input) {
   if (!input || typeof input !== 'string') {
     return '';
   }
-  
+
   // Remove HTML tags and script content
   let sanitized = input.replace(/<[^>]*>/g, '');
   sanitized = sanitized.replace(/javascript:/gi, '');
   sanitized = sanitized.replace(/on\w+\s*=/gi, '');
-  
+
   // Remove path traversal attempts
   sanitized = sanitized.replace(/\.\./g, '');
   sanitized = sanitized.replace(/\/+/g, '/');
-  
+
   // Remove null bytes and control characters
   sanitized = sanitized.replace(/\0/g, '');
-  sanitized = sanitized.replace(/[\x00-\x1F\x7F]/g, '');
-  
+  // Filter out control characters using a function
+  sanitized = sanitized
+    .split('')
+    .filter((char) => {
+      const code = char.charCodeAt(0);
+      return code >= 32 && code !== 127;
+    })
+    .join('');
+
   // Trim whitespace
   sanitized = sanitized.trim();
-  
+
   // Limit length to prevent buffer overflow
   if (sanitized.length > 1000) {
     sanitized = sanitized.substring(0, 1000);
   }
-  
+
   return sanitized;
 }
 
@@ -106,23 +113,23 @@ function validateFilePath(filePath) {
   if (!filePath || typeof filePath !== 'string') {
     return null;
   }
-  
+
   // Normalize path and remove any path traversal attempts
   const normalized = path.normalize(filePath);
-  
+
   // Check for path traversal patterns
   if (normalized.includes('..') || normalized.includes('//')) {
     return null;
   }
-  
+
   // Ensure path is within allowed directory
   const resolved = path.resolve(normalized);
   const allowedDir = path.resolve(__dirname, '../public');
-  
+
   if (!resolved.startsWith(allowedDir)) {
     return null;
   }
-  
+
   return normalized;
 }
 
@@ -142,7 +149,7 @@ function generateTimestamp() {
  */
 function complexCalculation(a, b, operation) {
   let result = 0;
-  
+
   // Intentionally complex nested conditions for testing
   if (operation === 'add') {
     if (a > 0) {
@@ -241,7 +248,7 @@ function complexCalculation(a, b, operation) {
   } else {
     throw new Error('Invalid operation');
   }
-  
+
   return result;
 }
 
@@ -298,16 +305,16 @@ function addNumbers(num1, num2) {
     // If not a number, convert to number
     num1 = parseFloat(num1) || 0;
   }
-  
+
   // Check if second number is provided
   if (typeof num2 !== 'number') {
     // If not a number, convert to number
     num2 = parseFloat(num2) || 0;
   }
-  
+
   // Perform the addition operation
   const sum = num1 + num2;
-  
+
   // Return the calculated sum
   return sum;
 }
@@ -325,5 +332,5 @@ module.exports = {
   duplicateLogic1,
   duplicateLogic2,
   processData,
-  addNumbers
+  addNumbers,
 };

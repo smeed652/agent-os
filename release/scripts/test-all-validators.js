@@ -245,7 +245,7 @@ class ValidatorTestSuite {
         
         tierResults.forEach(result => {
           const icon = result.status === 'PASS' ? '     ✅' : 
-                      result.status === 'ERROR' ? '     💥' : '     ❌';
+            result.status === 'ERROR' ? '     💥' : '     ❌';
           console.log(`${icon} ${result.name}: ${result.status}`);
           console.log(`          ${result.tests.totalTests} tests, ${result.tests.passedTests} passed, ${result.duration}ms`);
           

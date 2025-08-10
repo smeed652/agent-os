@@ -86,7 +86,7 @@ class DocumentationValidator {
 
     const completenessScore = (presentSections.length / requiredSections.length) * 100;
     const status = completenessScore >= 80 ? 'PASS' : 
-                  completenessScore >= 60 ? 'WARNING' : 'FAIL';
+      completenessScore >= 60 ? 'WARNING' : 'FAIL';
 
     const message = `README completeness: ${completenessScore.toFixed(0)}% (${presentSections.length}/${requiredSections.length} required sections)`;
 
@@ -190,7 +190,7 @@ class DocumentationValidator {
       : 100;
 
     const status = commentScore >= 70 ? 'PASS' : 
-                  commentScore >= 50 ? 'WARNING' : 'FAIL';
+      commentScore >= 50 ? 'WARNING' : 'FAIL';
 
     const message = `Code comment quality: ${commentScore.toFixed(0)}% (${commentAnalysis.wellCommentedFiles}/${codeFiles.length} files well-commented)`;
 
@@ -577,7 +577,7 @@ class DocumentationValidator {
     console.log('===================================\n');
 
     const statusIcon = result.status === 'PASS' ? '✅' : 
-                      result.status === 'WARNING' ? '⚠️' : '❌';
+      result.status === 'WARNING' ? '⚠️' : '❌';
     
     console.log(`${statusIcon} Overall Documentation Status: ${result.status}\n`);
     console.log(`📁 Project: ${path.basename(result.projectPath)}`);
@@ -587,7 +587,7 @@ class DocumentationValidator {
 
     result.validations.forEach(validation => {
       const icon = validation.status === 'PASS' ? '  ✓' : 
-                  validation.status === 'WARNING' ? '  ⚠' : '  ✗';
+        validation.status === 'WARNING' ? '  ⚠' : '  ✗';
       console.log(`${icon} ${validation.name}: ${validation.message}`);
       
       if (validation.details.missingSections && validation.details.missingSections.length > 0) {

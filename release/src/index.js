@@ -1,9 +1,9 @@
 /**
  * Hello World Express Application
- * 
+ *
  * This is a simple Hello World application built with Express.js
  * designed to test the Agent OS validator suite and workflow.
- * 
+ *
  * Features:
  * - Basic Hello World endpoint
  * - API status endpoint
@@ -16,7 +16,12 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const path = require('path');
-const { formatMessage, validateUserId, calculateUptime, sanitizeInput } = require('./utils');
+const {
+  formatMessage,
+  validateUserId,
+  calculateUptime,
+  sanitizeInput,
+} = require('./utils');
 const config = require('./config');
 
 const app = express();
@@ -25,36 +30,44 @@ const app = express();
 const startTime = Date.now();
 
 // Security middleware
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      scriptSrc: ["'self'"],
-      imgSrc: ["'self'", "data:", "https:"]
-    }
-  },
-  hsts: {
-    maxAge: 31536000,
-    includeSubDomains: true,
-    preload: true
-  }
-}));
-app.use(cors({
-  origin: config.cors.origin,
-  credentials: config.cors.credentials
-}));
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ['\'self\''],
+        styleSrc: ['\'self\'', '\'unsafe-inline\''],
+        scriptSrc: ['\'self\''],
+        imgSrc: ['\'self\'', 'data:', 'https:'],
+      },
+    },
+    hsts: {
+      maxAge: 31536000,
+      includeSubDomains: true,
+      preload: true,
+    },
+  })
+);
+app.use(
+  cors({
+    origin: config.cors.origin,
+    credentials: config.cors.credentials,
+  })
+);
 
 // Request size limits to prevent buffer overflow attacks
-app.use(express.json({ 
-  limit: '1mb', // Reduced from 10mb to prevent large payload attacks
-  strict: true 
-}));
-app.use(express.urlencoded({ 
-  extended: true, 
-  limit: '1mb', // Reduced from 10mb
-  parameterLimit: 10 // Limit number of parameters
-}));
+app.use(
+  express.json({
+    limit: '1mb', // Reduced from 10mb to prevent large payload attacks
+    strict: true,
+  })
+);
+app.use(
+  express.urlencoded({
+    extended: true,
+    limit: '1mb', // Reduced from 10mb
+    parameterLimit: 10, // Limit number of parameters
+  })
+);
 
 // Additional security middleware
 app.use((req, res, next) => {
@@ -63,19 +76,19 @@ app.use((req, res, next) => {
   if (sanitizedPath !== req.path) {
     return res.status(400).json({
       error: 'Invalid request path',
-      message: 'Path contains invalid characters'
+      message: 'Path contains invalid characters',
     });
   }
-  
+
   // Limit request headers to prevent header injection
   const headerCount = Object.keys(req.headers).length;
   if (headerCount > 50) {
     return res.status(431).json({
       error: 'Too many headers',
-      message: 'Request contains too many headers'
+      message: 'Request contains too many headers',
     });
   }
-  
+
   next();
 });
 
@@ -86,7 +99,7 @@ app.use('/static', express.static(path.join(__dirname, '../public')));
 app.use((req, res, next) => {
   const timestamp = new Date().toISOString();
   // Sanitize logged path to prevent log injection
-  const safePath = req.path.replace(/[^\w\/\-\.]/g, '');
+  const safePath = req.path.replace(/[^\w/.-]/g, '');
   console.log(`[${timestamp}] ${req.method} ${safePath} - ${req.ip}`);
   next();
 });
@@ -160,7 +173,7 @@ app.get('/', (req, res) => {
     </body>
     </html>
   `;
-  
+
   res.send(htmlContent);
 });
 
@@ -171,7 +184,7 @@ app.get('/', (req, res) => {
  */
 app.get('/api/status', (req, res) => {
   const uptime = calculateUptime(startTime);
-  
+
   res.json({
     status: 'ok',
     message: 'Hello World API is running',
@@ -179,7 +192,7 @@ app.get('/api/status', (req, res) => {
     uptime: uptime,
     version: require('../package.json').version,
     environment: process.env.NODE_ENV || 'development',
-    port: config.port
+    port: config.port,
   });
 });
 
@@ -191,26 +204,27 @@ app.get('/api/status', (req, res) => {
  */
 app.get('/api/user/:id', (req, res) => {
   const userId = req.params.id;
-  
+
   // Sanitize and validate user ID
   const sanitizedUserId = sanitizeInput(userId);
-  
+
   if (!validateUserId(sanitizedUserId)) {
     return res.status(400).json({
       error: 'Invalid user ID format',
-      message: 'User ID must be 3-50 characters, alphanumeric with dashes and underscores only'
+      message:
+        'User ID must be 3-50 characters, alphanumeric with dashes and underscores only',
       // Removed detailed userId exposure and validation rules
     });
   }
-  
+
   // Generate personalized message
   const message = formatMessage(sanitizedUserId);
-  
+
   res.json({
     message: message,
     userId: sanitizedUserId,
     timestamp: new Date().toISOString(),
-    requestId: Math.random().toString(36).substr(2, 9)
+    requestId: Math.random().toString(36).substr(2, 9),
   });
 });
 
@@ -223,29 +237,29 @@ app.get('/health', (req, res) => {
   res.json({
     status: 'healthy',
     timestamp: new Date().toISOString(),
-    uptime: calculateUptime(startTime)
+    uptime: calculateUptime(startTime),
   });
 });
 
 // Error handling middleware - Fixed information disclosure
-app.use((err, req, res, next) => {
+app.use((err, req, res, _next) => {
   console.error('Error occurred:', err);
-  
+
   // Don't expose internal error details in production
   const isDevelopment = process.env.NODE_ENV === 'development';
-  
+
   let errorResponse = {
     error: 'Internal Server Error',
     message: 'Something went wrong',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   };
-  
+
   // Only expose detailed error information in development
   if (isDevelopment) {
     errorResponse.message = err.message;
     errorResponse.stack = err.stack;
   }
-  
+
   // Handle specific error types
   if (err.type === 'entity.parse.failed') {
     errorResponse.error = 'Invalid Request Format';
@@ -256,7 +270,7 @@ app.use((err, req, res, next) => {
   } else {
     res.status(500);
   }
-  
+
   res.json(errorResponse);
 });
 
@@ -265,7 +279,7 @@ app.use((req, res) => {
   res.status(404).json({
     error: 'Not Found',
     message: 'The requested resource was not found',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
     // Removed detailed route information and available routes
   });
 });
@@ -273,7 +287,7 @@ app.use((req, res) => {
 // Start server function
 function startServer() {
   const port = config.port;
-  
+
   const server = app.listen(port, () => {
     console.log('🚀 Hello World server started successfully!');
     console.log(`📡 Server running at http://localhost:${port}`);
@@ -284,7 +298,7 @@ function startServer() {
     console.log('   - GET /api/user/:id     - User greeting');
     console.log('   - GET /health           - Health check');
   });
-  
+
   // Graceful shutdown
   process.on('SIGTERM', () => {
     console.log('SIGTERM received, shutting down gracefully');
@@ -293,7 +307,7 @@ function startServer() {
       process.exit(0);
     });
   });
-  
+
   process.on('SIGINT', () => {
     console.log('SIGINT received, shutting down gracefully');
     server.close(() => {
@@ -301,7 +315,7 @@ function startServer() {
       process.exit(0);
     });
   });
-  
+
   return server;
 }
 

@@ -914,7 +914,7 @@ class SpecAdherenceValidator {
     console.log('====================================\n');
 
     const statusIcon = result.status === 'PASS' ? '✅' : 
-                      result.status === 'WARNING' ? '⚠️' : '❌';
+      result.status === 'WARNING' ? '⚠️' : '❌';
     
     console.log(`${statusIcon} Overall Status: ${result.status}\n`);
     console.log(`📁 Spec: ${path.basename(result.specPath)}`);
@@ -922,7 +922,7 @@ class SpecAdherenceValidator {
 
     result.validations.forEach(validation => {
       const icon = validation.status === 'PASS' ? '  ✓' : 
-                  validation.status === 'WARNING' ? '  ⚠' : '  ✗';
+        validation.status === 'WARNING' ? '  ⚠' : '  ✗';
       console.log(`${icon} ${validation.name}: ${validation.message}`);
       
       if (validation.details && validation.details.missing && validation.details.missing.length > 0) {

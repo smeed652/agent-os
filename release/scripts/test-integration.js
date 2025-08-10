@@ -311,18 +311,18 @@ class TestIntegration {
    */
   async runFocusedTests(focus) {
     switch (focus) {
-      case 'regular':
-        await this.runRegularTests();
-        break;
-      case 'chaos':
-        await this.runChaosTests();
-        break;
-      case 'security':
-        await this.runSecurityTests();
-        break;
-      default:
-        console.log('Invalid focus. Use: regular, chaos, or security');
-        return;
+    case 'regular':
+      await this.runRegularTests();
+      break;
+    case 'chaos':
+      await this.runChaosTests();
+      break;
+    case 'security':
+      await this.runSecurityTests();
+      break;
+    default:
+      console.log('Invalid focus. Use: regular, chaos, or security');
+      return;
     }
     
     this.analyzeResults();
@@ -339,20 +339,20 @@ if (require.main === module) {
   const command = args[0];
   
   switch (command) {
-    case 'all':
-      integration.runAllTests();
-      break;
-    case 'regular':
-      integration.runFocusedTests('regular');
-      break;
-    case 'chaos':
-      integration.runFocusedTests('chaos');
-      break;
-    case 'security':
-      integration.runFocusedTests('security');
-      break;
-    case 'help':
-      console.log(`
+  case 'all':
+    integration.runAllTests();
+    break;
+  case 'regular':
+    integration.runFocusedTests('regular');
+    break;
+  case 'chaos':
+    integration.runFocusedTests('chaos');
+    break;
+  case 'security':
+    integration.runFocusedTests('security');
+    break;
+  case 'help':
+    console.log(`
 Test Integration Script
 
 Usage:
@@ -370,9 +370,9 @@ Examples:
   node scripts/test-integration.js security
   node scripts/test-integration.js chaos
       `);
-      break;
-    default:
-      integration.runAllTests();
+    break;
+  default:
+    integration.runAllTests();
   }
 }
 

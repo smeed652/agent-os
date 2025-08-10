@@ -17,6 +17,8 @@ console.log('🚀 Starting Hello World App Build Process...\n');
 const BUILD_DIR = 'dist';
 const SOURCE_DIR = 'src';
 const TEST_DIR = 'tests';
+const SKIP_LINT = process.env.SKIP_LINT === '1';
+const SKIP_TESTS = process.env.SKIP_TESTS === '1';
 
 // Colors for console output
 const colors = {
@@ -120,14 +122,22 @@ async function build() {
     }
 
     // Step 2: Run linting
-    if (!runCommand('npm run lint', 'Running code linting')) {
-      logWarning('Linting issues found, but continuing with build');
+    if (SKIP_LINT) {
+      logInfo('Skipping code linting due to SKIP_LINT=1');
+    } else {
+      if (!runCommand('npm run lint', 'Running code linting')) {
+        logWarning('Linting issues found, but continuing with build');
+      }
     }
 
     // Step 3: Run tests
-    if (!runCommand('npm run test:coverage', 'Running test suite with coverage')) {
-      logError('Tests failed! Build cannot continue');
-      process.exit(1);
+    if (SKIP_TESTS) {
+      logInfo('Skipping tests due to SKIP_TESTS=1');
+    } else {
+      if (!runCommand('npm run test:coverage', 'Running test suite with coverage')) {
+        logError('Tests failed! Build cannot continue');
+        process.exit(1);
+      }
     }
 
     // Step 4: Create build directory

@@ -744,14 +744,14 @@ class SecurityValidator {
     console.log('==============================\n');
 
     const statusIcon = results.overallStatus === 'PASS' ? '✅' : 
-                      results.overallStatus === 'WARNING' ? '⚠️' : '❌';
+      results.overallStatus === 'WARNING' ? '⚠️' : '❌';
     
     console.log(`${statusIcon} Overall Security Status: ${results.overallStatus}\n`);
 
     // Show file-by-file results
     results.files.forEach(result => {
       const fileIcon = result.status === 'PASS' ? '✅' : 
-                      result.status === 'WARNING' ? '⚠️' : '❌';
+        result.status === 'WARNING' ? '⚠️' : '❌';
       
       console.log(`${fileIcon} ${path.basename(result.file)} (${result.status})`);
       

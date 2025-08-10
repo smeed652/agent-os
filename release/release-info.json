@@ -1,12 +1,12 @@
 {
   "version": "2.0.0",
-  "releaseTime": "2025-08-10T19:53:05.503Z",
+  "releaseTime": "2025-08-10T21:57:56.645Z",
   "nodeVersion": "v23.11.0",
   "frameworkFiles": 10,
   "helloWorldApp": {
     "included": true,
-    "buildTime": "2025-08-10T19:53:05.266Z",
+    "buildTime": "2025-08-10T21:57:56.420Z",
     "buildSize": 288
   },
-  "releaseId": "release-1754855585504"
+  "releaseId": "release-1754863076645"
 }
