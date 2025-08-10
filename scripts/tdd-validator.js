@@ -296,7 +296,7 @@ class TDDValidator {
 
     // Check for poor test names
     const poorTestNames = content.match(
-      /it\s*\(\s*['"`](should work|test|works?|ok)['"`]/gi
+      /it\s*\(\s*[''`](should work|test|works?|ok)[''`]/gi
     );
     if (poorTestNames) {
       issues.push(
