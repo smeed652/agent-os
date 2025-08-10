@@ -1,18 +1,57 @@
-<img width="1280" height="640" alt="agent-os-og" src="https://github.com/user-attachments/assets/e897628e-7063-4bab-a69a-7bb6d7ac8403" />
+# Agent OS v2.0.0 - Advanced Development Framework
 
-## Your system for spec-driven agentic development.
+## Enterprise-grade spec-driven development with comprehensive testing, validation, and release automation.
 
-[Agent OS](https://buildermethods.com/agent-os) transforms AI coding agents from confused interns into productive developers. With structured workflows that capture your standards, your stack, and the unique details of your codebase, Agent OS gives your agents the specs they need to ship quality code on the first try—not the fifth.
+**Agent OS v2.0.0** is an advanced development framework that transforms AI coding agents into productive developers through structured workflows, comprehensive testing, and automated quality assurance. This framework extends proven spec-driven development concepts with enterprise-grade development practices, comprehensive testing suites, and production-ready automation.
 
-Use it with:
+### 🎯 What Makes This Version Different
 
-✅ Claude Code, Cursor, or any other AI coding tool.
+This **Advanced Development Framework** edition includes:
 
-✅ New products or established codebases.
+- **🧪 Comprehensive Testing Suite** - 220+ tests with Jest integration
+- **🐒 Chaos Engineering** - Resilience testing with chaos monkey
+- **🔍 Advanced Validation** - Code quality, security, and TDD compliance
+- **🚀 Automated Release Pipeline** - Full CI/CD with versioning and tagging
+- **📊 Performance Testing** - Memory leak detection and load testing
+- **🛡️ Security Testing** - Vulnerability scanning and penetration testing
+- **📝 Spec-Driven Architecture** - Enhanced specification management system
 
-✅ Big features, small fixes, or anything in between.
+### 🙏 Credits & Attribution
 
-✅ Any language or framework.
+This project builds upon concepts and inspiration from the original Agent OS framework:
+
+- **Original Concept**: Agent OS - Spec-driven development for AI agents
+- **Original Author**: Brian Casel
+- **Original Repository**: [buildermethods/agent-os](https://github.com/buildermethods/agent-os)
+- **Core Concepts**: Spec-driven development, AI agent workflows, structured standards
+
+This v2.0.0 implementation extends these foundational concepts with:
+
+- Production-ready development practices
+- Comprehensive testing and validation suites
+- Enterprise deployment capabilities
+- Advanced automation and quality assurance
+
+### 🎯 Framework Integration
+
+This framework provides **core development infrastructure** for AI agent projects, offering:
+
+- **Agent Workflow Standards** - Structured development processes for AI agents
+- **Quality Assurance Pipeline** - Automated testing and validation for agent-generated code
+- **Spec-Driven Agent Behavior** - Consistent, predictable agent interactions
+- **Production-Ready Deployments** - Enterprise-grade release management for agent systems
+
+Compatible with:
+
+✅ **Claude Code, Cursor, or any AI coding tool**
+
+✅ **Enterprise Projects** - Production codebases requiring quality assurance
+
+✅ **Agent Development** - Building reliable AI-powered development workflows
+
+✅ **Any language or framework** - Universal development standards
+
+✅ **CI/CD Pipelines** - Automated quality assurance and deployment
 
 ---
 
@@ -20,10 +59,11 @@ Use it with:
 
 📖 **Complete Setup Guide**: See [SETUP-GUIDE.md](SETUP-GUIDE.md) for detailed installation and configuration instructions.
 
-🚀 **Quick Start**: 
+🚀 **Quick Start**:
+
 ```bash
-# Global installation (recommended)
-git clone https://github.com/buildermethods/agent-os ~/.agent-os
+# Clone this repository
+git clone <your-repository-url> ~/.agent-os
 cd ~/.agent-os && npm install
 
 # Start with project analysis
@@ -31,6 +71,7 @@ cd ~/.agent-os && npm install
 ```
 
 🔧 **New Features**:
+
 - **Lifecycle Management**: Track and manage spec progress with automated dashboards
 - **Universal Rules System**: 15 comprehensive development rules with full validation
 - **Enhanced Testing Suite**: 96+ automated tests with coverage analysis
@@ -38,7 +79,7 @@ cd ~/.agent-os && npm install
 - **Test Command**: `@~/.agent-os/instructions/core/test-lifecycle.md` to set up lifecycle management
 - **Dashboard Generation**: `npm run dashboard` to generate spec status dashboards
 
-📚 **Full Documentation**: [buildermethods.com/agent-os](https://buildermethods.com/agent-os)
+📚 **Full Documentation**: See the `docs/` directory for comprehensive guides and API documentation
 
 ## 🧪 Testing & Quality Assurance
 
@@ -48,7 +89,7 @@ Agent OS includes a comprehensive testing suite with 100% success rate:
 # Run all tests with enhanced presentation
 npm test
 
-# Run detailed coverage analysis  
+# Run detailed coverage analysis
 npm run coverage
 
 # Run specific test suites
@@ -72,8 +113,9 @@ npm run validate:documentation    # Documentation completeness and quality
 ```
 
 **Test Coverage**:
+
 - ✅ **14 Universal Rules** - 100% coverage with structure, content & integration tests
-- ✅ **6 Core Features** - Comprehensive test suites for critical functionality  
+- ✅ **6 Core Features** - Comprehensive test suites for critical functionality
 - ✅ **96+ Individual Tests** - Automated validation across all components
 - ✅ **Performance Benchmarks** - Ensures system scales efficiently
 
@@ -82,25 +124,31 @@ npm run validate:documentation    # Documentation completeness and quality
 Agent OS includes 15 universal development rules that apply across all projects:
 
 **Foundation Rules (Tier 1)**:
+
 - Documentation Standards, Modular Documentation, TypeScript Standards
 - File Organization, Git Workflow, Commit Standards
 
-**Process Rules (Tier 2)**:  
+**Process Rules (Tier 2)**:
+
 - Testing Standards, Test Organization, CI/CD Basic, Deployment Safety
 
 **Architecture Rules (Tier 3)**:
+
 - Tech Stack Selection, Tech Stack Documentation, Architecture Patterns, Code Organization
 
 📖 **See [rules/README.md](rules/README.md)** for complete universal development standards.
 
 ## 🔍 Comprehensive Validation System
+
 Agent OS includes a 6-validator quality assurance system organized into 2 tiers:
 
 **Tier 1 - Critical Quality**:
+
 - **Code Quality**: File size (300-line standard), complexity, duplication, naming conventions
 - **Spec Adherence**: Implementation matches specification requirements exactly
 
 **Tier 2 - Development Workflow**:
+
 - **Security**: Vulnerability detection, hardcoded secrets, insecure patterns, OWASP compliance
 - **Branch Strategy**: Git workflow, naming conventions, feature branch alignment with specs
 - **Testing Completeness**: Coverage analysis (80% target), TDD approach, test type distribution
@@ -109,14 +157,6 @@ Agent OS includes a 6-validator quality assurance system organized into 2 tiers:
 **Quality Scoring**: 90%+ Excellent | 75-89% Good | 60-74% Moderate | <60% Needs Work
 
 ---
-
-### Created by Brian Casel @ Builder Methods
-
-Created by Brian Casel, the creator of [Builder Methods](https://buildermethods.com), where Brian helps professional software developers and teams build with AI.
-
-Get Brian's free resources on building with AI:
-- [Builder Briefing newsletter](https://buildermethods.com)
-- [YouTube](https://youtube.com/@briancasel)
 
 # Hello World Test Project
 
@@ -155,10 +195,12 @@ hello-world-app/
 ## 🛠️ Installation
 
 ### Prerequisites
+
 - Node.js 14+
 - npm or yarn
 
 ### Setup
+
 ```bash
 # Clone the repository
 git clone <repository-url>
@@ -174,6 +216,7 @@ npm start
 ## 🧪 Testing Framework
 
 ### Regular Testing (Jest)
+
 ```bash
 # Run all tests
 npm test
@@ -189,6 +232,7 @@ npm run test:ci
 ```
 
 ### Chaos Monkey Testing
+
 ```bash
 # Run full chaos testing
 npm run chaos
@@ -201,6 +245,7 @@ npm run chaos:security
 ```
 
 ### Comprehensive Testing
+
 ```bash
 # Run all tests including chaos monkey
 npm run test:comprehensive
@@ -217,6 +262,7 @@ npm run test:integration:all        # All integration tests
 The Chaos Monkey Testing Framework provides comprehensive testing capabilities:
 
 ### General Chaos Testing
+
 - **Memory Pressure**: Tests memory handling under stress
 - **CPU Spikes**: Validates performance under high CPU load
 - **Network Latency**: Tests timeout and retry mechanisms
@@ -227,6 +273,7 @@ The Chaos Monkey Testing Framework provides comprehensive testing capabilities:
 - **Memory Leaks**: Detects memory leak vulnerabilities
 
 ### Security Testing
+
 - **SQL Injection**: Tests input validation
 - **XSS Attacks**: Validates output sanitization
 - **Path Traversal**: Tests file access controls
@@ -237,32 +284,36 @@ The Chaos Monkey Testing Framework provides comprehensive testing capabilities:
 - **Content Type Bypass**: Tests content validation
 
 ### Configuration
+
 ```javascript
 const chaosConfig = {
-  baseUrl: 'http://localhost:3000',
-  testDuration: 30000,        // 30 seconds
+  baseUrl: "http://localhost:3000",
+  testDuration: 30000, // 30 seconds
   concurrentRequests: 10,
   memoryLeakSize: 1024 * 1024, // 1MB per leak
-  cpuIntensity: 1000,         // iterations
-  networkDelay: 1000          // milliseconds
+  cpuIntensity: 1000, // iterations
+  networkDelay: 1000, // milliseconds
 };
 ```
 
 ## 🔒 Security Features
 
 ### Input Validation
+
 - Comprehensive input sanitization
 - Path traversal protection
 - Buffer overflow prevention
 - Content type validation
 
 ### Error Handling
+
 - Information disclosure prevention
 - Secure error messages
 - Proper HTTP status codes
 - Log injection protection
 
 ### Security Headers
+
 - Helmet.js integration
 - Content Security Policy
 - HSTS configuration
@@ -271,18 +322,21 @@ const chaosConfig = {
 ## 📊 Reporting
 
 ### Test Reports
+
 - **Jest Reports**: Standard Jest output with coverage
 - **Chaos Monkey Reports**: JSON-based resilience testing results
 - **Security Reports**: Vulnerability findings and risk assessment
 - **Integration Reports**: Comprehensive testing overview
 
 ### Report Formats
+
 - JSON (machine-readable)
 - Console output (human-readable)
 - Coverage reports (HTML)
 - Integration summaries
 
 ### Metrics
+
 - Test pass/fail rates
 - Vulnerability counts
 - Performance metrics
@@ -291,6 +345,7 @@ const chaosConfig = {
 ## 🚀 Development
 
 ### Code Quality
+
 ```bash
 # Lint code
 npm run lint
@@ -303,7 +358,9 @@ npm run validate
 ```
 
 ### Environment Variables
+
 Create a `.env` file based on `env.example`:
+
 ```bash
 # Copy example environment file
 cp env.example .env
@@ -313,22 +370,24 @@ nano .env
 ```
 
 ### Adding New Tests
+
 ```javascript
 // tests/new-feature.test.js
-describe('New Feature', () => {
-  it('should work correctly', () => {
-    expect(newFeature()).toBe('expected result');
+describe("New Feature", () => {
+  it("should work correctly", () => {
+    expect(newFeature()).toBe("expected result");
   });
 });
 ```
 
 ### Extending Chaos Testing
+
 ```javascript
 // scripts/custom-chaos.js
 class CustomChaosMonkey extends ChaosMonkey {
   async runCustomTest() {
     // Custom test implementation
-    console.log('Running custom test...');
+    console.log("Running custom test...");
   }
 }
 ```
@@ -336,44 +395,49 @@ class CustomChaosMonkey extends ChaosMonkey {
 ## 🔧 Configuration
 
 ### Application Configuration
+
 ```javascript
 // src/config.js
 const config = {
   port: process.env.PORT || 3000,
-  host: process.env.HOST || 'localhost',
-  nodeEnv: process.env.NODE_ENV || 'development'
+  host: process.env.HOST || "localhost",
+  nodeEnv: process.env.NODE_ENV || "development",
 };
 ```
 
 ### Testing Configuration
+
 ```javascript
 // jest.config.js
 module.exports = {
-  testEnvironment: 'node',
-  collectCoverageFrom: ['src/**/*.js'],
-  coverageDirectory: 'coverage'
+  testEnvironment: "node",
+  collectCoverageFrom: ["src/**/*.js"],
+  coverageDirectory: "coverage",
 };
 ```
 
 ### Chaos Testing Configuration
+
 ```javascript
 // scripts/chaos-monkey.js
 const config = {
-  baseUrl: 'http://localhost:3000',
+  baseUrl: "http://localhost:3000",
   testDuration: 30000,
-  concurrentRequests: 10
+  concurrentRequests: 10,
 };
 ```
 
 ## 📚 Documentation
 
 ### API Endpoints
+
 - `GET /` - Hello World page
 - `GET /api/status` - Application status
 - `GET /api/user/:id` - User greeting
 - `GET /health` - Health check
 
 ### Testing Documentation
+
 - [Chaos Monkey Framework](docs/chaos-monkey-framework.md)
 - [Security Testing Guide](docs/security-testing.md)
 - [Performance Testing](docs/performance-testing.md)
@@ -382,6 +446,7 @@ const config = {
 ## 🤝 Contributing
 
 ### Development Workflow
+
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
@@ -390,12 +455,14 @@ const config = {
 6. Submit a pull request
 
 ### Testing Requirements
+
 - All new code must have tests
 - Chaos monkey tests for new features
 - Security validation for user inputs
 - Performance testing for critical paths
 
 ### Code Standards
+
 - Follow ESLint configuration
 - Use consistent naming conventions
 - Add comprehensive documentation
@@ -406,6 +473,7 @@ const config = {
 ### Common Issues
 
 #### Application Won't Start
+
 ```bash
 # Check if port is in use
 lsof -i :3000
@@ -418,6 +486,7 @@ npm install
 ```
 
 #### Tests Failing
+
 ```bash
 # Clear Jest cache
 npm run test -- --clearCache
@@ -430,6 +499,7 @@ npm ls
 ```
 
 #### Chaos Tests Not Working
+
 ```bash
 # Ensure app is running
 curl http://localhost:3000/health
@@ -442,6 +512,7 @@ node --version
 ```
 
 ### Debug Mode
+
 ```bash
 # Enable debug logging
 export DEBUG=chaos-monkey:*
@@ -453,12 +524,14 @@ npm run chaos -- --debug
 ## 📈 Performance
 
 ### Benchmarks
+
 - **Response Time**: < 100ms under normal load
 - **Throughput**: 1000+ requests/second
 - **Memory Usage**: < 100MB under load
 - **CPU Usage**: < 80% under stress
 
 ### Optimization
+
 - Efficient input validation
 - Optimized error handling
 - Minimal memory allocations
@@ -467,6 +540,7 @@ npm run chaos -- --debug
 ## 🔮 Future Enhancements
 
 ### Planned Features
+
 - Machine learning-based testing
 - Real-time monitoring dashboard
 - Integration with CI/CD pipelines
@@ -474,6 +548,7 @@ npm run chaos -- --debug
 - Performance benchmarking tools
 
 ### Community Features
+
 - Plugin architecture
 - Community test scenarios
 - Shared payload libraries

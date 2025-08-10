@@ -2,124 +2,128 @@
   {
     "scenario": "Memory Pressure",
     "status": "completed",
-    "timestamp": "2025-08-10T21:57:24.812Z"
+    "timestamp": "2025-08-10T22:18:55.726Z"
   },
   {
     "scenario": "CPU Spike",
     "status": "completed",
-    "duration": 9,
-    "timestamp": "2025-08-10T21:57:25.823Z"
-  },
-  {
-    "scenario": "Random Errors",
-    "status": "error",
-    "error": "Chaos range error",
-    "timestamp": "2025-08-10T21:57:26.814Z"
-  },
-  {
-    "scenario": "Network Latency",
-    "status": "completed",
-    "timestamp": "2025-08-10T21:57:27.964Z"
+    "duration": 12,
+    "timestamp": "2025-08-10T22:18:56.739Z"
   },
   {
     "scenario": "Extreme Load",
     "status": "completed",
     "successCount": 50,
     "failureCount": 0,
-    "timestamp": "2025-08-10T21:57:28.836Z"
+    "timestamp": "2025-08-10T22:18:57.766Z"
+  },
+  {
+    "scenario": "Network Latency",
+    "status": "completed",
+    "timestamp": "2025-08-10T22:18:58.514Z"
   },
   {
     "scenario": "Random Errors",
     "status": "error",
-    "error": "Chaos type error",
-    "timestamp": "2025-08-10T21:57:28.965Z"
+    "error": "Chaos reference error",
+    "timestamp": "2025-08-10T22:18:59.516Z"
+  },
+  {
+    "scenario": "Extreme Load",
+    "status": "completed",
+    "successCount": 50,
+    "failureCount": 0,
+    "timestamp": "2025-08-10T22:18:59.753Z"
   },
   {
     "scenario": "Resource Exhaustion",
     "status": "completed",
-    "timestamp": "2025-08-10T21:57:29.975Z"
-  },
-  {
-    "scenario": "Random Errors",
-    "status": "error",
-    "error": "Chaos range error",
-    "timestamp": "2025-08-10T21:57:30.815Z"
+    "timestamp": "2025-08-10T22:19:00.531Z"
   },
   {
     "scenario": "Concurrent Load",
     "status": "completed",
     "successCount": 10,
     "failureCount": 0,
-    "timestamp": "2025-08-10T21:57:30.979Z"
+    "timestamp": "2025-08-10T22:19:01.541Z"
+  },
+  {
+    "scenario": "Memory Pressure",
+    "status": "completed",
+    "timestamp": "2025-08-10T22:19:01.736Z"
   },
   {
     "scenario": "Malformed Requests",
     "status": "completed",
     "successCount": 5,
     "failureCount": 0,
-    "timestamp": "2025-08-10T21:57:31.982Z"
-  },
-  {
-    "scenario": "Network Latency",
-    "status": "completed",
-    "timestamp": "2025-08-10T21:57:33.884Z"
-  },
-  {
-    "scenario": "Random Errors",
-    "status": "error",
-    "error": "Chaos reference error",
-    "timestamp": "2025-08-10T21:57:34.818Z"
+    "timestamp": "2025-08-10T22:19:02.545Z"
   },
   {
     "scenario": "Extreme Load",
     "status": "completed",
     "successCount": 50,
     "failureCount": 0,
-    "timestamp": "2025-08-10T21:57:36.833Z"
+    "timestamp": "2025-08-10T22:19:03.755Z"
   },
   {
-    "scenario": "Random Errors",
-    "status": "error",
-    "error": "Chaos range error",
-    "timestamp": "2025-08-10T21:57:38.820Z"
-  },
-  {
-    "scenario": "Random Errors",
-    "status": "error",
-    "error": "Chaos range error",
-    "timestamp": "2025-08-10T21:57:40.821Z"
-  },
-  {
-    "scenario": "Memory Pressure",
+    "scenario": "Network Latency",
     "status": "completed",
-    "timestamp": "2025-08-10T21:57:42.828Z"
+    "timestamp": "2025-08-10T22:19:07.052Z"
+  },
+  {
+    "scenario": "Concurrent Load",
+    "status": "completed",
+    "successCount": 10,
+    "failureCount": 0,
+    "timestamp": "2025-08-10T22:19:07.744Z"
+  },
+  {
+    "scenario": "Extreme Load",
+    "status": "completed",
+    "successCount": 50,
+    "failureCount": 0,
+    "timestamp": "2025-08-10T22:19:09.760Z"
+  },
+  {
+    "scenario": "CPU Spike",
+    "status": "completed",
+    "duration": 18,
+    "timestamp": "2025-08-10T22:19:11.755Z"
+  },
+  {
+    "scenario": "Concurrent Load",
+    "status": "completed",
+    "successCount": 10,
+    "failureCount": 0,
+    "timestamp": "2025-08-10T22:19:13.746Z"
+  },
+  {
+    "scenario": "Resource Exhaustion",
+    "status": "completed",
+    "timestamp": "2025-08-10T22:19:15.757Z"
+  },
+  {
+    "scenario": "CPU Spike",
+    "status": "completed",
+    "duration": 17,
+    "timestamp": "2025-08-10T22:19:17.759Z"
   },
   {
     "scenario": "Memory Leak",
     "status": "completed",
     "leakCount": 50,
-    "timestamp": "2025-08-10T21:57:44.826Z"
-  },
-  {
-    "scenario": "Memory Pressure",
-    "status": "completed",
-    "timestamp": "2025-08-10T21:57:46.832Z"
-  },
-  {
-    "scenario": "Memory Leak",
-    "status": "completed",
-    "leakCount": 100,
-    "timestamp": "2025-08-10T21:57:48.829Z"
+    "timestamp": "2025-08-10T22:19:19.750Z"
   },
   {
     "scenario": "Random Errors",
     "status": "error",
     "error": "Simulated chaos error",
-    "timestamp": "2025-08-10T21:57:50.827Z"
+    "timestamp": "2025-08-10T22:19:21.743Z"
   },
   {
-    "scenario": "Network Latency",
+    "scenario": "Resource Exhaustion",
     "status": "completed",
-    "timestamp": "2025-08-10T21:57:54.288Z"
+    "timestamp": "2025-08-10T22:19:23.761Z"
   }
 ]

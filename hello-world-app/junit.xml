@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="88" failures="0" errors="0" time="0.448">
-  <testsuite name="Security Tests" errors="0" failures="0" skipped="0" timestamp="2025-08-10T21:57:55" time="0.209" tests="17">
-    <testcase classname="Security Tests Input Validation Tests should sanitize user input in user endpoint" name="Security Tests Input Validation Tests should sanitize user input in user endpoint" time="0.02">
+<testsuites name="jest tests" tests="88" failures="0" errors="0" time="0.419">
+  <testsuite name="Security Tests" errors="0" failures="0" skipped="0" timestamp="2025-08-10T22:19:26" time="0.202" tests="17">
+    <testcase classname="Security Tests Input Validation Tests should sanitize user input in user endpoint" name="Security Tests Input Validation Tests should sanitize user input in user endpoint" time="0.021">
     </testcase>
     <testcase classname="Security Tests Input Validation Tests should handle extremely long user IDs gracefully" name="Security Tests Input Validation Tests should handle extremely long user IDs gracefully" time="0.002">
     </testcase>
@@ -9,19 +9,19 @@
     </testcase>
     <testcase classname="Security Tests Input Validation Tests should handle null and undefined user IDs" name="Security Tests Input Validation Tests should handle null and undefined user IDs" time="0.002">
     </testcase>
-    <testcase classname="Security Tests SQL Injection Prevention should not be vulnerable to SQL injection attempts" name="Security Tests SQL Injection Prevention should not be vulnerable to SQL injection attempts" time="0.006">
+    <testcase classname="Security Tests SQL Injection Prevention should not be vulnerable to SQL injection attempts" name="Security Tests SQL Injection Prevention should not be vulnerable to SQL injection attempts" time="0.005">
     </testcase>
     <testcase classname="Security Tests XSS Prevention should not execute JavaScript in responses" name="Security Tests XSS Prevention should not execute JavaScript in responses" time="0.005">
     </testcase>
-    <testcase classname="Security Tests XSS Prevention should properly escape HTML entities" name="Security Tests XSS Prevention should properly escape HTML entities" time="0.004">
+    <testcase classname="Security Tests XSS Prevention should properly escape HTML entities" name="Security Tests XSS Prevention should properly escape HTML entities" time="0.005">
     </testcase>
-    <testcase classname="Security Tests Path Traversal Prevention should not allow directory traversal attacks" name="Security Tests Path Traversal Prevention should not allow directory traversal attacks" time="0.004">
+    <testcase classname="Security Tests Path Traversal Prevention should not allow directory traversal attacks" name="Security Tests Path Traversal Prevention should not allow directory traversal attacks" time="0.003">
     </testcase>
-    <testcase classname="Security Tests HTTP Security Headers should include security headers in responses" name="Security Tests HTTP Security Headers should include security headers in responses" time="0.001">
+    <testcase classname="Security Tests HTTP Security Headers should include security headers in responses" name="Security Tests HTTP Security Headers should include security headers in responses" time="0">
     </testcase>
-    <testcase classname="Security Tests HTTP Security Headers should handle malformed headers gracefully" name="Security Tests HTTP Security Headers should handle malformed headers gracefully" time="0.001">
+    <testcase classname="Security Tests HTTP Security Headers should handle malformed headers gracefully" name="Security Tests HTTP Security Headers should handle malformed headers gracefully" time="0">
     </testcase>
-    <testcase classname="Security Tests Rate Limiting and DoS Protection should handle rapid requests without crashing" name="Security Tests Rate Limiting and DoS Protection should handle rapid requests without crashing" time="0.041">
+    <testcase classname="Security Tests Rate Limiting and DoS Protection should handle rapid requests without crashing" name="Security Tests Rate Limiting and DoS Protection should handle rapid requests without crashing" time="0.038">
     </testcase>
     <testcase classname="Security Tests Rate Limiting and DoS Protection should handle concurrent requests without resource exhaustion" name="Security Tests Rate Limiting and DoS Protection should handle concurrent requests without resource exhaustion" time="0.008">
     </testcase>
@@ -29,61 +29,61 @@
     </testcase>
     <testcase classname="Security Tests Error Information Disclosure should handle malformed JSON gracefully" name="Security Tests Error Information Disclosure should handle malformed JSON gracefully" time="0.001">
     </testcase>
-    <testcase classname="Security Tests Authentication and Authorization should not require authentication for public endpoints" name="Security Tests Authentication and Authorization should not require authentication for public endpoints" time="0.002">
+    <testcase classname="Security Tests Authentication and Authorization should not require authentication for public endpoints" name="Security Tests Authentication and Authorization should not require authentication for public endpoints" time="0.001">
     </testcase>
     <testcase classname="Security Tests Authentication and Authorization should not expose authentication mechanisms" name="Security Tests Authentication and Authorization should not expose authentication mechanisms" time="0.001">
     </testcase>
-    <testcase classname="Security Tests Data Validation should validate user ID format" name="Security Tests Data Validation should validate user ID format" time="0.002">
+    <testcase classname="Security Tests Data Validation should validate user ID format" name="Security Tests Data Validation should validate user ID format" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="Performance Tests" errors="0" failures="0" skipped="0" timestamp="2025-08-10T21:57:55" time="0.103" tests="11">
-    <testcase classname="Performance Tests Response Time Tests should respond to root endpoint within 100ms" name="Performance Tests Response Time Tests should respond to root endpoint within 100ms" time="0.002">
+  <testsuite name="Performance Tests" errors="0" failures="0" skipped="0" timestamp="2025-08-10T22:19:26" time="0.09" tests="11">
+    <testcase classname="Performance Tests Response Time Tests should respond to root endpoint within 100ms" name="Performance Tests Response Time Tests should respond to root endpoint within 100ms" time="0.001">
     </testcase>
     <testcase classname="Performance Tests Response Time Tests should respond to status endpoint within 50ms" name="Performance Tests Response Time Tests should respond to status endpoint within 50ms" time="0.001">
     </testcase>
     <testcase classname="Performance Tests Response Time Tests should respond to user endpoint within 75ms" name="Performance Tests Response Time Tests should respond to user endpoint within 75ms" time="0.001">
     </testcase>
-    <testcase classname="Performance Tests Concurrent Request Tests should handle 10 concurrent requests efficiently" name="Performance Tests Concurrent Request Tests should handle 10 concurrent requests efficiently" time="0.005">
+    <testcase classname="Performance Tests Concurrent Request Tests should handle 10 concurrent requests efficiently" name="Performance Tests Concurrent Request Tests should handle 10 concurrent requests efficiently" time="0.004">
     </testcase>
-    <testcase classname="Performance Tests Concurrent Request Tests should handle mixed endpoint concurrent requests" name="Performance Tests Concurrent Request Tests should handle mixed endpoint concurrent requests" time="0.002">
+    <testcase classname="Performance Tests Concurrent Request Tests should handle mixed endpoint concurrent requests" name="Performance Tests Concurrent Request Tests should handle mixed endpoint concurrent requests" time="0.003">
     </testcase>
-    <testcase classname="Performance Tests Memory Usage Tests should not have memory leaks during repeated requests" name="Performance Tests Memory Usage Tests should not have memory leaks during repeated requests" time="0.039">
+    <testcase classname="Performance Tests Memory Usage Tests should not have memory leaks during repeated requests" name="Performance Tests Memory Usage Tests should not have memory leaks during repeated requests" time="0.033">
     </testcase>
-    <testcase classname="Performance Tests Load Handling Tests should handle rapid successive requests" name="Performance Tests Load Handling Tests should handle rapid successive requests" time="0.021">
+    <testcase classname="Performance Tests Load Handling Tests should handle rapid successive requests" name="Performance Tests Load Handling Tests should handle rapid successive requests" time="0.017">
     </testcase>
-    <testcase classname="Performance Tests Load Handling Tests should maintain consistent response times under load" name="Performance Tests Load Handling Tests should maintain consistent response times under load" time="0.007">
+    <testcase classname="Performance Tests Load Handling Tests should maintain consistent response times under load" name="Performance Tests Load Handling Tests should maintain consistent response times under load" time="0.005">
     </testcase>
     <testcase classname="Performance Tests Error Handling Performance should handle 404 errors efficiently" name="Performance Tests Error Handling Performance should handle 404 errors efficiently" time="0.001">
     </testcase>
-    <testcase classname="Performance Tests Error Handling Performance should handle malformed requests efficiently" name="Performance Tests Error Handling Performance should handle malformed requests efficiently" time="0.001">
+    <testcase classname="Performance Tests Error Handling Performance should handle malformed requests efficiently" name="Performance Tests Error Handling Performance should handle malformed requests efficiently" time="0">
     </testcase>
-    <testcase classname="Performance Tests Startup Performance should start up within reasonable time" name="Performance Tests Startup Performance should start up within reasonable time" time="0">
+    <testcase classname="Performance Tests Startup Performance should start up within reasonable time" name="Performance Tests Startup Performance should start up within reasonable time" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="Hello World Application Integration Tests" errors="0" failures="0" skipped="0" timestamp="2025-08-10T21:57:56" time="0.043" tests="20">
+  <testsuite name="Hello World Application Integration Tests" errors="0" failures="0" skipped="0" timestamp="2025-08-10T22:19:26" time="0.037" tests="20">
     <testcase classname="Hello World Application Integration Tests GET / should return Hello World HTML page" name="Hello World Application Integration Tests GET / should return Hello World HTML page" time="0.003">
     </testcase>
-    <testcase classname="Hello World Application Integration Tests GET / should include all endpoint information" name="Hello World Application Integration Tests GET / should include all endpoint information" time="0.001">
+    <testcase classname="Hello World Application Integration Tests GET / should include all endpoint information" name="Hello World Application Integration Tests GET / should include all endpoint information" time="0">
     </testcase>
     <testcase classname="Hello World Application Integration Tests GET / should have proper HTML structure" name="Hello World Application Integration Tests GET / should have proper HTML structure" time="0.001">
     </testcase>
     <testcase classname="Hello World Application Integration Tests GET /api/status should return application status" name="Hello World Application Integration Tests GET /api/status should return application status" time="0.001">
     </testcase>
-    <testcase classname="Hello World Application Integration Tests GET /api/status should have valid timestamp format" name="Hello World Application Integration Tests GET /api/status should have valid timestamp format" time="0">
+    <testcase classname="Hello World Application Integration Tests GET /api/status should have valid timestamp format" name="Hello World Application Integration Tests GET /api/status should have valid timestamp format" time="0.001">
     </testcase>
-    <testcase classname="Hello World Application Integration Tests GET /api/status should have numeric uptime" name="Hello World Application Integration Tests GET /api/status should have numeric uptime" time="0.001">
+    <testcase classname="Hello World Application Integration Tests GET /api/status should have numeric uptime" name="Hello World Application Integration Tests GET /api/status should have numeric uptime" time="0">
     </testcase>
     <testcase classname="Hello World Application Integration Tests GET /api/status should have valid environment" name="Hello World Application Integration Tests GET /api/status should have valid environment" time="0">
     </testcase>
-    <testcase classname="Hello World Application Integration Tests GET /api/user/:id should return personalized greeting for valid user ID" name="Hello World Application Integration Tests GET /api/user/:id should return personalized greeting for valid user ID" time="0.001">
+    <testcase classname="Hello World Application Integration Tests GET /api/user/:id should return personalized greeting for valid user ID" name="Hello World Application Integration Tests GET /api/user/:id should return personalized greeting for valid user ID" time="0">
     </testcase>
     <testcase classname="Hello World Application Integration Tests GET /api/user/:id should handle empty user ID" name="Hello World Application Integration Tests GET /api/user/:id should handle empty user ID" time="0.001">
     </testcase>
-    <testcase classname="Hello World Application Integration Tests GET /api/user/:id should handle whitespace-only user ID" name="Hello World Application Integration Tests GET /api/user/:id should handle whitespace-only user ID" time="0.001">
+    <testcase classname="Hello World Application Integration Tests GET /api/user/:id should handle whitespace-only user ID" name="Hello World Application Integration Tests GET /api/user/:id should handle whitespace-only user ID" time="0">
     </testcase>
     <testcase classname="Hello World Application Integration Tests GET /api/user/:id should sanitize dangerous input" name="Hello World Application Integration Tests GET /api/user/:id should sanitize dangerous input" time="0.001">
     </testcase>
-    <testcase classname="Hello World Application Integration Tests GET /api/user/:id should handle very long user ID" name="Hello World Application Integration Tests GET /api/user/:id should handle very long user ID" time="0.001">
+    <testcase classname="Hello World Application Integration Tests GET /api/user/:id should handle very long user ID" name="Hello World Application Integration Tests GET /api/user/:id should handle very long user ID" time="0">
     </testcase>
     <testcase classname="Hello World Application Integration Tests GET /api/user/:id should handle special characters in user ID" name="Hello World Application Integration Tests GET /api/user/:id should handle special characters in user ID" time="0.001">
     </testcase>
@@ -91,18 +91,18 @@
     </testcase>
     <testcase classname="Hello World Application Integration Tests Error Handling should handle malformed user endpoint gracefully" name="Hello World Application Integration Tests Error Handling should handle malformed user endpoint gracefully" time="0.001">
     </testcase>
-    <testcase classname="Hello World Application Integration Tests Request Logging should log requests with timestamp and method" name="Hello World Application Integration Tests Request Logging should log requests with timestamp and method" time="0.001">
+    <testcase classname="Hello World Application Integration Tests Request Logging should log requests with timestamp and method" name="Hello World Application Integration Tests Request Logging should log requests with timestamp and method" time="0">
     </testcase>
-    <testcase classname="Hello World Application Integration Tests Response Headers should set proper content type for HTML responses" name="Hello World Application Integration Tests Response Headers should set proper content type for HTML responses" time="0">
+    <testcase classname="Hello World Application Integration Tests Response Headers should set proper content type for HTML responses" name="Hello World Application Integration Tests Response Headers should set proper content type for HTML responses" time="0.001">
     </testcase>
-    <testcase classname="Hello World Application Integration Tests Response Headers should set proper content type for JSON responses" name="Hello World Application Integration Tests Response Headers should set proper content type for JSON responses" time="0.001">
+    <testcase classname="Hello World Application Integration Tests Response Headers should set proper content type for JSON responses" name="Hello World Application Integration Tests Response Headers should set proper content type for JSON responses" time="0">
     </testcase>
-    <testcase classname="Hello World Application Integration Tests Performance should respond to status endpoint within reasonable time" name="Hello World Application Integration Tests Performance should respond to status endpoint within reasonable time" time="0">
+    <testcase classname="Hello World Application Integration Tests Performance should respond to status endpoint within reasonable time" name="Hello World Application Integration Tests Performance should respond to status endpoint within reasonable time" time="0.001">
     </testcase>
     <testcase classname="Hello World Application Integration Tests Performance should handle multiple concurrent requests" name="Hello World Application Integration Tests Performance should handle multiple concurrent requests" time="0.001">
     </testcase>
   </testsuite>
-  <testsuite name="Utility Functions" errors="0" failures="0" skipped="0" timestamp="2025-08-10T21:57:56" time="0.016" tests="40">
+  <testsuite name="Utility Functions" errors="0" failures="0" skipped="0" timestamp="2025-08-10T22:19:26" time="0.016" tests="40">
     <testcase classname="Utility Functions generateUserGreeting should generate greeting for valid user ID" name="Utility Functions generateUserGreeting should generate greeting for valid user ID" time="0.001">
     </testcase>
     <testcase classname="Utility Functions generateUserGreeting should handle empty user ID" name="Utility Functions generateUserGreeting should handle empty user ID" time="0">
@@ -131,9 +131,9 @@
     </testcase>
     <testcase classname="Utility Functions validateUserId should reject empty user ID" name="Utility Functions validateUserId should reject empty user ID" time="0">
     </testcase>
-    <testcase classname="Utility Functions validateUserId should reject whitespace-only user ID" name="Utility Functions validateUserId should reject whitespace-only user ID" time="0.001">
+    <testcase classname="Utility Functions validateUserId should reject whitespace-only user ID" name="Utility Functions validateUserId should reject whitespace-only user ID" time="0">
     </testcase>
-    <testcase classname="Utility Functions validateUserId should reject null user ID" name="Utility Functions validateUserId should reject null user ID" time="0">
+    <testcase classname="Utility Functions validateUserId should reject null user ID" name="Utility Functions validateUserId should reject null user ID" time="0.001">
     </testcase>
     <testcase classname="Utility Functions validateUserId should reject non-string user ID" name="Utility Functions validateUserId should reject non-string user ID" time="0">
     </testcase>
@@ -147,9 +147,9 @@
     </testcase>
     <testcase classname="Utility Functions formatTimestamp should handle invalid date" name="Utility Functions formatTimestamp should handle invalid date" time="0">
     </testcase>
-    <testcase classname="Utility Functions generateRandomUserId should generate user ID of specified length" name="Utility Functions generateRandomUserId should generate user ID of specified length" time="0.001">
+    <testcase classname="Utility Functions generateRandomUserId should generate user ID of specified length" name="Utility Functions generateRandomUserId should generate user ID of specified length" time="0">
     </testcase>
-    <testcase classname="Utility Functions generateRandomUserId should generate user ID of default length" name="Utility Functions generateRandomUserId should generate user ID of default length" time="0">
+    <testcase classname="Utility Functions generateRandomUserId should generate user ID of default length" name="Utility Functions generateRandomUserId should generate user ID of default length" time="0.001">
     </testcase>
     <testcase classname="Utility Functions generateRandomUserId should generate alphanumeric characters only" name="Utility Functions generateRandomUserId should generate alphanumeric characters only" time="0">
     </testcase>
@@ -163,7 +163,7 @@
     </testcase>
     <testcase classname="Utility Functions truncateString should truncate long strings" name="Utility Functions truncateString should truncate long strings" time="0">
     </testcase>
-    <testcase classname="Utility Functions truncateString should not truncate short strings" name="Utility Functions truncateString should not truncate short strings" time="0">
+    <testcase classname="Utility Functions truncateString should not truncate short strings" name="Utility Functions truncateString should not truncate short strings" time="0.001">
     </testcase>
     <testcase classname="Utility Functions truncateString should handle empty string" name="Utility Functions truncateString should handle empty string" time="0">
     </testcase>
@@ -179,7 +179,7 @@
     </testcase>
     <testcase classname="Utility Functions generateHealthCheck should generate health check data" name="Utility Functions generateHealthCheck should generate health check data" time="0">
     </testcase>
-    <testcase classname="Utility Functions generateHealthCheck should include valid timestamp" name="Utility Functions generateHealthCheck should include valid timestamp" time="0">
+    <testcase classname="Utility Functions generateHealthCheck should include valid timestamp" name="Utility Functions generateHealthCheck should include valid timestamp" time="0.001">
     </testcase>
     <testcase classname="Utility Functions generateHealthCheck should include uptime" name="Utility Functions generateHealthCheck should include uptime" time="0">
     </testcase>
