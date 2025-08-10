@@ -187,13 +187,14 @@ Follow the proven workflow: Feature Branch → Main → Release Branch → Produ
 3. **Production Deployment**: `npm run deploy:production:release` - deploys release branch
 4. **Version Management**: Use semantic versioning (major.minor.patch)
 
-### Test-Driven Development
-- **Bug Fixes**: Write tests first to detect issues, then implement fixes
-- **Failing Tests First**: When bugs are found but tests are passing, first update tests to detect the issue, then fix the bug
-- **Documentation Updates**: Update project documentation to reflect this workflow
-- **Quality Gates**: All tests must pass before release creation
-- **Comprehensive Testing**: Unit tests + E2E tests before deployment
-- **Test Coverage**: Aim for high coverage, especially for critical paths
+### Test-Driven Development (MANDATORY)
+- **Tests First**: ALWAYS write tests before implementation code
+- **Red-Green-Refactor**: Follow the three-phase TDD cycle strictly
+- **Bug Fixes**: Write failing tests first to reproduce issues, then implement fixes
+- **Feature Development**: Write tests for desired behavior before implementing features
+- **Quality Gates**: All tests must pass before any commit or release
+- **Test Coverage**: Maintain 90%+ coverage for all business logic
+- **Regression Prevention**: Tests must catch regressions before they reach production
 
 ### Deployment Best Practices
 - **Rollback Strategy**: Always have a rollback plan for production issues

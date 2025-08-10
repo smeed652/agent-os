@@ -1,8 +1,13 @@
 {
-  "name": "test-project-hello-world",
-  "version": "1.0.0",
-  "description": "A comprehensive test project for validating the Agent OS validator suite and workflow",
+  "name": "agent-os",
+  "version": "2.0.0",
+  "description": "Agent Operating System - A comprehensive development and validation framework",
   "main": "src/index.js",
+  "bin": {
+    "agent-os": "./scripts/agent-os-cli.js",
+    "doc-version": "./scripts/document-versioner.js",
+    "create-spec": "./scripts/create-spec.js"
+  },
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
@@ -10,13 +15,16 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:ci": "jest --ci --coverage --watchAll=false",
+    "test:tdd": "jest --watch --notify",
     "lint": "eslint src tests",
     "lint:fix": "eslint src tests --fix",
     "setup": "node scripts/setup.js",
     "teardown": "node scripts/teardown.js",
     "rebuild": "node scripts/rebuild.js",
     "validate": "npm run lint && npm run test:ci",
-    "validate:agent-os": "cd ~/.agent-os && npm run validate:all",
+    "validate:tdd": "node scripts/tdd-validator.js",
+    "create:tdd-project": "node scripts/create-tdd-project.js",
+    "validate:agent-os": "npm run validate:all",
     "chaos": "node scripts/chaos-monkey.js",
     "chaos:quick": "timeout 15s node scripts/chaos-monkey.js",
     "chaos:security": "node scripts/security-chaos.js",
@@ -25,23 +33,35 @@
     "test:integration:regular": "node scripts/test-integration.js regular",
     "test:integration:chaos": "node scripts/test-integration.js chaos",
     "test:integration:security": "node scripts/test-integration.js security",
-    "test:comprehensive": "npm run test && npm run test:integration:all"
+    "test:comprehensive": "npm run test && npm run test:integration:all",
+    "validate:all": "node scripts/test-all-validators.js",
+    "doc:create": "node scripts/document-versioner.js create",
+    "doc:update": "node scripts/document-versioner.js update",
+    "doc:batch": "node scripts/document-versioner.js batch",
+    "doc:version": "node scripts/document-versioner.js version",
+    "create:spec": "node scripts/create-spec.js",
+    "create:spec:full": "node scripts/comprehensive-spec-creator.js",
+    "test:spec:system": "node scripts/test-comprehensive-spec-system.js",
+    "dashboard:update": "node scripts/specs-dashboard-updater.js",
+    "install:global": "npm install -g .",
+    "uninstall:global": "npm uninstall -g agent-os"
   },
   "keywords": [
-    "hello-world",
-    "test-project",
     "agent-os",
-    "validator-testing",
-    "nodejs",
-    "express",
-    "testing"
+    "development-framework",
+    "validation-suite",
+    "testing-framework",
+    "tdd",
+    "ci-cd",
+    "quality-assurance"
   ],
-  "author": "Agent OS Test Suite",
+  "author": "Agent OS Development Team",
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
+    "glob": "^10.4.5",
     "helmet": "^7.1.0"
   },
   "devDependencies": {
@@ -50,6 +70,7 @@
     "commitlint": "^19.8.1",
     "eslint": "^8.57.0",
     "jest": "^29.7.0",
+    "node-notifier": "^10.0.1",
     "nodemon": "^3.0.2",
     "supertest": "^6.3.4"
   },
@@ -62,16 +83,21 @@
     ],
     "coverageThreshold": {
       "global": {
-        "branches": 70,
-        "functions": 80,
-        "lines": 80,
-        "statements": 80
+        "branches": 90,
+        "functions": 90,
+        "lines": 90,
+        "statements": 90
       }
     },
     "coverageReporters": [
       "text",
       "lcov",
       "html"
+    ],
+    "notify": true,
+    "watchPathIgnorePatterns": [
+      "node_modules",
+      "coverage"
     ]
   },
   "engines": {
@@ -80,10 +106,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "local-test-project"
+    "url": "https://github.com/agent-os/agent-os.git"
   },
   "bugs": {
-    "url": "local-test-project/issues"
+    "url": "https://github.com/agent-os/agent-os/issues"
   },
-  "homepage": "local-test-project#readme"
+  "homepage": "https://github.com/agent-os/agent-os#readme"
 }
