@@ -1,18 +1,52 @@
 <img width="1280" height="640" alt="agent-os-og" src="https://github.com/user-attachments/assets/e897628e-7063-4bab-a69a-7bb6d7ac8403" />
 
-## Your system for spec-driven agentic development.
+# Agent OS v2.0.0 - Advanced Development Framework
 
-[Agent OS](https://buildermethods.com/agent-os) transforms AI coding agents from confused interns into productive developers. With structured workflows that capture your standards, your stack, and the unique details of your codebase, Agent OS gives your agents the specs they need to ship quality code on the first try—not the fifth.
+## Enterprise-grade spec-driven development with comprehensive testing, validation, and release automation.
+
+**Agent OS v2.0.0** is an advanced development framework that transforms AI coding agents into productive developers through structured workflows, comprehensive testing, and automated quality assurance. Built upon the foundation of the original [Agent OS](https://buildermethods.com/agent-os) by [BuilderMethods](https://github.com/buildermethods/agent-os), this version extends the core concepts with enterprise-grade development practices.
+
+### 🎯 What Makes This Version Different
+
+This **Advanced Development Framework** edition includes:
+
+- **🧪 Comprehensive Testing Suite** - 220+ tests with Jest integration
+- **🐒 Chaos Engineering** - Resilience testing with chaos monkey
+- **🔍 Advanced Validation** - Code quality, security, and TDD compliance
+- **🚀 Automated Release Pipeline** - Full CI/CD with versioning and tagging  
+- **📊 Performance Testing** - Memory leak detection and load testing
+- **🛡️ Security Testing** - Vulnerability scanning and penetration testing
+- **📝 Spec-Driven Architecture** - Enhanced specification management system
+
+### 🙏 Credits & Attribution
+
+This project builds upon the excellent foundation created by:
+- **Original Agent OS**: [buildermethods/agent-os](https://github.com/buildermethods/agent-os)
+- **Created by**: [BuilderMethods](https://buildermethods.com/agent-os)
+- **Core Concepts**: Spec-driven development, AI agent workflows, structured standards
+
+Our v2.0.0 extends these concepts with production-ready development practices, comprehensive testing, and enterprise deployment capabilities.
+
+### 🎬 StudioFlow Integration
+
+This framework serves as the **core development infrastructure** for [StudioFlow](https://github.com/smeed652/studioflow), providing:
+
+- **Agent Workflow Standards** - Structured development processes for AI agents
+- **Quality Assurance Pipeline** - Automated testing and validation for agent-generated code  
+- **Spec-Driven Agent Behavior** - Consistent, predictable agent interactions
+- **Production-Ready Deployments** - Enterprise-grade release management for agent systems
 
 Use it with:
 
-✅ Claude Code, Cursor, or any other AI coding tool.
+✅ **StudioFlow** - Advanced AI agent orchestration platform
 
-✅ New products or established codebases.
+✅ **Claude Code, Cursor** - Any AI coding tool
 
-✅ Big features, small fixes, or anything in between.
+✅ **Enterprise Projects** - Production codebases requiring quality assurance
 
-✅ Any language or framework.
+✅ **Agent Development** - Building reliable AI-powered development workflows
+
+✅ **Any language or framework** - Universal development standards
 
 ---
 
