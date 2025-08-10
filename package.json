@@ -1,6 +1,6 @@
 {
   "name": "agent-os",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Agent OS v2.0.0 - Advanced development framework with comprehensive testing, validation, and release automation for AI agent workflows",
   "main": "src/index.js",
   "bin": {
