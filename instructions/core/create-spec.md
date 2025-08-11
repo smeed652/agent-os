@@ -20,11 +20,11 @@ EXECUTE: @~/.agent-os/instructions/meta/pre-flight.md
 
 **WORKFLOW**: Execute steps 1-11 automatically (spec creation and review request), then PAUSE for user approval before continuing with steps 12-16 (tasks and status files). This allows users to review and approve the specification before task breakdown.
 
-<step number="1" subagent="context-fetcher" name="spec_initiation">
+<step number="1" name="spec_initiation">
 
 ### Step 1: Spec Initiation
 
-Use the context-fetcher subagent to identify spec initiation method by either finding the next uncompleted roadmap item when user asks "what's next?" or accepting a specific spec idea from the user.
+Identify spec initiation method by either finding the next uncompleted roadmap item when user asks "what's next?" or accepting a specific spec idea from the user.
 
 <directory_selection>
 <spec_types> - **Framework Testing**: Use `.agent-os/specs/` for testing the Agent-OS framework itself - **Project Features**: Use `.agent-os/project-specs/` for actual project feature specifications
@@ -48,11 +48,11 @@ Use the context-fetcher subagent to identify spec initiation method by either fi
 
 </step>
 
-<step number="2" subagent="context-fetcher" name="context_gathering">
+<step number="2" name="context_gathering">
 
 ### Step 2: Context Gathering (Conditional)
 
-Use the context-fetcher subagent to read @.agent-os/product/mission-lite.md and @.agent-os/product/tech-stack.md only if not already in context to ensure minimal context for spec alignment.
+Read @.agent-os/product/mission-lite.md and @.agent-os/product/tech-stack.md only if not already in context to ensure minimal context for spec alignment.
 
 <conditional_logic>
 IF both mission-lite.md AND tech-stack.md already read in current context:
@@ -65,11 +65,11 @@ CONTINUE with context analysis
 
 </step>
 
-<step number="3" subagent="context-fetcher" name="requirements_clarification">
+<step number="3" name="requirements_clarification">
 
 ### Step 3: Requirements Clarification
 
-Use the context-fetcher subagent to clarify scope boundaries and technical considerations by asking numbered questions as needed to ensure clear requirements before proceeding.
+Clarify scope boundaries and technical considerations by asking numbered questions as needed to ensure clear requirements before proceeding.
 
 <clarification_areas>
 <scope> - in_scope: what is included - out_of_scope: what is excluded (optional)
@@ -95,11 +95,11 @@ Determine accurate date for folder naming by creating a temporary file to extrac
 
 </step>
 
-<step number="5" subagent="file-creator" name="spec_folder_creation">
+<step number="5" name="spec_folder_creation">
 
 ### Step 5: Spec Folder Creation
 
-Use the file-creator subagent to create directory: [target_directory]/YYYY-MM-DD-spec-name/ using the date from step 4 and target_directory from step 1.
+Create directory: [target_directory]/YYYY-MM-DD-spec-name/ using the date from step 4 and target_directory from step 1.
 
 <folder_naming>
 <format>YYYY-MM-DD-spec-name</format>
@@ -109,11 +109,11 @@ Use the file-creator subagent to create directory: [target_directory]/YYYY-MM-DD
 
 </step>
 
-<step number="6" subagent="file-creator" name="create_spec_md">
+<step number="6" name="create_spec_md">
 
 ### Step 6: Create spec.md
 
-Use the file-creator subagent to create the file: [target_directory]/YYYY-MM-DD-spec-name/spec.md using the template: @~/.agent-os/instructions/core/templates/spec-template.md
+Create the file: [target_directory]/YYYY-MM-DD-spec-name/spec.md using the template: @~/.agent-os/instructions/core/templates/spec-template.md
 
 <template_guidelines>
 <overview> - length: 1-2 sentences - content: goal and objective
@@ -130,11 +130,11 @@ Use the file-creator subagent to create the file: [target_directory]/YYYY-MM-DD-
 
 </step>
 
-<step number="7" subagent="file-creator" name="create_spec_lite_md">
+<step number="7" name="create_spec_lite_md">
 
 ### Step 7: Create spec-lite.md
 
-Use the file-creator subagent to create the file: [target_directory]/YYYY-MM-DD-spec-name/spec-lite.md using the template: @~/.agent-os/instructions/core/templates/spec-lite-template.md
+Create the file: [target_directory]/YYYY-MM-DD-spec-name/spec-lite.md using the template: @~/.agent-os/instructions/core/templates/spec-lite-template.md
 
 <content_guidelines>
 - length: 1-3 sentences
@@ -146,11 +146,11 @@ Use the file-creator subagent to create the file: [target_directory]/YYYY-MM-DD-
 
 </step>
 
-<step number="8" subagent="file-creator" name="create_technical_spec">
+<step number="8" name="create_technical_spec">
 
 ### Step 8: Create Technical Specification
 
-Use the file-creator subagent to create the file: sub-specs/technical-spec.md using the template: @~/.agent-os/instructions/core/templates/technical-spec-template.md
+Create the file: sub-specs/technical-spec.md using the template: @~/.agent-os/instructions/core/templates/technical-spec-template.md
 
 <conditional_logic>
 IF spec_requires_new_external_dependencies:
@@ -161,11 +161,11 @@ OMIT section entirely
 
 </step>
 
-<step number="9" subagent="file-creator" name="create_database_schema">
+<step number="9" name="create_database_schema">
 
 ### Step 9: Create Database Schema (Conditional)
 
-Use the file-creator subagent to create the file: sub-specs/database-schema.md ONLY IF database changes needed for this task using the template: @~/.agent-os/instructions/core/templates/database-schema-template.md
+Create the file: sub-specs/database-schema.md ONLY IF database changes needed for this task using the template: @~/.agent-os/instructions/core/templates/database-schema-template.md
 
 <decision_tree>
 IF spec_requires_database_changes:
@@ -176,11 +176,11 @@ SKIP this_step
 
 </step>
 
-<step number="10" subagent="file-creator" name="create_api_spec">
+<step number="10" name="create_api_spec">
 
 ### Step 10: Create API Specification (Conditional)
 
-Use the file-creator subagent to create file: sub-specs/api-spec.md ONLY IF API changes needed using the template: @~/.agent-os/instructions/core/templates/api-spec-template.md
+Create file: sub-specs/api-spec.md ONLY IF API changes needed using the template: @~/.agent-os/instructions/core/templates/api-spec-template.md
 
 <decision_tree>
 IF spec_requires_api_changes:
@@ -217,13 +217,13 @@ AFTER completing steps 6-10 (creating all spec files), request user review of sp
 
 </step>
 
-<step number="12" subagent="file-creator" name="create_tasks">
+<step number="12" name="create_tasks">
 
 ### Step 12: Create tasks.md
 
 **TRIGGER**: User approval from Step 11 (keywords: "approved", "continue", "yes", or "proceed")
 
-Use the file-creator subagent to create file: tasks.md using the template: @~/.agent-os/instructions/core/templates/tasks-template.md
+Create file: tasks.md using the template: @~/.agent-os/instructions/core/templates/tasks-template.md
 
 <task_guidelines>
 <major_tasks> - count: 1-5 - format: numbered checklist - grouping: by feature or component
@@ -236,11 +236,11 @@ Use the file-creator subagent to create file: tasks.md using the template: @~/.a
 
 </step>
 
-<step number="13" subagent="file-creator" name="create_status">
+<step number="13" name="create_status">
 
 ### Step 13: Create status.md
 
-Use the file-creator subagent to create file: status.md for lifecycle management using the template: @~/.agent-os/instructions/core/templates/status-template.md
+Create file: status.md for lifecycle management using the template: @~/.agent-os/instructions/core/templates/status-template.md
 
 <lifecycle_integration>
 <status_tracking> - planning: Spec created, ready for implementation - active: Implementation in progress - completed: Implementation finished, ready for cleanup - archived: Spec archived, minimal maintenance
@@ -252,7 +252,7 @@ Use the file-creator subagent to create file: status.md for lifecycle management
 
 </step>
 
-<step number="14" subagent="file-creator" name="create_lifecycle_files">
+<step number="14" name="create_lifecycle_files">
 
 ### Step 14: Create Lifecycle Management Files (Conditional)
 
