@@ -1,10 +1,10 @@
-# Agent-OS Framework Release 2.2.0
+# Agent-OS Framework Release 2.2.1
 
 ## Release Summary
 
-**Version**: 2.2.0  
-**Release Date**: 8/10/2025  
-**Release Time**: 3:19:28 PM  
+**Version**: 2.2.1  
+**Release Date**: 8/11/2025  
+**Release Time**: 11:50:28 AM  
 **Node.js Version**: v23.11.0
 
 ## Components Included
@@ -18,7 +18,7 @@
 
 ### Hello World App
 - **Status**: Built and included
-- **Build Time**: 8/10/2025, 3:19:28 PM
+- **Build Time**: 8/11/2025, 11:50:28 AM
 - **Location**: hello-world-app/
 
 ## Installation

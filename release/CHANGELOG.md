@@ -233,3 +233,6 @@ Each major feature in this changelog corresponds to one or more specifications i
 
 ## v2.2.0+build.20250810221928 - 2025-08-10
 - No commits found
+
+## v2.2.1+build.20250811185028 - 2025-08-11
+- No commits found
