@@ -18,6 +18,8 @@ EXECUTE: @~/.agent-os/instructions/meta/pre-flight.md
 
 <process_flow>
 
+**IMPORTANT**: Execute ALL 16 steps in sequence automatically. Do not stop after any individual step unless explicitly instructed. The complete spec creation process includes creating all required files: spec.md, spec-lite.md, technical-spec.md, tasks.md, status.md, and any conditional sub-specs.
+
 <step number="1" subagent="context-fetcher" name="spec_initiation">
 
 ### Step 1: Spec Initiation
@@ -124,6 +126,8 @@ Use the file-creator subagent to create the file: [target_directory]/YYYY-MM-DD-
 </expected_deliverable>
 </template_guidelines>
 
+**PROCEED IMMEDIATELY** to Step 7 to create spec-lite.md.
+
 </step>
 
 <step number="7" subagent="file-creator" name="create_spec_lite_md">
@@ -133,11 +137,12 @@ Use the file-creator subagent to create the file: [target_directory]/YYYY-MM-DD-
 Use the file-creator subagent to create the file: [target_directory]/YYYY-MM-DD-spec-name/spec-lite.md using the template: @~/.agent-os/instructions/core/templates/spec-lite-template.md
 
 <content_guidelines>
-
 - length: 1-3 sentences
 - content: core goal and objective of the feature
 - source: Step 6 spec.md overview section
-  </content_guidelines>
+</content_guidelines>
+
+**PROCEED IMMEDIATELY** to Step 8 to create technical-spec.md.
 
 </step>
 
@@ -190,7 +195,7 @@ SKIP this_step
 
 ### Step 11: User Review
 
-Request user review of spec.md and all sub-specs files, waiting for approval or revision requests before proceeding to task creation.
+AFTER completing steps 6-10 (creating all spec files), request user review of spec.md and all sub-specs files, waiting for approval or revision requests before proceeding to task creation.
 
 <review_request>
 I've created the spec documentation:
