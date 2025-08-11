@@ -18,7 +18,7 @@ EXECUTE: @~/.agent-os/instructions/meta/pre-flight.md
 
 <process_flow>
 
-**IMPORTANT**: Execute ALL 16 steps in sequence automatically. Do not stop after any individual step unless explicitly instructed. The complete spec creation process includes creating all required files: spec.md, spec-lite.md, technical-spec.md, tasks.md, status.md, and any conditional sub-specs.
+**WORKFLOW**: Execute steps 1-11 automatically (spec creation and review request), then PAUSE for user approval before continuing with steps 12-16 (tasks and status files). This allows users to review and approve the specification before task breakdown.
 
 <step number="1" subagent="context-fetcher" name="spec_initiation">
 
@@ -126,7 +126,7 @@ Use the file-creator subagent to create the file: [target_directory]/YYYY-MM-DD-
 </expected_deliverable>
 </template_guidelines>
 
-**PROCEED IMMEDIATELY** to Step 7 to create spec-lite.md.
+
 
 </step>
 
@@ -142,7 +142,7 @@ Use the file-creator subagent to create the file: [target_directory]/YYYY-MM-DD-
 - source: Step 6 spec.md overview section
 </content_guidelines>
 
-**PROCEED IMMEDIATELY** to Step 8 to create technical-spec.md.
+
 
 </step>
 
@@ -198,14 +198,21 @@ SKIP this_step
 AFTER completing steps 6-10 (creating all spec files), request user review of spec.md and all sub-specs files, waiting for approval or revision requests before proceeding to task creation.
 
 <review_request>
-I've created the spec documentation:
+✅ **Spec Creation Complete!** I've created the specification files:
 
-- Spec Requirements: @[target_directory]/YYYY-MM-DD-spec-name/spec.md
-- Spec Summary: @[target_directory]/YYYY-MM-DD-spec-name/spec-lite.md
-- Technical Spec: @[target_directory]/YYYY-MM-DD-spec-name/sub-specs/technical-spec.md
-  [LIST_OTHER_CREATED_SPECS]
+- **Spec Requirements**: @[target_directory]/YYYY-MM-DD-spec-name/spec.md
+- **Spec Summary**: @[target_directory]/YYYY-MM-DD-spec-name/spec-lite.md  
+- **Technical Spec**: @[target_directory]/YYYY-MM-DD-spec-name/sub-specs/technical-spec.md
+[LIST_OTHER_CREATED_SPECS]
 
-Please review and let me know if any changes are needed before I create the task breakdown.
+📋 **Next Steps:**
+1. **Review** the specification files above
+2. **If approved**: Reply with "approved" or "continue" to create tasks.md and status.md
+3. **If changes needed**: Let me know what to modify
+
+⚠️ **Note**: I'm pausing here so you can review the spec before I create the task breakdown and status files.
+
+**To continue after approval**: I'll automatically proceed with creating tasks.md and status.md, then present the first implementation task.
 </review_request>
 
 </step>
@@ -214,7 +221,9 @@ Please review and let me know if any changes are needed before I create the task
 
 ### Step 12: Create tasks.md
 
-Use the file-creator subagent to await user approval from step 11 and then create file: tasks.md using the template: @~/.agent-os/instructions/core/templates/tasks-template.md
+**TRIGGER**: User approval from Step 11 (keywords: "approved", "continue", "yes", or "proceed")
+
+Use the file-creator subagent to create file: tasks.md using the template: @~/.agent-os/instructions/core/templates/tasks-template.md
 
 <task_guidelines>
 <major_tasks> - count: 1-5 - format: numbered checklist - grouping: by feature or component
