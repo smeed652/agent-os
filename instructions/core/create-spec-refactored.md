@@ -2,7 +2,7 @@
 description: Spec Creation Rules for Agent OS
 globs:
 alwaysApply: false
-version: 2.1
+version: 2.0
 encoding: UTF-8
 ---
 
@@ -23,13 +23,6 @@ EXECUTE: @~/.agent-os/instructions/meta/pre-flight.md
 ### Step 1: Spec Initiation
 
 Use the context-fetcher subagent to identify spec initiation method by either finding the next uncompleted roadmap item when user asks "what's next?" or accepting a specific spec idea from the user.
-
-<directory_selection>
-<spec_types> - **Framework Testing**: Use `.agent-os/specs/` for testing the Agent-OS framework itself - **Project Features**: Use `.agent-os/project-specs/` for actual project feature specifications
-</spec_types>
-<selection_process> 1. ASK user: "Is this a framework test spec or a project feature spec?" 2. IF framework test: SET target_directory = ".agent-os/specs/" 3. IF project feature: SET target_directory = ".agent-os/project-specs/" 4. STORE target_directory for use in subsequent steps
-</selection_process>
-</directory_selection>
 
 <option_a_flow>
 <trigger_phrases> - "what's next?"
@@ -85,7 +78,7 @@ Use the context-fetcher subagent to clarify scope boundaries and technical consi
 Determine accurate date for folder naming by creating a temporary file to extract timestamp in YYYY-MM-DD format, falling back to asking user if needed.
 
 <date_determination_process>
-<primary_method> 1. CREATE directory if not exists: [target_directory] (from step 1) 2. CREATE temporary file: [target_directory]/.date-check 3. READ file creation timestamp from filesystem 4. EXTRACT date in YYYY-MM-DD format 5. DELETE temporary file 6. STORE date in variable for folder naming
+<primary_method> 1. CREATE directory if not exists: .agent-os/specs/ 2. CREATE temporary file: .agent-os/specs/.date-check 3. READ file creation timestamp from filesystem 4. EXTRACT date in YYYY-MM-DD format 5. DELETE temporary file 6. STORE date in variable for folder naming
 </primary_method>
 <fallback_method> 1. STATE: "I need to confirm today's date for the spec folder" 2. ASK: "What is today's date? (YYYY-MM-DD format)" 3. WAIT for user response 4. VALIDATE format matches YYYY-MM-DD 5. STORE date for folder naming
 </fallback_method>
@@ -97,7 +90,7 @@ Determine accurate date for folder naming by creating a temporary file to extrac
 
 ### Step 5: Spec Folder Creation
 
-Use the file-creator subagent to create directory: [target_directory]/YYYY-MM-DD-spec-name/ using the date from step 4 and target_directory from step 1.
+Use the file-creator subagent to create directory: .agent-os/specs/YYYY-MM-DD-spec-name/ using the date from step 4.
 
 <folder_naming>
 <format>YYYY-MM-DD-spec-name</format>
@@ -111,7 +104,7 @@ Use the file-creator subagent to create directory: [target_directory]/YYYY-MM-DD
 
 ### Step 6: Create spec.md
 
-Use the file-creator subagent to create the file: [target_directory]/YYYY-MM-DD-spec-name/spec.md using the template: @~/.agent-os/instructions/core/templates/spec-template.md
+Use the file-creator subagent to create the file: .agent-os/specs/YYYY-MM-DD-spec-name/spec.md using the template: @~/.agent-os/instructions/core/templates/spec-template.md
 
 <template_guidelines>
 <overview> - length: 1-2 sentences - content: goal and objective
@@ -130,7 +123,7 @@ Use the file-creator subagent to create the file: [target_directory]/YYYY-MM-DD-
 
 ### Step 7: Create spec-lite.md
 
-Use the file-creator subagent to create the file: [target_directory]/YYYY-MM-DD-spec-name/spec-lite.md using the template: @~/.agent-os/instructions/core/templates/spec-lite-template.md
+Use the file-creator subagent to create the file: .agent-os/specs/YYYY-MM-DD-spec-name/spec-lite.md using the template: @~/.agent-os/instructions/core/templates/spec-lite-template.md
 
 <content_guidelines>
 
@@ -195,9 +188,9 @@ Request user review of spec.md and all sub-specs files, waiting for approval or 
 <review_request>
 I've created the spec documentation:
 
-- Spec Requirements: @[target_directory]/YYYY-MM-DD-spec-name/spec.md
-- Spec Summary: @[target_directory]/YYYY-MM-DD-spec-name/spec-lite.md
-- Technical Spec: @[target_directory]/YYYY-MM-DD-spec-name/sub-specs/technical-spec.md
+- Spec Requirements: @.agent-os/specs/YYYY-MM-DD-spec-name/spec.md
+- Spec Summary: @.agent-os/specs/YYYY-MM-DD-spec-name/spec-lite.md
+- Technical Spec: @.agent-os/specs/YYYY-MM-DD-spec-name/sub-specs/technical-spec.md
   [LIST_OTHER_CREATED_SPECS]
 
 Please review and let me know if any changes are needed before I create the task breakdown.

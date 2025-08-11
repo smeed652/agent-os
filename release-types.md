@@ -1,0 +1,7 @@
+npm run release:patch    # v2.0.0 → v2.0.1 (bug fixes)
+npm run release:minor    # v2.0.0 → v2.1.0 (new features)  
+npm run release:major    # v2.0.0 → v3.0.0 (breaking changes)
+npm run release:beta     # v2.0.0 → v2.1.0-beta.1 (testing)
+npm run release:alpha    # v2.0.0 → v2.1.0-alpha.1 (early dev)
+npm run release:rc       # v2.0.0 → v2.1.0-rc.1 (release candidate)
+npm run release:hotfix   # Same as patch (emergency fixes)
