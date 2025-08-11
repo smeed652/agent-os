@@ -1,6 +1,6 @@
 # Technical Specification
 
-> Agent-OS: v2.2.0
+> Agent-OS: v2.2.1
 > Spec: [SPEC_NAME]
 > Created: [CURRENT_DATE]
 > Status: Planning
