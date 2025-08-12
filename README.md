@@ -81,6 +81,40 @@ cd ~/.agent-os && npm install
 
 📚 **Full Documentation**: See the `docs/` directory for comprehensive guides and API documentation
 
+## 🏗️ 4-Level Documentation System
+
+Agent OS now includes a comprehensive documentation hierarchy that bridges strategic vision with technical implementation:
+
+### **Level 1: Strategic (10K Feet View)**
+
+- **Vision Documents**: Strategic vision, mission, values
+- **Strategic Maps**: Balanced scorecard strategy maps
+- **Strategic Roadmaps**: Long-term strategic planning
+- **Instructions**: `@create-vision.md`, `@create-strategic-map.md`
+
+### **Level 2: Architecture (5K Feet View)**
+
+- **ADRs**: Architecture Decision Records
+- **Architecture Patterns**: Design patterns and principles
+- **Technical Strategy**: Technology choices and constraints
+- **Instructions**: `@create-adr.md`, `@create-architecture-pattern.md`
+
+### **Level 3: Product (2K Feet View)**
+
+- **PRDs**: Product Requirements Documents
+- **User Stories**: User requirements and acceptance criteria
+- **Product Roadmaps**: Feature planning and timelines
+- **Instructions**: `@create-prd.md`, `@create-user-stories.md`
+
+### **Level 4: Specifications (Ground Level)**
+
+- **Technical Specs**: Detailed technical specifications
+- **API Specs**: API design and documentation
+- **Implementation Tasks**: Development task breakdowns
+- **Instructions**: `@create-spec.md`, `@create-api-spec.md`
+
+📖 **Complete Documentation System Guide**: See [docs/4-level-documentation-system.md](docs/4-level-documentation-system.md)
+
 ## 🧪 Testing & Quality Assurance
 
 Agent OS includes a comprehensive testing suite with 100% success rate:
